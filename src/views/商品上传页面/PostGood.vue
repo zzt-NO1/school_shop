@@ -33,13 +33,13 @@
           <span style="font-size: 30px;">请完善闲置品信息</span>
           <div class="upload-msg">
               <div id="focus"></div>
-              <input type="text" half placeholder="First name" autocomplete="no">
-              <input type="text" half placeholder="Last name" autocomplete="no">
-              <input type="text" placeholder="Address" autocomplete="no">
-              <input type="text" half placeholder="Zip code" autocomplete="no">
-              <input type="text" half placeholder="City" autocomplete="no">
-              <input type="text" placeholder="Mail" autocomplete="no">
-              <input type="submit" value="提交发布申请">
+              <input class="in_text" type="text" half placeholder="First name" autocomplete="no">
+              <input class="in_text" type="text" half placeholder="Last name" autocomplete="no">
+              <input class="in_text" type="text" placeholder="Address" autocomplete="no">
+              <input class="in_text" type="text" half placeholder="Zip code" autocomplete="no">
+              <input class="in_text" type="text" half placeholder="City" autocomplete="no">
+              <input class="in_text" type="text" placeholder="Mail" autocomplete="no">
+              <input class="in_text" type="submit" value="提交发布申请">
           </div>
         </div>
       </form>
