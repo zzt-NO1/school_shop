@@ -29,19 +29,92 @@
             </div>
           </div>
         </div>
-        <div class="upload">
+        <div class="upload1" >
           <span style="font-size: 30px;">请完善闲置品信息</span>
-          <div class="upload-msg">
-              <div id="focus"></div>
-              <input class="in_text" type="text" half placeholder="First name" autocomplete="no">
-              <input class="in_text" type="text" half placeholder="Last name" autocomplete="no">
-              <input class="in_text" type="text" placeholder="Address" autocomplete="no">
-              <input class="in_text" type="text" half placeholder="Zip code" autocomplete="no">
-              <input class="in_text" type="text" half placeholder="City" autocomplete="no">
-              <input class="in_text" type="text" placeholder="Mail" autocomplete="no">
+          <p style="margin: auto;height: 40px;margin-top: 15px">
+            <label style="margin-right: 15px;"><input type="radio" name="radioType" value="0" @click="selectUploadType(0)" checked="checked" />出售</label>
+            <label><input type="radio" name="radioType" value="1" @click="selectUploadType(1)"/>出租</label>
+          </p>
+<!----------------------------------出售品信息------------------------------------------------------------------->
+          <div class="upload-msg" v-if="rentOrSellMark===0">
+            <div class="form-group">
+              <span>标题*</span>
+              <input class="in_text form-field" type="text" placeholder="填写标题或闲置品名称" autocomplete="no"/>
+            </div>
+            <div class="form-group fleft">
+              <span>类别*</span>
+              <input class="in_text form-field" type="text" half placeholder="请选择类别" autocomplete="no"/>
+            </div>
+            <div class="form-group fright">
+              <input class="in_text form-field" type="text" half placeholder="预期价格" autocomplete="no"/>
+              <span v-if="rentOrSellMark===0">元*</span>
+            </div>
+            <div class="form-group fleft">
+              <span>新旧程度*</span>
+              <input class="in_text form-field" type="text" half placeholder="请选择" autocomplete="no"/>
+            </div>
+            <div class="form-group fright">
+              <span>数量*</span>
+              <input class="in_text form-field" type="number" min="1" max="20" half placeholder="库存数量" autocomplete="no"/>
+            </div>
+            <div class="form-group" >
+              <textarea class="in_text form-field" type="text" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;"/>
+            </div>
+            <div class="form-group" >
               <input class="in_text" type="submit" value="提交发布申请">
+            </div>
+          </div>
+<!------------------------------出租品信息--------------------------------------------------------->
+          <div class="rentDiv" v-if="rentOrSellMark===1">
+            <div class="form-group">
+              <span>标题*</span>
+              <input class="in_text form-field" type="text" placeholder="填写标题或闲置品名称" autocomplete="no"/>
+            </div>
+            <div class="form-group fleft">
+              <span>类别*</span>
+              <input class="in_text form-field" type="text" half placeholder="请选择类别" autocomplete="no"/>
+            </div>
+            <div class="form-group fright">
+              <input class="in_text form-field" type="text" half placeholder="预期价格" autocomplete="no"/>
+              <span v-if="rentOrSellMark===1">元/天*</span>
+            </div>
+            <div class="form-group fleft">
+              <span>新旧程度*</span>
+              <input class="in_text form-field" type="text" half placeholder="请选择" autocomplete="no"/>
+            </div>
+            <div class="form-group fright">
+              <span>数量*</span>
+              <input class="in_text form-field" type="number" min="1" max="20" half placeholder="库存数量" autocomplete="no"/>
+            </div>
+            <div class="form-group" >
+              <textarea class="in_text form-field" type="text" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;"/>
+            </div>
+            <div class="form-group">
+              <span>出租规则*</span>
+              <input class="in_text form-field" type="text" placeholder="请填写出租规则" autocomplete="no" v-model="rule"/>
+              <span style="cursor: pointer" @click="addRule(rule)">添加</span>
+            </div>
+            <div class="form-group" style="border: 1px solid #2196F3;border-radius: 6px;">
+              <!--<table class="rule-table" >
+                <tr v-for="(item,index) in rent_rules" :key="index">
+                  <td>{{item}}</td>
+                </tr>
+              </table>-->
+              <ul class="task-list">
+                <li class="task-list-item" v-for="(item,index) in rent_rules" :key="index">
+                  <label class="task-list-item-label">
+                    <span>{{index+1}}、 {{item}}</span>
+                  </label>
+                  <span @click="delItem(item)" class="delete-btn" title="删除规则">{{item.del}}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="form-group" >
+              <input class="in_text" type="submit" value="提交发布申请">
+            </div>
           </div>
         </div>
+
       </form>
     </div>
   </div>
@@ -57,18 +130,18 @@ export default {
   data () {
     return {
       imgList: [],//图片
-      rentOrSellMark: 1,//0:出售 ,1:出租
-      name: '',//名称
+      rentOrSellMark: 0,//0:出售 ,1:出租
       title: '',//标题
       description: '',//详细描述
       phone:'',//联系方式
       goodType: '',//闲置品类型
       qualityValue: '',//新旧程度
-      rentRules:'',//租赁规则
       studentAccount: '',//用户账号
       sellPrice: '',//价格
       rentPrice: '',
       size: 0,
+      rent_rules: [],//租赁规则
+      rule:'',
     }
   },
   created() {
@@ -84,13 +157,22 @@ export default {
     }
   },
   methods: {
-    selectUploadType(type){//选择出租或出售类型
-      if(type==1){
+
+    selectUploadType(typeValue){//选择出租或出售类型
+      if(typeValue==1){
         this.rentOrSellMark=1;
       }else {
         this.rentOrSellMark=0;
       }
-      //document.getElementsByName('price').click()
+    },
+    addRule(rule){
+      this.rent_rules.push(rule);
+      this.rule='';
+      console.log("增加后："+this.rent_rules)
+    },
+    delItem: function (item) {
+      this.rent_rules.splice(this.rent_rules.indexOf(item), 1);
+      console.log("删减后："+this.rent_rules)
     },
     fileClick(){
       document.getElementById('upload_file').click()
@@ -148,9 +230,17 @@ export default {
 <style scoped>
 @import "../../views/商品上传页面/css/style.css";
 
-.upload-msg{
+/*.upload-msg{
   text-align: left;
   margin-left: 40px;
+}*/
+.fleft{
+  float: left;
+  width: 45%;
+}
+.fright{
+  float: right;
+  width: 45%;
 }
 .upload_warp_img_div_del {
   position: absolute;
@@ -249,9 +339,17 @@ export default {
   width: 800px;
   border-radius: 14px;
 }
+.upload1 {
+  border: 1px solid #2196F3;
+  background-color: #fff;
+  width: 800px;
+  height: auto;
+  border-radius: 14px;
+}
 
 .hello {
   width: 800px;
+  height: 400px;
   margin: auto;
   text-align: center;
 }
