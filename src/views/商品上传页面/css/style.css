@@ -11,6 +11,9 @@
   justify-content: center;
   align-items: center;
 }*/
+uploadGood{
+  height: 100%;
+}
 .rule-table{
   width: 300px;
   margin: auto;
@@ -58,27 +61,42 @@ h1 {
   padding: 10px 15px;
   border-radius: 10px;
   transition: .3s ease;
-  color: #868283;
+  color: white;
+  background-color: transparent;
 }
 .in_text[type=text] {
   width: calc(100% - 30px);
   margin-bottom: 30px;
-  border: 2px solid #868283;
+  border: 2px solid #1687f3;
+  background-color: transparent
 }
-.in_text[type=text]:placeholder-shown {
-  border: 1px solid #2196F3;
+.in_text[type=number] {
+  width: calc(100% - 30px);
+  margin-bottom: 30px;
+  border: 2px solid #1687f3;
+  background-color: transparent
+}
+.in_text[type=text][type=number]:placeholder-shown {
+  border: 2px solid #1687f3;
+  background-color: transparent
 }
 .in_text[type=text]::placeholder {
-  color: #A3A5AA;
+  color: #EEF4FF;
+  background-color: transparent
+}
+.in_text[type=number]::placeholder {
+  color: #EEF4FF;
+  background-color: transparent
 }
 .in_text[type=text][half] {
   width: calc(50% - 30px);
   float: left;
   margin-right: 0px;
+  background-color: transparent
 }
 .in_text[type=submit] {
   background: #2196f3;;
-  color: white;
+  color: #EEF4FF;
   border: 2px solid #1687f3;
   outline: 0px solid #fff;
   width: calc(50% - 30px);
@@ -90,6 +108,7 @@ h1 {
   letter-spacing: 1.8pt;
   text-transform: uppercase;
   cursor: pointer;
+  background-color: transparent
 }
 .in_text[type=submit]:hover {
   outline-width: 0;
@@ -103,7 +122,7 @@ h1 {
   --input-border: #CDD9ED;
   --input-background: #fff;
   --input-placeholder: #CBD1DC;
-  --input-border-focus: #275EFE;
+  --input-border-focus: #275efe;
   --group-color: var(--input-color);
   --group-border: var(--input-border);
   --group-background: #EEF4FF;
@@ -183,9 +202,9 @@ h1 {
   padding: 8px 12px;
   font-size: 14px;
   line-height: 25px;
-  color: var(--group-color);
-  background: var(--group-background);
-  border: 1px solid var(--group-border);
+  color: #EEF4FF;
+  /*background: var(--group-background);*/
+  border: 2px solid #1687f3;
   transition: background .3s ease, border .3s ease, color .3s ease;
 }
 .form-group:focus-within > span {
@@ -276,4 +295,112 @@ html {
     -webkit-appearance: none;
     -moz-appearance: none;
   }*/
+}
+
+/*--------------------------背景----------------------------------------------*/
+.wall{
+  position: absolute;
+  top: 50px;
+  left: 0;
+  bottom: -134px;
+  right: 0;
+}
+div#background{
+  background: url("../../../views/商品上传页面/img/preview.jpg")no-repeat;
+  -webkit-animation: dd 1000s linear infinite;
+  -moz-animation: dd 1000s linear infinite;
+  -o-animation: dd 1000s linear infinite;
+  animation: dd 1000s linear infinite;
+  background-size: cover;
+}
+div#midground{
+  background: url("../../../views/商品上传页面/img/midground.png");
+  z-index: 1;
+  -webkit-animation: cc 1000s linear infinite;
+  -moz-animation: cc 1000s linear infinite;
+  -o-animation: cc 1000s linear infinite;
+  animation: cc 1000s linear infinite;
+}
+div#foreground{
+  background: url("../../../views/商品上传页面/img/foreground.png");
+  z-index: 2;
+  -webkit-animation: cc 1530s linear infinite;
+  -o-animation: cc 1530s linear infinite;
+  -moz-animation: cc 1530s linear infinite;
+  animation: cc 553s linear infinite;
+}
+div#top{
+  background: url("../../../views/商品上传页面/img/midground.png");
+  z-index: 2;
+  -webkit-animation: dd 200s linear infinite;
+  -o-animation: dd 200s linear infinite;
+  animation: da 200s linear infinite;
+}
+@-webkit-keyframes cc {
+  from{
+    background-position: 0 0;
+    transform: translateY(10px);
+  }
+  to{
+    background-position: 600% 0;
+  }
+}
+@-o-keyframes cc {
+  from{
+    background-position: 0 0;
+    transform: translateY(10px);
+  }
+  to{
+    background-position: 600% 0;
+  }
+}
+@-moz-keyframes cc {
+  from{
+    background-position: 0 0;
+    transform: translateY(10px);
+  }
+  to{
+    background-position: 600% 0;
+  }
+}
+@keyframes cc {
+  0%{
+    background-position: 0 0;
+  }
+  100%{
+    background-position: 600% 0;
+  }
+}
+
+@keyframes da {
+  0%{
+    background-position: 0 0;
+  }
+  100%{
+    background-position: 0 600%;
+  }
+}
+@-webkit-keyframes da {
+  0%{
+    background-position: 0 0;
+  }
+  100%{
+    background-position: 0 600%;
+  }
+}
+@-moz-keyframes da {
+  0%{
+    background-position: 0 0;
+  }
+  100%{
+    background-position: 0 600%;
+  }
+}
+@-ms-keyframes da {
+  0%{
+    background-position: 0 0;
+  }
+  100%{
+    background-position: 0 600%;
+  }
 }

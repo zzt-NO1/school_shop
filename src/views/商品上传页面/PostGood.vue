@@ -1,122 +1,130 @@
 <template>
   <div id="uploadGood">
-    <div class="hello">
-      <form ref="upload_form">
-        <div class="upload">
-          <div class="upload_warp">
-            <div class="upload_warp_left" @click="fileClick">
-              <img src="../商品上传页面/img/upload.png"><br/>
-              <span style="color: #2d8cf0">点击上传图片</span>
-            </div>
-            <div class="upload_warp_right" @drop="drop($event)" @dragenter="dragenter($event)" @dragover="dragover($event)">
-              或者将图片拖到此处
-            </div>
-          </div>
-          <div class="upload_warp_text">
-            选中{{imgList.length}}个图片，共{{bytesToSize(this.size)}}
-            <span class="ml20 c-red">[单个图片附件的最大尺寸为10MB]</span>
-          </div>
-          <input @change="fileChange($event)" type="file" id="upload_file" multiple style="display: none">
-          <div class="upload_warp_img" v-show="imgList.length!=0">
-            <div class="upload_warp_img_div" v-for="(item,index) of imgList" :key="index">
-              <div class="upload_warp_img_div_top">
-                <div class="upload_warp_img_div_text">
-                  {{item.file.name}}
-                </div>
-                <img src="../商品上传页面/img/del.png" class="upload_warp_img_div_del" @click="fileDel(index)">
+<!------------------------背景---------------------------------------------------->
+    <div id="background" class="wall"></div>
+    <div id="midground" class="wall"></div>
+    <div id="foreground" class="wall"></div>
+    <div id="top" class="wall">
+      <div class="hello">
+        <form ref="upload_form">
+          <div class="upload">
+            <div class="upload_warp">
+              <div class="upload_warp_left" @click="fileClick">
+                <img src="../商品上传页面/img/upload.png"><br/>
+                <span style="color: #2d8cf0">点击上传图片</span>
               </div>
-              <img :src="item.file.src">
+              <div class="upload_warp_right" @drop="drop($event)" @dragenter="dragenter($event)" @dragover="dragover($event)">
+                或者将图片拖到此处
+              </div>
+            </div>
+            <div class="upload_warp_text">
+              选中{{imgList.length}}个图片，共{{bytesToSize(this.size)}}
+              <span class="ml20 c-red">[单个图片附件的最大尺寸为10MB]</span>
+            </div>
+            <input @change="fileChange($event)" type="file" id="upload_file" multiple style="display: none">
+            <div class="upload_warp_img" v-show="imgList.length!=0">
+              <div class="upload_warp_img_div" v-for="(item,index) of imgList" :key="index">
+                <div class="upload_warp_img_div_top">
+                  <div class="upload_warp_img_div_text">
+                    {{item.file.name}}
+                  </div>
+                  <img src="../商品上传页面/img/del.png" class="upload_warp_img_div_del" @click="fileDel(index)">
+                </div>
+                <img :src="item.file.src">
+              </div>
             </div>
           </div>
-        </div>
-        <div class="upload1" >
-          <span style="font-size: 30px;">请完善闲置品信息</span>
-          <p style="margin: auto;height: 40px;margin-top: 15px">
-            <label style="margin-right: 15px;"><input type="radio" name="radioType" value="0" @click="selectUploadType(0)" checked="checked" />出售</label>
-            <label><input type="radio" name="radioType" value="1" @click="selectUploadType(1)"/>出租</label>
-          </p>
-<!----------------------------------出售品信息------------------------------------------------------------------->
-          <div class="upload-msg" v-if="rentOrSellMark===0">
-            <div class="form-group">
-              <span>标题*</span>
-              <input class="in_text form-field" type="text" placeholder="填写标题或闲置品名称" autocomplete="no"/>
+          <div class="upload1" >
+            <span style="font-size: 30px;color:white;margin-top: 20px">请完善闲置品信息</span>
+            <p style="margin: auto;height: 40px;margin-top: 15px">
+              <label style="margin-right: 15px;color: white"><input type="radio" name="radioType" value="0" @click="selectUploadType(0)" checked="checked" />出售</label>
+              <label style="margin-right: 15px;color: white"><input type="radio" name="radioType" value="1" @click="selectUploadType(1)"/>出租</label>
+            </p>
+            <!----------------------------------出售品信息------------------------------------------------------------------->
+            <div class="upload-msg" v-if="rentOrSellMark===0">
+              <div class="form-group">
+                <span>标题*</span>
+                <input class="in_text form-field" type="text" placeholder="填写标题或闲置品名称" autocomplete="no"/>
+              </div>
+              <div class="form-group fleft">
+                <span>类别*</span>
+                <input class="in_text form-field" type="text" half placeholder="请选择类别" autocomplete="no"/>
+              </div>
+              <div class="form-group fright">
+                <input class="in_text form-field" type="text" half placeholder="预期价格" autocomplete="no"/>
+                <span v-if="rentOrSellMark===0">元*</span>
+              </div>
+              <div class="form-group fleft">
+                <span>新旧程度*</span>
+                <input class="in_text form-field" type="text" half placeholder="请选择" autocomplete="no"/>
+              </div>
+              <div class="form-group fright">
+                <span>数量*</span>
+                <input class="in_text form-field" type="number" min="1" max="20" half placeholder="库存数量" autocomplete="no"/>
+              </div>
+              <div class="form-group" >
+                <textarea class="in_text form-field" type="text" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;"/>
+              </div>
+              <div class="form-group" >
+                <input class="in_text" type="submit" value="提交发布申请">
+              </div>
             </div>
-            <div class="form-group fleft">
-              <span>类别*</span>
-              <input class="in_text form-field" type="text" half placeholder="请选择类别" autocomplete="no"/>
-            </div>
-            <div class="form-group fright">
-              <input class="in_text form-field" type="text" half placeholder="预期价格" autocomplete="no"/>
-              <span v-if="rentOrSellMark===0">元*</span>
-            </div>
-            <div class="form-group fleft">
-              <span>新旧程度*</span>
-              <input class="in_text form-field" type="text" half placeholder="请选择" autocomplete="no"/>
-            </div>
-            <div class="form-group fright">
-              <span>数量*</span>
-              <input class="in_text form-field" type="number" min="1" max="20" half placeholder="库存数量" autocomplete="no"/>
-            </div>
-            <div class="form-group" >
-              <textarea class="in_text form-field" type="text" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;"/>
-            </div>
-            <div class="form-group" >
-              <input class="in_text" type="submit" value="提交发布申请">
+            <!------------------------------出租品信息--------------------------------------------------------->
+            <div class="rentDiv" v-if="rentOrSellMark===1">
+              <div class="form-group">
+                <span>标题*</span>
+                <input class="in_text form-field" type="text" placeholder="填写标题或闲置品名称" autocomplete="no"/>
+              </div>
+              <div class="form-group fleft">
+                <span>类别*</span>
+                <input class="in_text form-field" type="text" half placeholder="请选择类别" autocomplete="no"/>
+              </div>
+              <div class="form-group fright">
+                <input class="in_text form-field" type="text" half placeholder="预期价格" autocomplete="no"/>
+                <span v-if="rentOrSellMark===1">元/天*</span>
+              </div>
+              <div class="form-group fleft">
+                <span>新旧程度*</span>
+                <input class="in_text form-field" type="text" half placeholder="请选择" autocomplete="no"/>
+              </div>
+              <div class="form-group fright">
+                <span>数量*</span>
+                <input class="in_text form-field" type="number" min="1" max="20" half placeholder="库存数量" autocomplete="no"/>
+              </div>
+              <div class="form-group" >
+                <textarea class="in_text form-field" type="text" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;"/>
+              </div>
+              <div class="form-group">
+                <span>出租规则*</span>
+                <input class="in_text form-field" type="text" placeholder="请填写出租规则" autocomplete="no" v-model="rule"/>
+                <span style="cursor: pointer" @click="addRule(rule)">添加</span>
+              </div>
+              <div class="form-group" style="border: 1px solid #2196F3;border-radius: 6px;">
+                <!--<table class="rule-table" >
+                  <tr v-for="(item,index) in rent_rules" :key="index">
+                    <td>{{item}}</td>
+                  </tr>
+                </table>-->
+                <ul class="task-list">
+                  <li class="task-list-item" v-for="(item,index) in rent_rules" :key="index">
+                    <label class="task-list-item-label">
+                      <span>{{index+1}}、 {{item}}</span>
+                    </label>
+                    <span @click="delItem(item)" class="delete-btn" title="删除规则">{{item.del}}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="form-group" >
+                <input class="in_text" type="submit" value="提交发布申请">
+              </div>
             </div>
           </div>
-<!------------------------------出租品信息--------------------------------------------------------->
-          <div class="rentDiv" v-if="rentOrSellMark===1">
-            <div class="form-group">
-              <span>标题*</span>
-              <input class="in_text form-field" type="text" placeholder="填写标题或闲置品名称" autocomplete="no"/>
-            </div>
-            <div class="form-group fleft">
-              <span>类别*</span>
-              <input class="in_text form-field" type="text" half placeholder="请选择类别" autocomplete="no"/>
-            </div>
-            <div class="form-group fright">
-              <input class="in_text form-field" type="text" half placeholder="预期价格" autocomplete="no"/>
-              <span v-if="rentOrSellMark===1">元/天*</span>
-            </div>
-            <div class="form-group fleft">
-              <span>新旧程度*</span>
-              <input class="in_text form-field" type="text" half placeholder="请选择" autocomplete="no"/>
-            </div>
-            <div class="form-group fright">
-              <span>数量*</span>
-              <input class="in_text form-field" type="number" min="1" max="20" half placeholder="库存数量" autocomplete="no"/>
-            </div>
-            <div class="form-group" >
-              <textarea class="in_text form-field" type="text" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;"/>
-            </div>
-            <div class="form-group">
-              <span>出租规则*</span>
-              <input class="in_text form-field" type="text" placeholder="请填写出租规则" autocomplete="no" v-model="rule"/>
-              <span style="cursor: pointer" @click="addRule(rule)">添加</span>
-            </div>
-            <div class="form-group" style="border: 1px solid #2196F3;border-radius: 6px;">
-              <!--<table class="rule-table" >
-                <tr v-for="(item,index) in rent_rules" :key="index">
-                  <td>{{item}}</td>
-                </tr>
-              </table>-->
-              <ul class="task-list">
-                <li class="task-list-item" v-for="(item,index) in rent_rules" :key="index">
-                  <label class="task-list-item-label">
-                    <span>{{index+1}}、 {{item}}</span>
-                  </label>
-                  <span @click="delItem(item)" class="delete-btn" title="删除规则">{{item.del}}</span>
-                </li>
-              </ul>
-            </div>
-            <div class="form-group" >
-              <input class="in_text" type="submit" value="提交发布申请">
-            </div>
-          </div>
-        </div>
 
-      </form>
+        </form>
+      </div>
     </div>
+<!------------------------信息填写--------------------------------------------------->
+
   </div>
 </template>
 
@@ -334,14 +342,12 @@ export default {
 }
 
 .upload {
-  border: 1px solid #2196F3;
-  background-color: #fff;
+  border: 2px solid #2196F3;
   width: 800px;
   border-radius: 14px;
 }
 .upload1 {
-  border: 1px solid #2196F3;
-  background-color: #fff;
+  border: 2px solid #2196F3;
   width: 800px;
   height: auto;
   border-radius: 14px;
