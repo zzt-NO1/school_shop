@@ -11,9 +11,6 @@
   justify-content: center;
   align-items: center;
 }*/
-uploadGood{
-  height: 100%;
-}
 .rule-table{
   width: 300px;
   margin: auto;
@@ -61,7 +58,7 @@ h1 {
   padding: 10px 15px;
   border-radius: 10px;
   transition: .3s ease;
-  color: white;
+  color: #1687f3;
   background-color: transparent;
 }
 .in_text[type=text] {
@@ -81,11 +78,11 @@ h1 {
   background-color: transparent
 }
 .in_text[type=text]::placeholder {
-  color: #EEF4FF;
+  color: #999999;
   background-color: transparent
 }
 .in_text[type=number]::placeholder {
-  color: #EEF4FF;
+  color: #999999;
   background-color: transparent
 }
 .in_text[type=text][half] {
@@ -96,7 +93,7 @@ h1 {
 }
 .in_text[type=submit] {
   background: #2196f3;;
-  color: #EEF4FF;
+  color: #1687f3;
   border: 2px solid #1687f3;
   outline: 0px solid #fff;
   width: calc(50% - 30px);
@@ -202,7 +199,7 @@ h1 {
   padding: 8px 12px;
   font-size: 14px;
   line-height: 25px;
-  color: #EEF4FF;
+  color:#1687f3;
   /*background: var(--group-background);*/
   border: 2px solid #1687f3;
   transition: background .3s ease, border .3s ease, color .3s ease;
@@ -216,16 +213,21 @@ h1 {
 html {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
+  width: 100%;
+  height: auto;
 }
-
+.hello{
+  z-index: 3;
+  height: auto;
+}
 * {
   box-sizing: inherit;
 }
 *:before, *:after {
   box-sizing: inherit;
 }
-
-/*body {
+/*
+body {
   min-height: 100vh;
   font-family: 'Mukta Malar', Arial;
   display: flex;
@@ -298,22 +300,26 @@ html {
 }
 
 /*--------------------------背景----------------------------------------------*/
+/*
 .wall{
   position: absolute;
   top: 50px;
   left: 0;
-  bottom: -134px;
+  bottom: -0px;
   right: 0;
+  background-repeat: repeat;
 }
-div#background{
-  background: url("../../../views/商品上传页面/img/preview.jpg")no-repeat;
+#background{
+  background: url("../../../views/商品上传页面/img/preview.jpg") repeat;
   -webkit-animation: dd 1000s linear infinite;
   -moz-animation: dd 1000s linear infinite;
   -o-animation: dd 1000s linear infinite;
   animation: dd 1000s linear infinite;
-  background-size: cover;
+  background-size: 100% 100%;
+  height: auto;
+
 }
-div#midground{
+#midground{
   background: url("../../../views/商品上传页面/img/midground.png");
   z-index: 1;
   -webkit-animation: cc 1000s linear infinite;
@@ -321,15 +327,15 @@ div#midground{
   -o-animation: cc 1000s linear infinite;
   animation: cc 1000s linear infinite;
 }
-div#foreground{
+#foreground{
   background: url("../../../views/商品上传页面/img/foreground.png");
-  z-index: 2;
+  z-index: 1;
   -webkit-animation: cc 1530s linear infinite;
   -o-animation: cc 1530s linear infinite;
   -moz-animation: cc 1530s linear infinite;
   animation: cc 553s linear infinite;
 }
-div#top{
+#top{
   background: url("../../../views/商品上传页面/img/midground.png");
   z-index: 2;
   -webkit-animation: dd 200s linear infinite;
@@ -404,3 +410,4 @@ div#top{
     background-position: 0 600%;
   }
 }
+*/
