@@ -18,12 +18,12 @@
             </div>
           </div>
           <div class="upload_warp_text">
-            选中{{imgList.length}}个图片，共{{bytesToSize(this.size)}}
+            选中{{params.imgList.length}}个图片，共{{bytesToSize(this.params.size)}}
             <span class="ml20 c-red">[单个图片附件的最大尺寸为10MB]</span>
           </div>
           <input @change="fileChange($event)" type="file" id="upload_file" multiple style="display: none">
-          <div class="upload_warp_img" v-show="imgList.length!=0">
-            <div class="upload_warp_img_div" v-for="(item,index) of imgList" :key="index">
+          <div class="upload_warp_img" v-show="params.imgList.length!=0">
+            <div class="upload_warp_img_div" v-for="(item,index) of params.imgList" :key="index">
               <div class="upload_warp_img_div_top">
                 <div class="upload_warp_img_div_text">
                   {{item.file.name}}
@@ -41,58 +41,116 @@
             <label style="margin-right: 15px;color: #2c3e50"><input type="radio" name="radioType" value="1" @click="selectUploadType(1)"/>出租</label>
           </p>
           <!----------------------------------出售品信息------------------------------------------------------------------->
-          <div class="upload-msg" v-if="rentOrSellMark===0">
+          <div class="upload-msg" v-if="params.rentOrSellMark===0">
             <div class="form-group">
               <span>标题*</span>
-              <input class="in_text form-field" type="text" placeholder="填写标题或闲置品名称" autocomplete="no" required="required"/>
+              <input class="in_text form-field" type="text" v-model="params.title" placeholder="填写标题或闲置品名称" autocomplete="no" required="required"/>
             </div>
             <div class="form-group fleft">
               <span>类别*</span>
-              <input class="in_text form-field" type="text" half placeholder="请选择类别" autocomplete="no" required="required"/>
+              <!--<input class="in_text form-field" list="typelist" type="text" half placeholder="请选择类别" autocomplete="no" required="required"/>-->
+              <select v-model="params.goodType" class="in_text form-field select" id="typelist" half placeholder="请选择类别" autocomplete="no" required="required">
+                <option value="">请选择类别</option>
+                <option v-for="item in goodTypes" :key="item.id">{{item.name}}</option>
+              </select>
             </div>
             <div class="form-group fright">
-              <input class="in_text form-field" type="text" half placeholder="预期价格" autocomplete="no" required="required"/>
-              <span v-if="rentOrSellMark===0">元*</span>
+              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.sellPrice" half placeholder="预期价格" autocomplete="no" required="required"/>
+              <span v-if="params.rentOrSellMark===0">元*</span>
             </div>
             <div class="form-group fleft">
               <span>新旧程度*</span>
-              <input class="in_text form-field" type="text" half placeholder="请选择" autocomplete="no" required="required"/>
+              <!--<input class="in_text form-field" type="text" v-model="params.qualityValue" half placeholder="请选择" autocomplete="no" required="required"/>-->
+              <select v-model="params.qualityValue" class="in_text form-field select" half autocomplete="no" required="required">
+                <option value="">请选择新旧程度</option>
+                <option v-for="(item,index) in qualityValues" :key="index">{{item}}</option>
+              </select>
             </div>
             <div class="form-group fright">
               <span>数量*</span>
-              <input class="in_text form-field" type="number" min="1" max="20" half placeholder="库存数量" autocomplete="no" required="required"/>
+              <input class="in_text form-field" type="number" v-model="params.count" min="1" max="20" half placeholder="库存数量" autocomplete="no" required="required"/>
+            </div>
+            <div class="form-group fleft">
+              <span>交易途径*</span>
+              <!--<input class="in_text form-field" type="text" v-model="params.transWay" half placeholder="请选择" autocomplete="no" required="required"/>-->
+              <select v-model="params.transWay" class="in_text form-field select" half autocomplete="no" required="required">
+                <!--<option value="">请选择交易途径 </option>-->
+                <option v-for="(item,index) in transWays" :key="index" :value="index">{{item}}</option>
+              </select>
+            </div>
+            <div class="form-group fright">
+              <span>是否包邮*</span>
+              <select v-model="params.isFree" class="in_text form-field select" half autocomplete="no" required="required">
+                <!--<option value="">请选择交易途径 </option>-->
+                <option value=0 >不包邮</option>
+                <option value=1 >包邮</option>
+              </select>
+              <!--<input class="in_text form-field" type="text"  half placeholder="请选择" autocomplete="no" required="required"/>-->
+            </div>
+            <div class="form-group">
+              <span>校内地点*</span>
+              <input class="in_text form-field" type="text" v-model="params.address" placeholder="请填写交易地址" autocomplete="no" required="required"/>
             </div>
             <div class="form-group" >
-              <textarea class="in_text form-field" type="text" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;" required="required"/>
+              <textarea class="in_text form-field" type="text" v-model="params.description" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;" required="required"/>
             </div>
             <div class="form-group" >
-              <input class="in_text" type="submit" value="提交发布申请">
+              <input class="in_text" type="submit" value="提交发布申请" @click="submitClick">
             </div>
           </div>
           <!------------------------------出租品信息--------------------------------------------------------->
-          <div class="rentDiv" v-if="rentOrSellMark===1">
+          <div class="rentDiv" v-if="params.rentOrSellMark===1">
             <div class="form-group">
               <span>标题*</span>
-              <input class="in_text form-field" type="text" placeholder="填写标题或闲置品名称" autocomplete="no" required="required"/>
+              <input class="in_text form-field" type="text" v-model="params.title" placeholder="填写标题或闲置品名称" autocomplete="no" required="required"/>
             </div>
             <div class="form-group fleft">
               <span>类别*</span>
-              <input class="in_text form-field" type="text" half placeholder="请选择类别" autocomplete="no" required="required"/>
+              <!--<input class="in_text form-field" type="text" v-model="params.goodType" half placeholder="请选择类别" autocomplete="no" required="required"/>-->
+              <select v-model="params.goodType" class="in_text form-field select" id="typelist1" half autocomplete="no" required="required">
+                <option value="">请选择类别</option>
+                <option v-for="item in goodTypes" :key="item.id">{{item.name}}</option>
+              </select>
             </div>
             <div class="form-group fright">
-              <input class="in_text form-field" type="number" step="0.1" min="0" half placeholder="预期价格" autocomplete="no" required="required"/>
-              <span v-if="rentOrSellMark===1">元/天*</span>
+              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.rentPrice" half placeholder="预期价格" autocomplete="no" required="required"/>
+              <span v-if="params.rentOrSellMark===1">元/天*</span>
             </div>
             <div class="form-group fleft">
               <span>新旧程度*</span>
-              <input class="in_text form-field" type="text" half placeholder="请选择" autocomplete="no" required="required"/>
+              <!--<input class="in_text form-field" type="text" v-model="params.qualityValue" half placeholder="请选择" autocomplete="no" required="required"/>-->
+              <select v-model="params.qualityValue" class="in_text form-field select" half autocomplete="no" required="required">
+                <option value="">请选择新旧程度</option>
+                <option v-for="(item,index) in qualityValues" :key="index">{{item}}</option>
+              </select>
             </div>
             <div class="form-group fright">
               <span>数量*</span>
-              <input class="in_text form-field" type="number" min="1" max="20" half placeholder="库存数量" autocomplete="no" required="required"/>
+              <input class="in_text form-field" type="number" min="1" max="20" v-model="params.count" half placeholder="库存数量" autocomplete="no" required="required"/>
+            </div>
+            <div class="form-group fleft">
+              <span>交易途径*</span>
+              <!--<input class="in_text form-field" type="text" v-model="params.transWay" half placeholder="请选择" autocomplete="no" required="required"/>-->
+              <select v-model="params.transWay" class="in_text form-field select" half autocomplete="no" required="required">
+                <!--<option value="">请选择交易途径 </option>-->
+                <option v-for="(item,index) in transWays" :key="index" :value="index">{{item}}</option>
+              </select>
+            </div>
+            <div class="form-group fright">
+              <span>是否包邮*</span>
+              <!--<input class="in_text form-field" type="text"  half placeholder="请选择" autocomplete="no" required="required"/>-->
+              <select v-model="params.isFree" class="in_text form-field select" half autocomplete="no" required="required">
+                <!--<option value="">请选择交易途径 </option>-->
+                <option value=0 >不包邮</option>
+                <option value=1 >包邮</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <span>校内地点*</span>
+              <input class="in_text form-field" type="text" v-model="params.address" placeholder="请填写交易地址" autocomplete="no" required="required"/>
             </div>
             <div class="form-group" >
-              <textarea class="in_text form-field" type="text" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;" required="required"/>
+              <textarea class="in_text form-field" type="text" v-model="params.description" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;" required="required"/>
             </div>
             <div class="form-group">
               <span>出租规则*</span>
@@ -101,7 +159,7 @@
             </div>
             <div class="form-group" style="border: 1px solid #2196F3;border-radius: 6px;">
               <ul class="task-list">
-                <li class="task-list-item" v-for="(item,index) in rent_rules" :key="index">
+                <li class="task-list-item" v-for="(item,index) in params.rent_rules" :key="index">
                   <label class="task-list-item-label">
                     <span>{{index+1}}、 {{item}}</span>
                   </label>
@@ -110,7 +168,7 @@
               </ul>
             </div>
             <div class="form-group" >
-              <input class="in_text" type="submit" value="提交发布申请">
+              <input class="in_text" type="submit" value="提交发布申请" @click="submitClick">
             </div>
           </div>
         </div>
@@ -124,23 +182,36 @@
 <script src="../../views/商品上传页面/js/script.js"></script>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Upload",
   data () {
     return {
-      imgList: [],//图片
-      rentOrSellMark: 0,//0:出售 ,1:出租
-      title: '',//标题
-      description: '',//详细描述
-      phone:'',//联系方式
-      goodType: '',//闲置品类型
-      qualityValue: '',//新旧程度
-      studentAccount: '',//用户账号
-      sellPrice: '',//价格
-      rentPrice: '',
-      size: 0,
-      rent_rules: [],//租赁规则
+      loginStatus:false,
+      studentName:'',
+      goodTypes:[],
+      transWays:["邮寄或线下","校内线下","快递邮寄"],
+      qualityValues:["全新","9成新","8成新","7成新","6成新","5成新"],
+      params:{
+        imgList: [],//图片
+        rentOrSellMark: 0,//0:出售 ,1:出租
+        title: '',//标题
+        description: '',//详细描述
+        count: 1,//可售数量
+        goodType: '',//闲置品类型
+        qualityValue: '',//新旧程度
+        studentAccount: '',//用户账号
+        sellPrice: '',//价格
+        rentPrice: '',
+        size: 0,
+        transWay:0,//默认全部 0全部，1校内线下交易，2快递
+        isFree: 0,// 默认不包邮， 0不包邮 ，1包邮
+        address:'',//校内线下交易地址
+        rent_rules: [],//租赁规则
+      },
       rule:'',
+      resultMsg:null,
     }
   },
   created() {
@@ -152,26 +223,62 @@ export default {
     }else {
       this.loginStatus = true;
       this.studentName = stu.nickname;
-      this.studentAccount = stu.account;
+      this.params.studentAccount = stu.account;
+      this.goodTypes = this.getAllGoodType();
     }
   },
   methods: {
-
+    submitClick(){
+      console.log("提交");
+      console.log(this.params);
+      const _this = this;
+      axios.post('http://localhost:8181/student/addIdle', {
+        params: this.params
+      }).then(function (res) {
+            console.log(res.data);
+            _this.resultMsg = res.data;
+            if (_this.resultMsg.postResult) {//登录成功
+              console.log("发布成功");
+              alert("发布成功！请耐心等待审核结果......");
+              _this.$router.push('/postGood');
+            } else {
+              console.log('发布失败!!');
+              alert("发布失败！请稍后重试！");
+              _this.$router.push('/postGood');
+              return false;
+            }
+          }
+      );
+    },
+    getAllGoodType(){
+      const _this = this;
+      axios.post('http://localhost:8181/goodType/getAllGoodType').then(function (res) {
+            console.log(res.data);
+            if (res.data != null) {//成功
+              console.log("类型查询成功");
+              _this.goodTypes = res.data;
+            } else {
+              console.log('类型查询失败');
+              return '';
+            }
+          }
+      );
+    },
     selectUploadType(typeValue){//选择出租或出售类型
       if(typeValue==1){
-        this.rentOrSellMark=1;
+        this.params.rentOrSellMark=1;
       }else {
-        this.rentOrSellMark=0;
+        this.params.rentOrSellMark=0;
       }
     },
     addRule(rule){
-      this.rent_rules.push(rule);
+      this.params.rent_rules.push(rule);
       this.rule='';
-      console.log("增加后："+this.rent_rules)
+      console.log("增加后："+this.params.rent_rules)
     },
     delItem: function (item) {
-      this.rent_rules.splice(this.rent_rules.indexOf(item), 1);
-      console.log("删减后："+this.rent_rules)
+      this.params.rent_rules.splice(this.params.rent_rules.indexOf(item), 1);
+      console.log("删减后："+this.params.rent_rules)
     },
     fileClick(){
       document.getElementById('upload_file').click()
@@ -187,20 +294,20 @@ export default {
       }
     },
     fileAdd(file){
-      this.size = this.size + file.size;//总大小
+      this.params.size = this.params.size + file.size;//总大小
       let reader = new FileReader();
       reader.vue = this;
       reader.readAsDataURL(file);
       reader.onload = function () {
         file.src = this.result;
-        this.vue.imgList.push({
+        this.vue.params.imgList.push({
           file
         });
       }
     },
     fileDel(index){
-      this.size = this.size - this.imgList[index].file.size;//总大小
-      this.imgList.splice(index, 1);
+      this.params.size = this.params.size - this.params.imgList[index].file.size;//总大小
+      this.params.imgList.splice(index, 1);
     },
     bytesToSize(bytes){
       if (bytes === 0) return '0 B';

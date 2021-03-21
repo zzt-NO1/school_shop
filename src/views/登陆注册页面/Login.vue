@@ -66,7 +66,7 @@ export default {
     login() {
       console.log(this.userName+' '+this.password)
       const _this = this;
-      axios.post('http://localhost:8181/user/login', {
+      axios.post('http://localhost:8181/student/login', {
         account: this.userName,
         password: this.password
       }).then(function (res) {
