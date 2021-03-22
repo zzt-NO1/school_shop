@@ -32,6 +32,9 @@
         <ul class="guide-ul">
           <li ><label @click="toPage('messageCenter')">消息中心</label></li>
         </ul>
+        <ul class="guide-ul">
+          <li ><label @click="toPage('orderCenter')">订单中心</label></li>
+        </ul>
       </div>
     </div>
     <!--头部导航 end-->
@@ -79,6 +82,7 @@ export default {
           case 'buyRecord': this.$router.push({path:"/login"}); break;
           case 'messageCenter': this.$router.push({path:"/login"}); break;
           case 'personal': this.$router.push({path:"/login"}); break;
+          case 'orderCenter': this.$router.push({path:"/login"}); break;
           default: this.$router.push({path:"/login"});
         }
       }else {
@@ -115,6 +119,9 @@ export default {
   height: 50px;
   background-color: #2c3e50;
   color: white;
+}
+.guide-ul:hover{
+  color: #2d8cf0;
 }
 
 .user-avator {

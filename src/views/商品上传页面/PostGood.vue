@@ -157,7 +157,7 @@
               <input class="in_text form-field" type="text" placeholder="请填写出租规则" autocomplete="no" v-model="rule" style="color:#1687f3"/>
               <span style="cursor: pointer" @click="addRule(rule)">添加</span>
             </div>
-            <div class="form-group" style="border: 1px solid #2196F3;border-radius: 6px;">
+            <div class="form-group" style="border: 2px solid #2196F3;border-radius: 6px;">
               <ul class="task-list">
                 <li class="task-list-item" v-for="(item,index) in params.rent_rules" :key="index">
                   <label class="task-list-item-label">
@@ -202,13 +202,19 @@ export default {
         goodType: '',//闲置品类型
         qualityValue: '',//新旧程度
         studentAccount: '',//用户账号
-        sellPrice: '',//价格
-        rentPrice: '',
+        sellPrice: 0,//价格
+        rentPrice: 0,
         size: 0,
         transWay:0,//默认全部 0全部，1校内线下交易，2快递
         isFree: 0,// 默认不包邮， 0不包邮 ，1包邮
         address:'',//校内线下交易地址
         rent_rules: [],//租赁规则
+      },
+      rules: {
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+        veriCode: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
       },
       rule:'',
       resultMsg:null,
@@ -232,23 +238,27 @@ export default {
       console.log("提交");
       console.log(this.params);
       const _this = this;
-      axios.post('http://localhost:8181/student/addIdle', {
-        params: this.params
-      }).then(function (res) {
-            console.log(res.data);
-            _this.resultMsg = res.data;
-            if (_this.resultMsg.postResult) {//登录成功
-              console.log("发布成功");
-              alert("发布成功！请耐心等待审核结果......");
-              _this.$router.push('/postGood');
-            } else {
-              console.log('发布失败!!');
-              alert("发布失败！请稍后重试！");
-              _this.$router.push('/postGood');
-              return false;
+      if (this.params.title==''||this.params.description==''||this.params.goodType==''||this.params.qualityValue==''||this.params.address==''){
+        alert("请填写完整信息再提交！")
+      }else {
+        axios.post('http://localhost:8181/student/addIdle', {
+          params: this.params
+        }).then(function (res) {
+              console.log(res.data);
+              _this.resultMsg = res.data;
+              if (_this.resultMsg.postResult) {//登录成功
+                console.log("发布成功");
+                alert("发布成功！请耐心等待审核结果......");
+                _this.$router.push('/postGood');
+              } else {
+                console.log('发布失败!!');
+                alert("发布失败！请稍后重试！");
+                return false;
+              }
             }
-          }
-      );
+        );
+      }
+
     },
     getAllGoodType(){
       const _this = this;
