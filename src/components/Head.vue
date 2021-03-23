@@ -4,10 +4,18 @@
     <div class="head-div">
       <!-- 用户头像 -->
       <div class="user-avator">
-        <div v-if="loginStatus">
-          <span class="user">{{ studentName }}</span>
-          <img src="../views/商品展示页面/image/img.jpg" />
-        </div>
+        <ul class="main" v-if="loginStatus">
+            <li class="li1" >
+              <a class="main-a" href="#">
+                <span class="user iconfont">{{ studentName }}&#xe78b;</span>
+                <img src="../views/商品展示页面/image/img.jpg" />
+              </a>
+              <ul class="drop menu1 ull">
+                <li class="li2"><a class="menu1-a" href="#">个人资料</a></li>
+                <li class="li2"><a class="menu1-a" href="#">退出登录</a></li>
+              </ul>
+            </li>
+          </ul>
         <ul class="user" v-if="!loginStatus">
           <li @click="login"><label><a>登录/注册</a></label></li>
         </ul>
@@ -15,25 +23,25 @@
       <!--导航按钮-->
       <div class="guide">
         <ul class="guide-ul">
-          <li><label @click="toPage('goods')">首页</label></li>
+          <li><label @click="toPage('goods')"><span class="iconfont">&#xe6b8;首页</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('postGood')">我要发布</label></li>
+          <li><label @click="toPage('postGood')"><span class="iconfont">&#xe6a0;我要发布</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('shoppingCar')">购物车</label></li>
+          <li><label @click="toPage('shoppingCar')"><span class="iconfont">&#xe6af;购物车</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('postRecord')">发布记录</label></li>
+          <li><label @click="toPage('postRecord')"><span class="iconfont">&#xe6b0;发布记录</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('buyGood')">购买记录</label></li>
+          <li><label @click="toPage('buyGood')"><span class="iconfont">&#xe699;购买记录</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li ><label @click="toPage('messageCenter')">消息中心</label></li>
+          <li ><label @click="toPage('messageCenter')"><span class="iconfont">&#xe70a;消息中心</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li ><label @click="toPage('orderCenter')">订单中心</label></li>
+          <li ><label @click="toPage('orderCenter')"><span class="iconfont">&#xe645;订单中心</span></label></li>
         </ul>
       </div>
     </div>
@@ -109,6 +117,71 @@ export default {
 </script>
 
 <style>
+
+@import "../assets/iconfont/iconfont.css";
+.li1 {
+  margin: -15px 0 0 0;
+  width: 120px;
+}
+.li1:hover {
+  color: #2d8cf0;
+}
+.li2 .menu1-a{
+  border-left:0px solid rgb(23, 23, 50);
+  margin-top: 10px;
+}
+.menu1-a {
+  text-decoration: none;
+
+  text-transform: capitalize;
+  font-family: monospace;
+  display: flex;
+  font-size: 14px;
+  transition: background-color 0.5s ease-in-out;
+  font-family: "Raleway", sans-serif;
+}
+
+.drop .li2 {
+  opacity: 0;
+  transform-origin: top center;
+}
+
+.drop .li2 .menu1-a:hover{
+  color: #63af34;
+  font-size: 16px;
+}
+.main .li1:hover .menu1 .li2:first-of-type {
+  animation: menu1 0.3s ease-in-out forwards;
+  animation-delay: 0.1s;
+}
+
+.main .li1:hover .menu1 .li2:nth-of-type(2) {
+  animation: menu1 0.3s ease-in-out forwards;
+  animation-delay: 0.3s;
+}
+
+.main .li1:hover .menu1 .li2:nth-of-type(3) {
+  animation: menu1 0.3s ease-in-out forwards;
+  animation-delay: 0.2s;
+}
+
+
+@keyframes menu1 {
+  from {
+    opacity: 0;
+    transform: translateX(30px) rotateY(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotateY(0);
+  }
+}
+
+.ull {
+  list-style: none;
+}
+
+
 .wrapper{
   width: 100%;
   height: 100%;
@@ -122,6 +195,7 @@ export default {
 }
 .guide-ul:hover{
   color: #2d8cf0;
+  font-size: 18px;
 }
 
 .user-avator {
@@ -137,9 +211,15 @@ export default {
 }
 .user{
   margin-right: 20px;
+  color: white;
+  font-size: 18px;
+}
+.user:hover{
+  color: #2d8cf0;
+  font-size: 20px;
 }
 .guide-ul{
-  width: 5%;
+  width: 7%;
   height: 20px;
   float: left;
 }
