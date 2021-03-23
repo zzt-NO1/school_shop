@@ -1,53 +1,31 @@
 <template>
   <div class="wrapper">
-    <!--头部导航 begin
-    <div class="head-div">
-       用户头像
-      <div class="user-avator">
-        <div v-if="loginStatus">
-            <span class="user">{{ studentName }}</span>
-            <img src="../商品展示页面/image/img.jpg" />
-        </div>
-        <ul class="user" v-if="!loginStatus">
-          <li @click="login"><a>登录/注册</a></li>
-        </ul>
-      </div>
-      导航按钮
-      <div class="guide">
-        <ul class="guide-ul">
-          <li><label @click="toPage('postGood')">我要发布</label></li>
-        </ul>
-        <ul class="guide-ul">
-          <li><label @click="toPage('shoppingCar')">购物车</label></li>
-        </ul>
-        <ul class="guide-ul">
-          <li><label @click="toPage('postRecord')">发布记录</label></li>
-        </ul>
-        <ul class="guide-ul">
-          <li><label @click="toPage('buyGood')">购买记录</label></li>
-        </ul>
-        <ul class="guide-ul">
-          <li ><label @click="toPage('messageCenter')">消息中心</label></li>
-        </ul>
-      </div>
-    </div>
-    头部导航 end-->
     <!--搜索栏 begin-->
     <div class="search-div">
       <div class="key">
         <p>
-          关键字搜索：<input type="text" /><button>搜索</button>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <label for="sell">
+          <span class="iconfont school" style="width: 300px" v-if="loginStatus">&#xe651;{{schoolName}}</span>
+          <span class="search-box">
+            <input type="search" placeholder="关键字" />
+            <button type="submit" class="search-btn"><span class="iconfont search-icon">&#xe7e8;</span></button>
+          </span>
+          <span class="good-type">
+            <select v-model="goodType" class="select-type" half autocomplete="no">
+              <option value="">请选择类别</option>
+              <option v-for="item in goodTypes" :key="item.id">{{item.name}}</option>
+            </select>
+            <button type="submit" class="search-btn1"><span>类型</span></button>
+          </span>
+          <label for="sell" class="choose-type">
             <input type="radio" id="sell" name="type" v-model="finalType" value="sell">出售
           </label>
-          <label for="rent">
+          <label for="rent" class="choose-type">
             <input type="radio" id="rent" name="type" v-model="finalType" value="rent">出租
           </label>
-          <label for="all">
+          <label for="all" class="choose-type">
             <input type="radio" id="all" name="type" v-model="finalType" value="all">全部
           </label>
         </p>
-
       </div>
     </div>
     <!--搜索栏 end-->
@@ -55,13 +33,13 @@
     <!--列表展示区 begin-->
     <div class="goodList-div">
       <div class="gallery-wrapper" >
-        <div class="white-panel" v-for="(item,index) in goodList" :key="index">
+        <div class="white-panel" v-for="(item,index) in idleList" :key="index">
           <a href="#">
-          <img v-bind:src="item.image" class="thumb">
-          <h1>{{item.title}}</h1>
-          <p><i :class="item.icon"></i>{{item.owner}}</p>
-          <p class="flag-sell" v-if="item.type==1">出售价格：￥{{item.price}}元</p>
-          <p class="flag-rend" v-if="item.type==2">出租价格：￥{{item.price}}元/天</p>
+            <img v-if="item.pictures===null || item.pictures===''" src="../../assets/img/noPics.png" class="thumb">
+            <img v-bind:src="item.pictures" class="thumb">
+            <h1>{{item.title}}</h1>
+            <p class="flag-sell" v-if="item.rentAndSellMark===0">出售价格：￥{{item.price}}元</p>
+            <p class="flag-rend" v-if="item.rentAndSellMark===1">出租价格：￥{{item.price}}元/天</p>
           </a>
         </div>
       </div>
@@ -73,151 +51,85 @@
 <script src="../../商品展示页面/js/jquery-1.11.0.min.js" type="text/javascript"></script>
 <script src="../../商品展示页面/js/pinterest_grid.js"></script>
 <script>
+import axios from "axios";
 export default {
   name: "Goods",
   data(){
     return {
+      goodTypes:[],
+      goodType: '',
       studentName:'',
       loginStatus: false,
       finalType:'all',
       delayTime:300,
-      goodList:[
+      schoolName:'',
+      idleList:[
         {
           icon:'el-icon-lx-people',
-          image: require('../../assets/img/1.jpg'),
+          pictures: require('../../assets/img/1.jpg'),
           title:1,
           price:20,
           owner:'阿斯顿',
           goodType:'book',
-          type:2
+          rentAndSellMark:1
         },
         {
           icon:'el-icon-lx-people',
-          image: require('../../assets/img/2.jpg'),
+          pictures: require('../../assets/img/2.jpg'),
           title:2,
           price:20,
           owner:'阿斯顿',
           goodType:'book',
-          type:2
+          rentAndSellMark:1
         },
         {
           icon:'el-icon-lx-people',
-          image: require('../../assets/img/3.jpg'),
+          pictures: require('../../assets/img/3.jpg'),
           title:3,
           price:20,
           owner:'阿斯顿',
           goodType:'book',
-          type:1
+          rentAndSellMark:0
         },
         {
           icon:'el-icon-lx-people',
-          image: require('../../assets/img/4.jpg'),
+          pictures: require('../../assets/img/4.jpg'),
           title:4,
           price:20,
           owner:'阿斯顿',
           goodType:'food',
-          type:1
+          rentAndSellMark:0
         },
         {
           icon:'el-icon-lx-people',
-          image: require('../../assets/img/5.jpg'),
+          pictures: require('../../assets/img/5.jpg'),
           title:5,
           price:20,
           owner:'阿斯顿',
           goodType:'food',
-          type:1
+          rentAndSellMark:0
         },
-        {
-          icon:'el-icon-lx-people',
-          image: require('../../assets/img/6.jpg'),
-          title:6,
-          price:20,
-          owner:'阿斯顿',
-          goodType:'food',
-          type:1
-        },
-        {
-          icon:'el-icon-lx-people',
-          image: require('../../assets/img/7.jpg'),
-          title:7,
-          price:20,
-          owner:'阿斯顿',
-          goodType:'cloth',
-          type:1
-        },
-        {
-          icon:'el-icon-lx-people',
-          image: require('../../assets/img/1.jpg'),
-          title:1,
-          price:20,
-          owner:'阿斯顿',
-          goodType:'book',
-          type:2
-        },
-        {
-          icon:'el-icon-lx-people',
-          image: require('../../assets/img/2.jpg'),
-          title:2,
-          price:20,
-          owner:'阿斯顿',
-          goodType:'book',
-          type:2
-        },
-        {
-          icon:'el-icon-lx-people',
-          image: require('../../assets/img/3.jpg'),
-          title:3,
-          price:20,
-          owner:'阿斯顿',
-          goodType:'book',
-          type:1
-        },
-        {
-          icon:'el-icon-lx-people',
-          image: require('../../assets/img/4.jpg'),
-          title:4,
-          price:20,
-          owner:'阿斯顿',
-          goodType:'food',
-          type:1
-        },
-        {
-          icon:'el-icon-lx-people',
-          image: require('../../assets/img/5.jpg'),
-          title:5,
-          price:20,
-          owner:'阿斯顿',
-          goodType:'food',
-          type:1
-        },
-        {
-          icon:'el-icon-lx-people',
-          image: require('../../assets/img/6.jpg'),
-          title:6,
-          price:20,
-          owner:'阿斯顿',
-          goodType:'food',
-          type:1
-        },
-        {
-          icon:'el-icon-lx-people',
-          image: require('../../assets/img/7.jpg'),
-          title:7,
-          price:20,
-          owner:'阿斯顿',
-          goodType:'cloth',
-          type:1
-        },
-      ]
+
+      ],
+      idleListMap:null,
+      params: {
+        idleId:'',
+        schoolId:0,
+      }
     }
   },
   created() {
+    this.goodTypes = this.getAllGoodType();
     let stu = JSON.parse(sessionStorage.getItem('student'));
     if (null == stu){
       this.loginStatus = false;
     }else {
       this.loginStatus = true;
       this.studentName = stu.nickname;
+      this.schoolName = stu.schoolName;
+      this.params.schoolId = stu.schoolId;
+      console.log("this.params.schoolId="+this.params.schoolId)
+      this.idleListMap = this.getIdleListBySchoolId(this.params.schoolId);
       return true;
     }
   },
@@ -225,25 +137,6 @@ export default {
     //跳转登录页面
     login() {
       this.$router.push({path:"/login"})
-    },
-    //
-    toPage(page){
-      console.log(page);
-      if (this.judgeLogin()){
-        this.loginStatus = true;
-        switch (page){
-          case 'postGood': this.$router.push({path:"/login"}); break;
-          case 'shoppingCar': this.$router.push({path:"/login"}); break;
-          case 'postRecord': this.$router.push({path:"/login"}); break;
-          case 'buyRecord': this.$router.push({path:"/login"}); break;
-          case 'messageCenter': this.$router.push({path:"/login"}); break;
-          case 'personal': this.$router.push({path:"/login"}); break;
-          default: this.$router.push({path:"/login"});
-        }
-      }else {
-        window.alert("尚未登录！请先登录......")
-        this.$router.push({path:"/login"});
-      }
     },
 
     //判断是否已登录
@@ -256,7 +149,40 @@ export default {
         return true;
       }
     },
+    getAllGoodType(){//获取全部闲置品类型
+      const _this = this;
+      axios.post('http://localhost:8181/issueIdle/getAllGoodType').then(function (res) {
+            console.log(res.data);
+            if (res.data != null) {//成功
+              console.log("类型查询成功");
+              _this.goodTypes = res.data;
+            } else {
+              console.log('类型查询失败');
+              return '';
+            }
+          }
+      );
+    },
 
+    //获取产品列表
+    getIdleListBySchoolId(schoolId){
+      const _this = this;
+      _this.params.schoolId = schoolId;
+      console.log("schoolId="+_this.params.schoolId)
+      axios.post('http://localhost:8181/idleInfo/getIdleListBySchoolId',{
+        params: this.params
+      }).then(function (res) {
+            console.log(res.data);
+            if (res.data != null && res.data.searchResult) {//成功
+              console.log('闲置品查询成功');
+              _this.idleList = res.data.idleList;
+            } else {
+              console.log('闲置品查询失败');
+              return '';
+            }
+          }
+      );
+    }
   },
   mounted() {
   },
@@ -264,8 +190,97 @@ export default {
 
 </script>
 
+
+
 <style scoped>
 @import "../../views/商品展示页面/css/goods.css";
+.search-icon:hover{
+  font-size: 18px;
+}
+.school{
+  margin-left: 20px;
+  margin-right:50px;
+}
+.search-box{
+  margin-right: 50px;
+}
+.choose-type{
+  margin-right: 10px;
+}
+.good-type{
+  margin-right: 50px;
+}
+input[type=search] {
+  /*box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.4);*/
+  background: #ffffff;
+  border: 1px solid #2d8cf0;
+  outline: none;
+  width: 180px;
+  height: 34px;
+  border-radius: 8px 0 0 8px;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 0px 10px;
+  font-family: "Lato", sans-serif;
+  letter-spacing: 0px;
+  color: #2d8cf0;
+}
+.select-type{
+  background: #ffffff;
+  border: 1px solid #2d8cf0;
+  outline: none;
+  width: 130px;
+  height: 34px;
+  border-radius: 8px 0px 0px 8px;
+  font-size: 14px;
+  font-weight: 300;
+  padding: 0px 10px;
+  font-family: "Lato", sans-serif;
+  letter-spacing: 0px;
+  color: #999999;
+
+}
+::placeholder {
+  color: #999999;
+  font-size: 14px;
+}
+
+.search-btn {
+  height: 34px;
+  width: 45px;
+  outline: none;
+  border-radius: 0 8px 8px 0;
+  background: #2d8cf0;
+  color: #ffffff;
+  border: 1px solid #2d8cf0;
+  transition: all 0.3s ease;
+}
+.search-btn:hover{
+  background-color: #275efe;
+}
+.search-btn1 {
+  height: 35px;
+  width: 45px;
+  outline: none;
+  border-radius: 0px 8px 8px 0px;
+  background: #2d8cf0;
+  color: #ffffff;
+  border: 1px solid #2d8cf0;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.search-btn:hover {
+  transition: all 0.3s ease;
+}
+.search-btn:hover i {
+  font-size: 2.5em;
+}
+.search-btn i {
+  font-size: 2.3em;
+}
+
+
 .flag-rend{
   color: #2d8cf0;
 }
