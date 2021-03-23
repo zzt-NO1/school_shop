@@ -55,7 +55,7 @@
               </select>
             </div>
             <div class="form-group fright">
-              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.sellPrice" half placeholder="预期价格" autocomplete="no" required="required"/>
+              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.price" half placeholder="预期价格" autocomplete="no" required="required"/>
               <span v-if="params.rentOrSellMark===0">元*</span>
             </div>
             <div class="form-group fleft">
@@ -113,7 +113,7 @@
               </select>
             </div>
             <div class="form-group fright">
-              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.rentPrice" half placeholder="预期价格" autocomplete="no" required="required"/>
+              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.price" half placeholder="预期价格" autocomplete="no" required="required"/>
               <span v-if="params.rentOrSellMark===1">元/天*</span>
             </div>
             <div class="form-group fleft">
@@ -202,20 +202,20 @@ export default {
         goodType: '',//闲置品类型
         qualityValue: '',//新旧程度
         studentAccount: '',//用户账号
-        sellPrice: 0,//价格
-        rentPrice: 0,
+        price: 0,//价格
         size: 0,
         transWay:0,//默认全部 0全部，1校内线下交易，2快递
         isFree: 0,// 默认不包邮， 0不包邮 ，1包邮
         address:'',//校内线下交易地址
         rent_rules: [],//租赁规则
+        schoolId:'',//学校编号
       },
-      rules: {
+      /*rules: {
         username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
         phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
         veriCode: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
-      },
+      },*/
       rule:'',
       resultMsg:null,
     }
@@ -230,18 +230,24 @@ export default {
       this.loginStatus = true;
       this.studentName = stu.nickname;
       this.params.studentAccount = stu.account;
+      this.params.schoolId = stu.schoolId;
       this.goodTypes = this.getAllGoodType();
     }
   },
   methods: {
-    submitClick(){
+    submitClick(){//向后端提交数据
       console.log("提交");
       console.log(this.params);
       const _this = this;
       if (this.params.title==''||this.params.description==''||this.params.goodType==''||this.params.qualityValue==''||this.params.address==''){
         alert("请填写完整信息再提交！")
       }else {
-        axios.post('http://localhost:8181/student/addIdle', {
+        this.params.price = parseInt(this.params.price)
+        this.params.transWay = parseInt(this.params.transWay)
+        this.params.isFree = parseInt(this.params.isFree)
+        this.params.rentOrSellMark = parseInt(this.params.rentOrSellMark)
+        this.params.count = parseInt(this.params.count)
+        axios.post('http://localhost:8181/issueIdle/addIdle', {
           params: this.params
         }).then(function (res) {
               console.log(res.data);
@@ -249,7 +255,8 @@ export default {
               if (_this.resultMsg.postResult) {//登录成功
                 console.log("发布成功");
                 alert("发布成功！请耐心等待审核结果......");
-                _this.$router.push('/postGood');
+                _this.$router.go(0);
+                //_this.$router.push('/postGood');
               } else {
                 console.log('发布失败!!');
                 alert("发布失败！请稍后重试！");
@@ -260,9 +267,10 @@ export default {
       }
 
     },
-    getAllGoodType(){
+
+    getAllGoodType(){//获取全部闲置品类型
       const _this = this;
-      axios.post('http://localhost:8181/goodType/getAllGoodType').then(function (res) {
+      axios.post('http://localhost:8181/issueIdle/getAllGoodType').then(function (res) {
             console.log(res.data);
             if (res.data != null) {//成功
               console.log("类型查询成功");
@@ -274,6 +282,7 @@ export default {
           }
       );
     },
+
     selectUploadType(typeValue){//选择出租或出售类型
       if(typeValue==1){
         this.params.rentOrSellMark=1;
@@ -303,7 +312,7 @@ export default {
         this.fileAdd(files[i]);
       }
     },
-    fileAdd(file){
+    fileAdd(file){ //将图片转换成base64
       this.params.size = this.params.size + file.size;//总大小
       let reader = new FileReader();
       reader.vue = this;
