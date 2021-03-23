@@ -12,7 +12,7 @@
               </a>
               <ul class="drop menu1 ull">
                 <li class="li2"><a class="menu1-a" href="#">个人资料</a></li>
-                <li class="li2"><a class="menu1-a" href="#">退出登录</a></li>
+                <li class="li2"><a class="menu1-a" href="#" @click="loadout">退出登录</a></li>
               </ul>
             </li>
           </ul>
@@ -109,7 +109,10 @@ export default {
         return true;
       }
     },
-
+  loadout(){
+      sessionStorage.clear();
+      this.$router.push({path:"/login"});
+  }
   },
   mounted() {
   },
@@ -147,7 +150,7 @@ export default {
 }
 
 .drop .li2 .menu1-a:hover{
-  color: #63af34;
+  color: #2d8cf0;
   font-size: 16px;
 }
 .main .li1:hover .menu1 .li2:first-of-type {
