@@ -6,24 +6,24 @@
         <p>
           <span class="iconfont school" style="width: 300px" v-if="loginStatus">&#xe651;{{schoolName}}</span>
           <span class="search-box">
-            <input type="search" placeholder="关键字" />
-            <button type="submit" class="search-btn"><span class="iconfont search-icon">&#xe65c;</span></button>
+            <input type="search" placeholder="关键字" v-model="keyWord" />
+            <button type="submit" class="search-btn" @click="filterIdleList"><span class="iconfont search-icon">&#xe65c;</span></button>
           </span>
           <span class="good-type">
-            <select v-model="goodType" class="select-type" half autocomplete="no">
-              <option value="">请选择类别</option>
+            <select v-model="goodType" class="select-type" half autocomplete="no" @click="filterIdleList">
+              <option value="">全部类型</option>
               <option v-for="item in goodTypes" :key="item.id">{{item.name}}</option>
             </select>
             <button type="submit" class="search-btn1"><span>类型</span></button>
           </span>
-          <label for="sell" class="choose-type">
-            <input type="radio" id="sell" name="type" v-model="finalType" value="sell">出售
+          <label for="sell" class="choose-type" @change="filterIdleList">
+            <input type="radio" id="sell" name="type" v-model="finalType" value=0 >出售
           </label>
-          <label for="rent" class="choose-type">
-            <input type="radio" id="rent" name="type" v-model="finalType" value="rent">出租
+          <label for="rent" class="choose-type" @change="filterIdleList">
+            <input type="radio" id="rent" name="type" v-model="finalType" value=1 >出租
           </label>
-          <label for="all" class="choose-type">
-            <input type="radio" id="all" name="type" v-model="finalType" value="all">全部
+          <label for="all" class="choose-type" @change="filterIdleList">
+            <input type="radio" id="all" name="type" v-model="finalType" value=2 >全部
           </label>
         </p>
       </div>
@@ -62,10 +62,12 @@ export default {
   data(){
     return {
       goodTypes:[],
-      goodType: '',
+      finalType:2,//租售类型
+      goodType: '',//闲置品类型
+      keyWord:'',//关键字
+
       studentName:'',
       loginStatus: false,
-      finalType:'all',
       delayTime:300,
       schoolName:'',
       idleList:[
@@ -191,7 +193,27 @@ export default {
     },
     //筛选闲置品
     filterIdleList(){
-
+      let res = this.allIdleList
+      //租售类型筛选
+      if (this.finalType != 2){//出租//出售
+        console.log("finalType="+this.finalType)
+        res = this.allIdleList.filter(item=>{
+          return item.rentAndSellMark == this.finalType
+        })
+      }
+      //类型筛选
+      if (this.goodType != null && this.goodType != ''){
+        res = res.filter(item=>{
+          return item.type == this.goodType
+        })
+      }
+      //关键字筛选
+      if (this.keyWord != null && this.keyWord != ''){
+        res = res.filter(item=>{
+          return item.title.includes(this.keyWord)||item.type.includes(this.keyWord)||item.describe.includes(this.keyWord)
+        })
+      }
+      this.idleList = res
     }
   },
   mounted() {
