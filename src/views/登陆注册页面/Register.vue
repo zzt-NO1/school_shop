@@ -15,30 +15,30 @@
     <div class="content">
       <div class="mod-reg">
         <div class="reg-content2">
-          <h1 style="text-align: left">校园闲置物品交易平台</h1>
+          <h1 style="text-align: left" class="plat-title">校园闲置物品交易平台</h1>
           <div class="name" >
-            <span class="title">用户名：</span>
-            <input type="text"  name="" placeholder="请设置用户名" class="">
+            <span class="tips-register">用户名</span>
+            <input type="text"  name="" placeholder="请设置用户名" class="user-input">
           </div>
 
           <div class="nickname" >
-            <span class="title">昵称：</span>
-            <input type="text"  name="" placeholder="请设置昵称" class="">
+            <span class="tips-register">昵称</span>
+            <input type="text"  name="" placeholder="请设置昵称" class="user-input">
           </div>
 
           <div class="phone" >
-            <span class="title">手机号：</span>
-            <input type="text"  name="" placeholder="请输入有效手机号" class="">
+            <span class="tips-register">手机号</span>
+            <input type="text"  name="" placeholder="请输入有效手机号" class="user-input">
           </div>
 
           <div class="code" >
-            <span class="title">密码：</span>
-            <input type="password"  name="" placeholder="请设置密码" class="">
+            <span class="tips-register">密码</span>
+            <input type="password"  name="" placeholder="请设置密码" class="user-input">
           </div>
 
           <div class="recode" >
-            <span class="title">确认密码：</span>
-            <input type="password"  name="" placeholder="请再次输入密码" class="">
+            <span class="tips-register">确认密码</span>
+            <input type="password"  name="" placeholder="请再次输入密码" class="user-input">
           </div>
 
           <div class="submit" >

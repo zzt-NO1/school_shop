@@ -8,6 +8,9 @@ a{
 ul {
     list-style: none;
 }
+.plat-title{
+    color: #2c3e50;
+}
 .space{
     width: 2px;
     height: 35px;
@@ -52,16 +55,32 @@ ul {
 }
 .head .bigger{
     font-size: 24px;
-    color: #a7bbcd;
+    color: #2c3e50;
 }
 .head li a{
-    font-size: 16px;
+    font-size: 19px;
     color: red;
+}
+.head li a:hover{
+    font-size: 20px;
+    color: #2d8cf0;
 }
 .head img{
     margin-top: 15px;
 }
-
+.tips-login{
+    text-align: justify;
+    display: inline-block;
+    background-color: #2c3e50;
+    height: 35px;
+    width: 82px;
+    margin: auto;
+    color: white;
+    border: 1px solid #2c3e50;
+    border-radius: 8px 0px 0px 8px;
+    font-size: 17px;
+    padding: 8px 0px 5px 13px;
+}
 
 
 
@@ -75,7 +94,7 @@ ul {
 
 .mod-reg {
     position: relative;
-    background-color: green;
+
 }
 .reg-content {
     position: relative;
@@ -107,15 +126,19 @@ input::-webkit-input-placeholder{
  } */  
 .submit .submitbutton{
     /*#dd4242*/
-    background-color: #dd4242;
+    background-color: #2c3e50;
     width: 325px;
     display: block;
     height: 50px;
     font-size: 20px;
     font-weight: 700;
     margin-top: 30px;
-    border-radius: 5px;
-    color:#fff;
+    border-radius: 10px;
+    color: #fff;
+    border-color: white;
+}
+.submit .submitbutton:hover{
+    background-color: #2d8cf0;
 }
 .picture{
     float: right;
@@ -148,10 +171,37 @@ input::-webkit-input-placeholder{
     margin:0 15px;
 }
 .foot .link .c{
-    color: #dd4242;
+    color: #2d8cf0;
+}
+.user-input{
+    height: 35px;
+    border-radius: 0px 8px 8px 0px;
+    border: 1px solid #2c3e50;
+    padding: 2px 2px 0px 20px;
+    width: 240px;
+    font-size: 16px;
+    color: #2c3e50;
+}
+.user-input::placeholder{
+    color: #999999;
+}
+.user-input:hover{
+    border: 2px solid #2d8cf0;
 }
 
-
+.tips-register{
+    text-align: justify;
+    display: inline-block;
+    background-color: #2c3e50;
+    height: 35px;
+    width: 85px;
+    margin: auto;
+    color: white;
+    border: 1px solid #2c3e50;
+    border-radius: 8px 0px 0px 8px;
+    font-size: 17px;
+    padding: 8px 0px 5px 10px;
+}
 
 
 

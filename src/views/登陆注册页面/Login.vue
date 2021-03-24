@@ -15,13 +15,15 @@
     <div class="content">
       <div class="mod-reg">
         <div class="reg-content">
-          <h1 style="text-align: left">校园闲置物品交易平台</h1>
+          <h1 style="text-align: left" class="plat-title">校园闲置物品交易平台</h1>
           <br/><br/>
-          <div class="name" > 用户名：
-            <input type="text" v-model="userName" name="" placeholder="请输入用户名" class="">
+          <div class="name" >
+            <span class="tips-login">用户名</span>
+            <input type="text" v-model="userName" name="" placeholder="请输入用户名" class="user-input">
           </div>
-          <div class="code" > 密码 ：
-            <input type="password" v-model="password" name="" placeholder="请输入密码" style="margin-left: 14px" class="">
+          <div class="code" >
+            <span class="tips-login">密码</span>
+            <input type="password" v-model="password" name="" placeholder="请输入密码"  class="user-input">
           </div>
           <div class="submit" >
             <input type="submit" id="" name="" value="登    录" @click="login()" class="submitbutton" style="cursor: pointer">

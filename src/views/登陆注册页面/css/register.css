@@ -1,27 +1,9 @@
-a{
-	text-decoration: none;
-}
-ul {
-	list-style: none;
-}
-.space{
-	width: 2px;
-	height: 35px;
-	background-color: #666;
-	margin:19px 12px 0px;
-}
-.fr{
-	float: right;
-}
-.fl{
-	float: left;
-}
 
 .wrapper {
 	width: 100%;
 }
-.head, 
-.content, 
+.head,
+.content,
 .foot {
     width: 980px;
 
@@ -48,24 +30,11 @@ ul {
 }
 .head .bigger{
 	font-size: 24px;
-	color: #a7bbcd;
+	color: #2c3e50;
 }
-.head li a{
-	font-size: 16px;
-	color: red;
-}
+
 .head img{
 	margin-top: 15px;
-}
-.title{
-	text-align: justify;
-	width: 100px;
-	display: inline-block;
-}
-.nav{
-	width: 100%;
-	height: 20px;
-    background: url(../image/nav.png) no-repeat center top;
 }
 
 
@@ -94,24 +63,6 @@ input::-webkit-input-placeholder{
 	font-size: 16px;
 }
 
-/*.accept{
-	font-size: 14px;
-}
-.accept a{
-    color:#a7bbcd;
- } */  
-.submit .submitbutton{
-	/*#dd4242*/
-	background-color: #dd4242;
-	width: 325px;
-	display: block;
-    height: 50px;
-    font-size: 20px;
-    font-weight: 700;
-    margin-top: 30px;
-    border-radius: 5px;
-    color:#fff;
-}
 .picture{
 	float: right;
 	width: 800px;
@@ -142,9 +93,9 @@ input::-webkit-input-placeholder{
 	color: #666;
 	margin:0 15px;
 }
-.foot .link .c{
+/*.foot .link .c{
 	color: #dd4242;
-}
+}*/
 
 
 
