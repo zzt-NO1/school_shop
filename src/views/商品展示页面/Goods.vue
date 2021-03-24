@@ -7,7 +7,7 @@
           <span class="iconfont school" style="width: 300px" v-if="loginStatus">&#xe651;{{schoolName}}</span>
           <span class="search-box">
             <input type="search" placeholder="关键字" />
-            <button type="submit" class="search-btn"><span class="iconfont search-icon">&#xe7e8;</span></button>
+            <button type="submit" class="search-btn"><span class="iconfont search-icon">&#xe65c;</span></button>
           </span>
           <span class="good-type">
             <select v-model="goodType" class="select-type" half autocomplete="no">
@@ -35,11 +35,16 @@
       <div class="gallery-wrapper" >
         <div class="white-panel" v-for="(item,index) in idleList" :key="index">
           <a href="#">
-            <img v-if="item.pictures===null || item.pictures===''" src="../../assets/img/noPics.png" class="thumb">
-            <img v-bind:src="item.pictures" class="thumb">
-            <h1>{{item.title}}</h1>
-            <p class="flag-sell" v-if="item.rentAndSellMark===0">出售价格：￥{{item.price}}元</p>
-            <p class="flag-rend" v-if="item.rentAndSellMark===1">出租价格：￥{{item.price}}元/天</p>
+            <div style="position: relative;">
+              <img v-if="item.pictures===null || item.pictures===''" src="../../assets/img/noPics.png" class="thumb">
+              <img v-bind:src="item.pictures" class="thumb">
+              <span v-if="item.rentAndSellMark===0" style="background-color: #6666FF; color: whitesmoke" class="tag tag-wrap card-tag">出售</span>
+              <span v-if="item.rentAndSellMark===1" style="background-color: #669999; color: whitesmoke" class="tag tag-wrap card-tag">出租</span>
+            </div>
+            <p class="idle-p card-title iconfont">&#xe6ba; {{item.title}}</p>
+            <p class="idle-p p-price" v-if="item.rentAndSellMark===0"><span class="iconfont">&#xe7d1;</span>价格:<span class="card-price flag-sell" >￥{{item.price}} </span>元</p>
+            <p class="idle-p p-price" v-if="item.rentAndSellMark===1"><span class="iconfont">&#xe7d1;</span>价格:<span class="card-price flag-rent">￥{{item.price}} </span>元/天</p>
+            <p class="idle-p"><span class="iconfont location">&#xe651;{{item.address}}</span></p>
           </a>
         </div>
       </div>
@@ -111,6 +116,7 @@ export default {
         },
 
       ],
+      allIdleList:[],
       idleListMap:null,
       params: {
         idleId:'',
@@ -138,7 +144,6 @@ export default {
     login() {
       this.$router.push({path:"/login"})
     },
-
     //判断是否已登录
     judgeLogin(){
       let student = JSON.parse(sessionStorage.getItem('student'));
@@ -149,7 +154,8 @@ export default {
         return true;
       }
     },
-    getAllGoodType(){//获取全部闲置品类型
+    //获取全部闲置品类型
+    getAllGoodType(){
       const _this = this;
       axios.post('http://localhost:8181/issueIdle/getAllGoodType').then(function (res) {
             console.log(res.data);
@@ -163,7 +169,6 @@ export default {
           }
       );
     },
-
     //获取产品列表
     getIdleListBySchoolId(schoolId){
       const _this = this;
@@ -176,12 +181,17 @@ export default {
             if (res.data != null && res.data.searchResult) {//成功
               console.log('闲置品查询成功');
               _this.idleList = res.data.idleList;
+              _this.allIdleList = res.data.idleList;
             } else {
               console.log('闲置品查询失败');
               return '';
             }
           }
       );
+    },
+    //筛选闲置品
+    filterIdleList(){
+
     }
   },
   mounted() {
@@ -279,14 +289,31 @@ input[type=search] {
 .search-btn i {
   font-size: 2.3em;
 }
+.card-tag{
+  width: 50px;
+  max-width: 100%;
+  position: absolute;
+  margin: 0px 0px 0px 165px;
+  left: 5px;
+  font-size: 14px;
+  border-radius: 2px;
+}
+.tag-wrap {
+  -webkit-filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
+  filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
+}
+
+.tag {
+  background: #FB8C00;
+  color: #222;
+  padding: 5px 8px 5px 14px;
+  /* font: bold 14px system-ui; */
+  -webkit-clip-path: polygon(30px 0%, 100% 0%, 100% 100%, 10px 100%, 0 50%);
+  clip-path: polygon(10px 0%, 100% 0%, 100% 100%, 10px 100%, 0 50%);
+  transform:rotate(-30deg);
+}
 
 
-.flag-rend{
-  color: #2d8cf0;
-}
-.flag-sell{
-  color: #5daf34;
-}
 .gallery-wrapper {
   column-count: 5;
   display: inline-block;
@@ -322,5 +349,33 @@ img.thumb {
   transition: all 0.3s ease-in-out;
   transform: scale(1.003);
 }
+.card-title{
+  color: #003472;
+  font-size: 14px;
+}
 
+.flag-rent{
+  color: #669999;
+  font-size: 13px;
+}
+.flag-sell{
+  color: #6666FF;
+  font-size: 13px;
+}
+.card-price{
+  font-size: 16px;
+}
+.p-price{
+  font-size: 13px;
+  color: #666666;
+}
+.idle-p{
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 2px;
+}
+.location{
+  color: #999999;
+  font-size: 13px;
+}
 </style>
