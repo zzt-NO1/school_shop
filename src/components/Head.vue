@@ -23,25 +23,25 @@
       <!--导航按钮-->
       <div class="guide">
         <ul class="guide-ul">
-          <li><label @click="toPage('goods')"><span class="iconfont">&#xe6b8;首页</span></label></li>
+          <li><label @click="toPage('goods')"><span class="iconfont">&#xe6b8; 首页</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('postGood')"><span class="iconfont">&#xe6a0;我要发布</span></label></li>
+          <li><label @click="toPage('postGood')"><span class="iconfont">&#xe6a0; 我要发布</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('shoppingCar')"><span class="iconfont">&#xe6af;购物车</span></label></li>
+          <li><label @click="toPage('shoppingCar')"><span class="iconfont">&#xe6af; 购物车</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('postRecord')"><span class="iconfont">&#xe6b0;发布记录</span></label></li>
+          <li><label @click="toPage('postRecord')"><span class="iconfont">&#xe800; 发布记录</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('buyGood')"><span class="iconfont">&#xe699;购买记录</span></label></li>
+          <li><label @click="toPage('buyGood')"><span class="iconfont">&#xe699; 购买记录</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li ><label @click="toPage('messageCenter')"><span class="iconfont">&#xe70a;消息中心</span></label></li>
+          <li ><label @click="toPage('messageCenter')"><span class="iconfont">&#xe70a; 消息中心</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li ><label @click="toPage('orderCenter')"><span class="iconfont">&#xe645;订单中心</span></label></li>
+          <li ><label @click="toPage('orderCenter')"><span class="iconfont">&#xe645; 订单中心</span></label></li>
         </ul>
       </div>
     </div>

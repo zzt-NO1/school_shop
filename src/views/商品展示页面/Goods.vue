@@ -41,9 +41,9 @@
               <span v-if="item.rentAndSellMark===0" style="background-color: #6666FF; color: whitesmoke" class="tag tag-wrap card-tag">出售</span>
               <span v-if="item.rentAndSellMark===1" style="background-color: #669999; color: whitesmoke" class="tag tag-wrap card-tag">出租</span>
             </div>
-            <p class="idle-p card-title iconfont">&#xe6ba; {{item.title}}</p>
-            <p class="idle-p p-price" v-if="item.rentAndSellMark===0"><span class="iconfont">&#xe7d1;</span>价格:<span class="card-price flag-sell" >￥{{item.price}} </span>元</p>
-            <p class="idle-p p-price" v-if="item.rentAndSellMark===1"><span class="iconfont">&#xe7d1;</span>价格:<span class="card-price flag-rent">￥{{item.price}} </span>元/天</p>
+            <p class="idle-p card-title"><span class="iconfont" style="font-size: 16px">&#xe719;</span> {{item.title}}</p>
+            <p class="idle-p p-price" v-if="item.rentAndSellMark===0"><span class="iconfont" style="font-size: 13px">&#xe7d1;</span>价格:<span class="card-price flag-sell" >￥{{item.price}} </span>元</p>
+            <p class="idle-p p-price" v-if="item.rentAndSellMark===1"><span class="iconfont" style="font-size: 13px">&#xe7d1;</span>价格:<span class="card-price flag-rent">￥{{item.price}} </span>元/天</p>
             <p class="idle-p"><span class="iconfont location">&#xe651;{{item.address}}</span></p>
           </a>
         </div>
