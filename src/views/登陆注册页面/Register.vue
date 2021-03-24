@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="head">
       <ul class="fl">
-        <li><img src="../../views/登陆注册页面/image/shark.jpg"></li>
+        <li><img src="../../views/登陆注册页面/image/cat2.jpg"></li>
         <li class="space"></li>
         <li><span class="bigger">注册账号</span></li>
       </ul>
