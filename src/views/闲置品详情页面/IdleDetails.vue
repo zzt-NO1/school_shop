@@ -5,11 +5,12 @@
       <!-- SLIDES -->
       <div class="slide-wrapper">
         <div id="slide-role">
-            <img :src="pic" class="imgs">
+            <img v-bind:src="modelData.pictures" class="imgs">
+            <img v-if="modelData.pictures===null || modelData.pictures===''" src="../../assets/img/noPics.png" class="imgs">
         </div>
       </div>
       <div class="label-wrapper">
-        <button  class="face-button trigger" v-for="(item,index) in pictures" :key="index" @click="btnClick(index)">
+        <button  class="face-button trigger" v-for="(item,index) in modelData.picBase64List" :key="index" @click="btnClick(index)">
           <div class="face-container">
             <span class="eye left"></span>
           </div>
@@ -42,7 +43,7 @@
                 <span style="font-size: 17px;color: #FF6600">{{modelData.quality}}</span>好物件,仅剩<span style="color: #FF6600;font-size: 18px">{{modelData.count}}</span>件了喔！先到先得！
               </div>
             </div>
-            <span class="stand" style="font-size: 14px;">类型:{{modelData.goodType}}</span>
+            <span class="stand" style="font-size: 14px;">类型:{{modelData.type}}</span>
             <div class="cat">
               <div class="body"></div>
               <div class="head">
@@ -84,11 +85,11 @@
         <div class="other-msg">
           <span class="iconfont focus-span1">&#xe719;</span>
           <div class="div-shang">
-            详情:<div class="div-description">{{modelData.description}}</div>
+            详情:<div class="div-description">{{modelData.describe}}</div>
           </div>
           <div v-if="modelData.rentAndSellMark==1" class="div-xia">
             <hr/>
-            租赁要求:<div><li class="rule-li" v-for="(item,index) in modelData.rules" :key="index">{{item}}</li></div>
+            租赁要求:<div><li class="rule-li" v-for="(item,index) in modelData.ruleList" :key="index">{{item}}</li></div>
           </div>
         </div>
         <div>
@@ -121,6 +122,8 @@
 </template>
 <!--<script src="../闲置品详情页面/js/index.js"></script>-->
 <script>
+import axios from "axios";
+
 export default {
   name: "IdleDetails",
 
@@ -130,12 +133,8 @@ export default {
       slip:'',
       active: true,
       btnValue:0,
-      mood:null,
       pic: require('../闲置品详情页面/img/5.jpg'),
-      pictures:[
-        /*{
-          imgSrc:require('../闲置品详情页面/img/5.jpg')
-        },*/
+      picBase64List:[
         {
           imgSrc:require('../闲置品详情页面/img/5.jpg')
         },
@@ -152,21 +151,21 @@ export default {
       modelData:{
         title: '大松鼠玩偶',
         rentAndSellMark: 1,
-        goodType: '其他',
+        type: '其他',
         price:50,
         quality:'8成新',
         count:2,
         transWay: 0,
         isFree: 0,
         address:'南校区六公寓',
-        description:'手感不错',
-        rules:[
+        describe:'手感不错',
+        ruleList:[
           '完整归还',
           '弄丢赔钱'
         ]
       },
       params:{
-
+        idleId:null,
       }
     }
 
@@ -176,27 +175,13 @@ export default {
      /* let btn = document.getElementsByClassName('face-button')*/
       console.log("index="+index)
       /*btn[this.btnValue].style.backgroundColor='#678efe'*/
-      for (let i=0 ;i<this.pictures.length;i++){
+      this.modelData.pictures = this.modelData.picBase64List[index]
+      /*for (let i=0 ;i<this.modelData.picBase64List.length;i++){
         if (i==index){
-          this.pic = this.pictures[i].imgSrc
-          console.log("curr.pic="+this.pic)
+          this.pic = this.modelData.picBase64List[i]
+          //console.log("curr.pic="+this.pic)
         }
-      }
-    },
-    getHappiness: function(){
-      if(this.modelData.quality == '5成新'){
-        this.val='50%'
-      } else if(this.modelData.quality == '6成新'){
-        this.val='60%'
-      } else if(this.modelData.quality == '7成新'){
-        this.val='70%'
-      } else if(this.modelData.quality == '8成新'){
-        this.val='80%'
-      } else if(this.modelData.quality == '9成新'){
-        this.val='90%'
-      } else if(this.modelData.quality == '全新'){
-        this.val='100%'
-      }
+      }*/
     },
     // 检查内容
     commentFocus(){
@@ -215,10 +200,32 @@ export default {
         }
       }
     },
+    getIdleInfoById(id){
+      const _this = this
+      this.params.idleId = id;
+      axios.post('http://localhost:8181/idleInfo/getIdleInfoByIdleId',{
+        params: this.params
+      }).then(function (res) {
+            console.log(res.data);
+            if (res.data != null && res.data.searchStatus) {//成功
+              console.log('闲置品查询成功');
+              _this.modelData = res.data.idle;
+            } else {
+              console.log('闲置品查询失败');
+              return '';
+            }
+          }
+      );
+    }
+  },
+  watch:{
+    '$route':'getParams'
   },
   created() {
     console.log("进入详情页...")
-    this.getHappiness()
+    let idleId = this.$route.query.idleId
+    console.log("idleId=" + idleId)
+    this.getIdleInfoById(parseInt(idleId))
   },
   mounted(){
     /*this.val = Math.floor(Math.random() * 101)*/

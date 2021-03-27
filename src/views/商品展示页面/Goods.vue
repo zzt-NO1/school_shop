@@ -34,7 +34,7 @@
     <div class="goodList-div">
       <div class="gallery-wrapper" >
         <div class="white-panel" v-for="(item,index) in idleList" :key="index">
-          <a href="#">
+          <a href="#" @click="goToIdleDetails(item.id)">
             <div style="position: relative;">
               <img v-if="item.pictures===null || item.pictures===''" src="../../assets/img/noPics.png" class="thumb">
               <img v-bind:src="item.pictures" class="thumb">
@@ -123,6 +123,7 @@ export default {
       params: {
         idleId:'',
         schoolId:0,
+        idleMsg:null,
       }
     }
   },
@@ -214,6 +215,10 @@ export default {
         })
       }
       this.idleList = res
+    },
+    //进入详情页
+    goToIdleDetails(idleId){
+      this.$router.push({path:'/idleDetails',query:{idleId: idleId}});
     }
   },
   mounted() {
