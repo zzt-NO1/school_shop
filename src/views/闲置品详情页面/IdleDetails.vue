@@ -84,27 +84,38 @@
         <div class="other-msg">
           <span class="iconfont focus-span1">&#xe719;</span>
           <div class="div-shang">
-            详情:<div>{{modelData.description}}</div>
+            详情:<div class="div-description">{{modelData.description}}</div>
           </div>
           <div v-if="modelData.rentAndSellMark==1" class="div-xia">
             <hr/>
-            租赁要求:<div><li v-for="(item,index) in modelData.rules" :key="index">{{item}}</li></div>
-          </div>
-        </div>
-        <!--<div>
-          <p><span>商品描述：{{modelData.description}}</span></p>
-          <span>租赁规则：</span>
-          <div >
-            <li v-for="(item,index) in modelData.rules" :key="index">{{item}}</li>
+            租赁要求:<div><li class="rule-li" v-for="(item,index) in modelData.rules" :key="index">{{item}}</li></div>
           </div>
         </div>
         <div>
-          <p><input type="button" class="p-btn" value="加入购物车"><span class="iconfont">&#xe7d8; </span><input type="button" class="p-btn" value="立即下单"></p>
-        </div>-->
+          <div class="btn-div1 ">
+            <input type="button" class="p-btn" value="加入购物车">
+          </div>
+          <div class="btn-div2 ">
+            <input type="button" class="p-btn" value="立即下单">
+          </div>
+        </div>
       </div>
     </div>
     <div class="page-body1">
-      hh
+      <div class="board_panel">
+        <h2>留言信息</h2>
+        <div class="input">
+          <textarea class="textarea-panel" id="comment" placeholder="请输入留言..." minlength="1" @blur="commentBlur" @focus="commentFocus"></textarea>
+          <!--<em class="commentWar">内容不能是空的</em>-->
+          <div class="post_button">
+            <button class="el-button" id="postBtn" disabled>提交</button>
+          </div>
+        </div>
+      </div>
+      <div class="out">
+        <hr/>
+        暂无留言
+      </div>
     </div>
   </div>
 </template>
@@ -144,7 +155,7 @@ export default {
         goodType: '其他',
         price:50,
         quality:'8成新',
-        count:1,
+        count:2,
         transWay: 0,
         isFree: 0,
         address:'南校区六公寓',
@@ -185,6 +196,23 @@ export default {
         this.val='90%'
       } else if(this.modelData.quality == '全新'){
         this.val='100%'
+      }
+    },
+    // 检查内容
+    commentFocus(){
+      document.getElementsByClassName('commentWar')[0].style.display = 'none';
+      this.comment = 0;
+    },
+    commentBlur(){
+      if(document.getElementById('comment').value==''){
+        document.getElementsByClassName('commentWar')[0].style.display = 'block';
+      }else{
+        this.comment = 1;
+        if(this.title==1 && this.comment==1 && this.code==1){
+          document.getElementById('postBtn').disabled = false;
+          document.getElementById('postBtn').style.background = '#00bfff';
+          document.getElementById('postBtn').style.cursor = 'pointer';
+        }
       }
     },
   },

@@ -117,9 +117,9 @@
 }
 
 img.imgs{
-    width: 300px;
-    height: 450px;
-    max-width: 100%;
+   /* width: 300px;*/
+    height: 100%;
+    /*max-width: 100%;*/
 }
 
 
@@ -552,19 +552,6 @@ button.face-button {
     z-index: 2;
     box-shadow: 0px 3px 5px grey;
 }
-/*.main .stand::after {
-    content: "";
-    position: absolute;
-    bottom: -189px;
-    left: 50%;
-    transform: translate(-50%);
-    height: 189px;
-    width: 50px;
-    border-radius: 10px;
-    background-color: #99CCCC;
-    box-shadow: 0px 0px 0px #666666;
-   !* box-shadow: 0 10px 0 #99CCCC, 0 20px 0 #99CCCC, 0 30px 0 #99CCCC, 0 40px 0 #fdf9de, 0 50px 0 #fdf9de, 0 60px 0 #fdf9de, 0 70px 0 #fdf9de;*!
-}*/
 .main .cat {
     width: 105px;
     height: 50px;
@@ -747,17 +734,101 @@ button.face-button {
 }
 
 .div-shang{
-    width: 100%;
+    width: 90%;
     height: auto;
     /* border-radius: 12px; */
     /* float: left; */
-    margin: 28px 0px -28px 0px;
+    /*margin: 28px 0px -28px 0px;*/
+    margin-top: 28px;
+    text-align: left;
+    margin-left: 20px;
+    font-family: 仿宋;
+    font-size: 18px;
+}
+.div-description{
+    font-family: 仿宋;
+    font-size: 20px;
+    color: #FF9900;
+}
+
+.rule-li{
+    font-family: 仿宋;
+    font-size: 20px;
+    color: #669999;
 }
 .div-xia{
-    width: 100%;
-    height:auto;
-/*    border-radius: 12px;*/
+    width: 90%;
+    height: auto;
+    /* border-radius: 12px; */
     background-color: #E8E8EE;
-    float: right;
-    margin: 30px 0px 0px 0px;
+    text-align: left;
+    font-family: 仿宋;
+    font-size: 18px;
+    margin-left: 20px;
+}
+.btn-div1{
+    width: 150px;
+    height: 60px;
+    margin: -100px 0px 40px 450px;
+}
+.btn-div2{
+    width: 150px;
+    height: 60px;
+    margin: -50px 0px -10px 450px;
+}
+.p-btn{
+    width: 180px;
+    height: 40px;
+    border-radius: 6px;
+    background-color: #6699CC;
+    border: 1px solid #eeeeee;
+    color: whitesmoke;
+    box-shadow: 1px 3px 4px #999999;
+}
+.p-btn:hover{
+    background-color: #669999  ;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+}
+
+/*------------------------留言版---------------------------------*/
+textarea{
+    margin: 0px 0;
+    width: 80%;
+    height: 20%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #c4c4c4;
+    border-radius: 10px;
+    outline: unset;
+    resize: unset;
+}
+
+em{
+    display: none;
+    margin: 10px 0 0;
+    padding: 0 20px;
+    font-size: 16px;
+    color: red;
+}
+
+#postBtn{
+    width: 100px;
+    margin: 0px 0px 0px 750px;
+    background-color: #6699CC;
+    border-radius: 6px;
+    color: whitesmoke;
+    box-shadow: 1px 3px 4px #999999;
+}
+#postBtn:hover{
+    background-color: #669999  ;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+}
+.out{
+    width: 80%;
+    height: auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    margin-left: 105px;
 }
