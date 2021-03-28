@@ -4,11 +4,15 @@ import Axios from "axios";
 import VueRouter from "vue-router";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import VueDirectiveImagePreviewer from 'vue-directive-image-previewer';
+import 'vue-directive-image-previewer/dist/assets/style.css'
+
 
 Vue.prototype.axios = Axios
 
 Vue.use(VueRouter)
 Vue.use(ElementUI)
+Vue.use(VueDirectiveImagePreviewer)
 
 Vue.config.productionTip = false
 

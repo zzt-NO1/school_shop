@@ -126,7 +126,16 @@ img.imgs{
     box-shadow: 1px 6px 5px #666666;
     border-radius: 20px;
 }
-
+img:active{
+    width: auto;
+    height: auto;
+    max-width: 200%;
+    max-height: 200%;
+   /* position: absolute;*/
+    box-shadow: 1px 6px 5px #666666;
+    border-radius: 20px;
+    /*transform: scale3d(1.5,1.5,2) translateX(240px);*/
+}
 
 
 /*===================
