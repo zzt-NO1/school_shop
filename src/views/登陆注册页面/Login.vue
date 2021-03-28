@@ -26,7 +26,8 @@
             <input type="password" v-model="password" name="" placeholder="请输入密码"  class="user-input">
           </div>
           <div class="submit" >
-            <input type="submit" id="" name="" value="登    录" @click="login()" class="submitbutton" style="cursor: pointer">
+            <el-button @click="login()" class="submitbutton" style="cursor: pointer">登 录</el-button>
+            <!--<input type="submit" id="" name="" value="登    录" @click="login()" class="submitbutton" style="cursor: pointer">-->
           </div>
         </div>
         <div class="picture"></div>
@@ -78,7 +79,10 @@ export default {
               localStorage.setItem('username', _this.resultMsg.student.nickname);
               sessionStorage.setItem('student', JSON.stringify(_this.resultMsg.student));
               console.log("登录成功");
-              alert("登录成功！");
+              _this.$message({
+                message:"登录成功！",
+                type: 'success'
+              })
               _this.$router.push('/goods');
               //console.log(JSON.parse(sessionStorage.getItem("user")))
             } else {

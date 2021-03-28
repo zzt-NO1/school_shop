@@ -9,7 +9,7 @@ import Goods from "../views/商品展示页面/Goods"
 import PostGood from "../views/商品上传页面/PostGood";
 import Head from "../components/Head";
 import IdleDetails from "../views/闲置品详情页面/IdleDetails";
-
+import ShoppingCart from "../views/购物车页面/ShoppingCart";
 export default new Router({
     routes:[
         {
@@ -49,6 +49,13 @@ export default new Router({
         {
             path: '/idleDetails',
             component: IdleDetails,
+            meta: {
+                keepAlive: true
+            }
+        },
+        {
+            path: '/shoppingCart',
+            component: ShoppingCart,
             meta: {
                 keepAlive: true
             }
