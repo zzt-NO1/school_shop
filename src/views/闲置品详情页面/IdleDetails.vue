@@ -94,7 +94,7 @@
         </div>
         <div>
           <div class="btn-div1 ">
-            <input type="button" class="p-btn" value="加入购物车">
+            <input type="button" class="p-btn" value="加入购物车" @click="addIdleToCart">
           </div>
           <div class="btn-div2 ">
             <input type="button" class="p-btn" value="立即下单">
@@ -165,6 +165,7 @@ export default {
         ]
       },
       params:{
+        studentAccount: null,
         idleId:null,
       }
     }
@@ -216,7 +217,41 @@ export default {
             }
           }
       );
-    }
+    },
+    addIdleToCart(){
+      console.log("studentAccount="+this.params.studentAccount)
+      console.log("idleId="+this.params.idleId)
+      if (this.judgeLogin()){//已登录
+        axios.post('http://localhost:8181/cartOperate/addIdleToCart',{
+          params: this.params
+        }).then(function (res) {
+              console.log(res.data);
+              if (res.data != null && res.data.addResult) {//成功
+                console.log('成功添加至购物车');
+                window.alert("已添加至购物车！")
+              } else {
+                console.log('添加至购物车失败');
+                window.alert("添加至购物车失败！请稍后重试...")
+                return false;
+              }
+            }
+        );
+      }else {
+        window.alert("尚未登录，请前往登录页面进行登录！")
+        this.$router.push({path:"/login"})
+      }
+    },
+    //判断是否已登录
+    judgeLogin(){
+      let student = JSON.parse(sessionStorage.getItem('student'));
+      if (null == student){
+        return false;
+      }else {
+        this.studentName = student.nickname;
+        this.params.studentAccount = student.account;
+        return true;
+      }
+    },
   },
   watch:{
     '$route':'getParams'
@@ -224,6 +259,7 @@ export default {
   created() {
     console.log("进入详情页...")
     let idleId = this.$route.query.idleId
+    this.params.idleId = parseInt(idleId)
     console.log("idleId=" + idleId)
     this.getIdleInfoById(parseInt(idleId))
   },
