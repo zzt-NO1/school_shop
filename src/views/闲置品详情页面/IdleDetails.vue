@@ -93,6 +93,7 @@
           </div>
         </div>
         <div>
+          <div class="owner">某某人:某某联系方式</div>
           <div class="btn-div1 ">
             <input type="button" class="p-btn" value="加入购物车" @click="addIdleToCart">
           </div>
@@ -175,14 +176,8 @@ export default {
     btnClick(index){
      /* let btn = document.getElementsByClassName('face-button')*/
       console.log("index="+index)
-      /*btn[this.btnValue].style.backgroundColor='#678efe'*/
+
       this.modelData.pictures = this.modelData.picBase64List[index]
-      /*for (let i=0 ;i<this.modelData.picBase64List.length;i++){
-        if (i==index){
-          this.pic = this.modelData.picBase64List[i]
-          //console.log("curr.pic="+this.pic)
-        }
-      }*/
     },
     // 检查内容
     commentFocus(){
@@ -219,6 +214,7 @@ export default {
       );
     },
     addIdleToCart(){
+      let _this = this
       console.log("studentAccount="+this.params.studentAccount)
       console.log("idleId="+this.params.idleId)
       if (this.judgeLogin()){//已登录
@@ -227,11 +223,20 @@ export default {
         }).then(function (res) {
               console.log(res.data);
               if (res.data != null && res.data.addResult) {//成功
+                _this.$message({
+                  message: '闲置品已成功添加至购物车',
+                  type: 'success',
+                  showClose:true
+                });
                 console.log('成功添加至购物车');
-                window.alert("已添加至购物车！")
+                //window.alert("已添加至购物车！")
               } else {
+                _this.$message({
+                  message: '添加至购物车失败,请稍后重试！',
+                  type: 'error',
+                  showClose:true
+                });
                 console.log('添加至购物车失败');
-                window.alert("添加至购物车失败！请稍后重试...")
                 return false;
               }
             }

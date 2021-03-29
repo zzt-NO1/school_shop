@@ -29,7 +29,7 @@
           <li><label @click="toPage('postGood')"><span class="iconfont">&#xe6a0; 我要发布</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('shoppingCar')"><span class="iconfont">&#xe6af; 购物车</span></label></li>
+          <li><label @click="toPage('shoppingCart')"><span class="iconfont">&#xe6af; 购物车</span></label></li>
         </ul>
         <ul class="guide-ul">
           <li><label @click="toPage('postRecord')"><span class="iconfont">&#xe800; 发布记录</span></label></li>
@@ -85,7 +85,7 @@ export default {
         this.loginStatus = true;
         switch (page){
           case 'postGood': this.$router.push({path:"/postGood"}); break;
-          case 'shoppingCar': this.$router.push({path:"/login"}); break;
+          case 'shoppingCart': this.$router.push({path:"/shoppingCart"}); break;
           case 'postRecord': this.$router.push({path:"/login"}); break;
           case 'buyRecord': this.$router.push({path:"/login"}); break;
           case 'messageCenter': this.$router.push({path:"/login"}); break;

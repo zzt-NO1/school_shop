@@ -65,7 +65,6 @@ export default {
       finalType:2,//租售类型
       goodType: '',//闲置品类型
       keyWord:'',//关键字
-
       studentName:'',
       loginStatus: false,
       delayTime:300,
