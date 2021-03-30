@@ -161,7 +161,7 @@ name: "ShoppingCart",
       console.log("arrId="+this.params.arrID)
     },
     cellStyle(row){//根据是否过期显示颜色
-      if(row.row.validMark===0){
+      if(row.row.validMark===0 || row.row.passMark!=1){
         return 'color:#BDC3C7;background:#F2F3F4'
       }else {
         if (row.row.rentAndSellMark===0){
@@ -173,7 +173,7 @@ name: "ShoppingCart",
     },
     checkSelect (row) {
       let isChecked = true;
-      if (row.validMark===0 || row.rentAndSellMark != this.typeMark && this.params.arrID.length != 0) { // 判断里面是否存在某个参数
+      if (row.passMark != 1 || row.validMark===0 || row.rentAndSellMark != this.typeMark && this.params.arrID.length != 0 ) { // 判断里面是否存在某个参数
         isChecked = false
       }
       return isChecked
