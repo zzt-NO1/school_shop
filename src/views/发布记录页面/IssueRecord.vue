@@ -54,12 +54,12 @@
             <span v-if="scope.row.validMark!=0 && scope.row.remain!=0 && scope.row.passMark===0">等待上架</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" fixed="right" width="180">
+        <el-table-column label="操作" fixed="right" width="200">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.validMark===0 || scope.row.remain===0" type="primary" disabled plain>编辑</el-button>
-            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0" type="primary" plain>修改</el-button>
-            <el-button v-if="scope.row.validMark===0 || scope.row.remain===0 || scope.row.passMark===2" type="danger" disabled plain>下架</el-button>
-            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0 && scope.row.passMark!=2" type="danger" plain>下架</el-button>
+            <el-button v-if="scope.row.validMark===0 || scope.row.remain===0" type="primary" disabled plain><i class="el-icon-edit"></i>修改</el-button>
+            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0" type="primary" plain><i class="el-icon-edit"></i>修改</el-button>
+            <el-button v-if="scope.row.validMark===0 || scope.row.remain===0 || scope.row.passMark===2" type="danger" disabled plain><i class="el-icon-sold-out"></i>下架</el-button>
+            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0 && scope.row.passMark!=2" type="danger" plain><i class="el-icon-sold-out"></i>下架</el-button>
           </template>
         </el-table-column>
       </el-table>
