@@ -38,6 +38,7 @@
         <el-table-column prop="count" label="操作">
           <template slot-scope="scope">
               <el-button slot="reference" type="danger" plain @click="delIdleFromCart(scope.row.id)"><i class="el-icon-delete"> </i> 删除</el-button>
+              <span v-if="scope.row.validMark===0" style=" color: #B3B6B7;margin-left: 14px;" >已下架</span>
           </template>
         </el-table-column>
       </el-table>
@@ -213,13 +214,19 @@ name: "ShoppingCart",
 
 <style scoped>
 @import "../购物车页面/css/style.css";
-/*.el-table td, .el-table th.is-leaf,.el-table--border, .el-table--group{
-  border-color: black;
-}
-.el-table--border::after, .el-table--group::after, .el-table::before{
-  background-color: black;
-}*/
+
 .el-table{
   border: 1px solid #D0D3D4;
+}
+
+.type-span1{
+  width: 48px;
+  height: 14px;
+  margin-right: 146px;
+  margin-top: 0px;
+  font-size: 14px;
+  padding: 6px 10px 32px 9px;
+  border-radius: 50%;
+  float: right;
 }
 </style>
