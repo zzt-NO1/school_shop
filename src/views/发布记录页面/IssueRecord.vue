@@ -57,7 +57,7 @@
         <el-table-column label="操作" fixed="right" width="200">
           <template slot-scope="scope">
             <el-button v-if="scope.row.validMark===0 || scope.row.remain===0" type="primary" disabled plain><i class="el-icon-edit"></i>修改</el-button>
-            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0" type="primary" plain><i class="el-icon-edit"></i>修改</el-button>
+            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0" type="primary" plain @click="goToModifyPage(scope.row.id)"><i class="el-icon-edit"></i>修改</el-button>
             <el-button v-if="scope.row.validMark===0 || scope.row.remain===0 || scope.row.passMark===2" type="danger" disabled plain><i class="el-icon-sold-out"></i>下架</el-button>
             <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0 && scope.row.passMark!=2" type="danger" plain><i class="el-icon-sold-out"></i>下架</el-button>
           </template>
@@ -80,7 +80,7 @@ name: "IssueRecord",
       selectType:"2",
       idleList:[],
       filIdleList:[],
-      btnDisable:true,
+      idleId: 0,//测试用
       params:{
         studentAccount:'',
       }
@@ -131,6 +131,11 @@ name: "IssueRecord",
           return item.rentAndSellMark == parseInt(this.selectType)
         })
       }
+    },
+    //跳转到闲置信息修改页
+    goToModifyPage(idleId){
+      console.log("modify-idleId="+idleId)
+      this.$router.push({path:'/modifyIdleInfo',query:{idleId:idleId}})
     }
   },
   created() {

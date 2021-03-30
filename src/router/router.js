@@ -11,6 +11,7 @@ import Head from "../components/Head";
 import IdleDetails from "../views/闲置品详情页面/IdleDetails";
 import ShoppingCart from "../views/购物车页面/ShoppingCart";
 import IssueRecord from "../views/发布记录页面/IssueRecord";
+import ModifyIdleInfo from "../views/闲置信息修改页面/ModifyIdleInfo";
 export default new Router({
     routes:[
         {
@@ -64,6 +65,13 @@ export default new Router({
         {
             path: '/issueRecord',
             component: IssueRecord,
+            meta: {
+                keepAlive: true
+            }
+        },
+        {
+            path: '/modifyIdleInfo',
+            component: ModifyIdleInfo,
             meta: {
                 keepAlive: true
             }
