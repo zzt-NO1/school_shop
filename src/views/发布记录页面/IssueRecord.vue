@@ -57,7 +57,7 @@
         <el-table-column label="操作" fixed="right" width="180">
           <template slot-scope="scope">
             <el-button v-if="scope.row.validMark===0 || scope.row.remain===0" type="primary" disabled plain>编辑</el-button>
-            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0" type="primary" plain>编辑</el-button>
+            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0" type="primary" plain>修改</el-button>
             <el-button v-if="scope.row.validMark===0 || scope.row.remain===0 || scope.row.passMark===2" type="danger" disabled plain>下架</el-button>
             <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0 && scope.row.passMark!=2" type="danger" plain>下架</el-button>
           </template>
