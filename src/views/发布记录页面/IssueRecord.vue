@@ -7,7 +7,7 @@
           <el-radio v-model="selectType"  label="0" border @change="filterIdle">出售</el-radio>
           <el-radio v-model="selectType"  label="1" border @change="filterIdle">出租</el-radio>
       </p>
-      <el-table :data="filIdleList"  border style="margin: auto;" :row-style="rowStyle" :cell-style="cellStyle">
+      <el-table :data="filIdleList" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}"  border style="margin: auto;" :row-style="rowStyle" :cell-style="cellStyle">
         <el-table-column prop="pictures" width="140">
           <template slot-scope="scope">
             <el-image :src="scope.row.pictures" :preview-src-list="[scope.row.pictures]" :key="scope.row.id" style="width: 100px;height: 100px">
@@ -106,18 +106,18 @@ name: "IssueRecord",
     },
     cellStyle(row){//根据是否过期显示颜色
       if(row.row.validMark===0 || row.row.remain===0 || row.row.passMark === 2){//下架或余量为0或审批不通过
-        return 'color:#909497;background:#F2F3F4'
+        return 'color:#909497;background:#F2F3F4;borderColor:#D0D3D4!important'
       }else if (row.row.passMark === 0){ //待审批  黄色
         if (row.row.rentAndSellMark===0){//出售
-          return 'color:#6699CC;background:#FFFAE9'
+          return 'color:#6699CC;background:#FFFAE9;borderColor:#D0D3D4!important'
         }else {//出租
-          return 'color:#669999;background:#FFFAE9'
+          return 'color:#669999;background:#FFFAE9;borderColor:#D0D3D4!important'
         }
       }else if (row.row.passMark === 1){ //审批通过  绿色
         if (row.row.rentAndSellMark===0){//出售
-          return 'color:#6699CC;background:#F1FFEA'
+          return 'color:#6699CC;background:#F1FFEA;borderColor:#D0D3D4!important'
         }else {//出租
-          return 'color:#669999;background:#F1FFEA'
+          return 'color:#669999;background:#F1FFEA;borderColor:#D0D3D4!important'
         }
       }
     },
@@ -160,6 +160,9 @@ name: "IssueRecord",
   margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
+}
+.el-table{
+  border: 1px solid #D0D3D4;
 }
 
 

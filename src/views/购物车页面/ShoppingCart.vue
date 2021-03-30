@@ -3,8 +3,9 @@
     <div class="cartPage-body">
       <h1>购物车</h1>
       <el-divider></el-divider>
-      <el-table :data="idleInfos" border style="margin: auto" @click="getSum"  @row-click="handleCurrentChange" @selection-change="seleChange"  :cell-style="cellStyle">
+      <el-table :data="idleInfos" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}" border style="margin: auto" @click="getSum"  @row-click="handleCurrentChange" @selection-change="seleChange" :cell-style="cellStyle">
         <el-table-column
+            class-name="el-table"
             type="selection"
             width="60"
             :selectable="checkSelect">
@@ -162,12 +163,12 @@ name: "ShoppingCart",
     },
     cellStyle(row){//根据是否过期显示颜色
       if(row.row.validMark===0 || row.row.passMark!=1){
-        return 'color:#BDC3C7;background:#F2F3F4'
+        return 'color:#BDC3C7;background:#F2F3F4;borderColor:#D0D3D4!important'
       }else {
         if (row.row.rentAndSellMark===0){
-          return 'color:#6699CC'
+          return 'color:#6699CC;borderColor:#D0D3D4!important'
         }else {
-          return 'color:#669999'
+          return 'color:#669999;borderColor:#D0D3D4!important'
         }
       }
     },
@@ -212,19 +213,13 @@ name: "ShoppingCart",
 
 <style scoped>
 @import "../购物车页面/css/style.css";
-/*.el-button{
-  background-color: #d5d5d5;
+/*.el-table td, .el-table th.is-leaf,.el-table--border, .el-table--group{
+  border-color: black;
+}
+.el-table--border::after, .el-table--group::after, .el-table::before{
+  background-color: black;
 }*/
-/*.el-checkbox__inner {
-  display: inline-block;
-  position: relative;
-  border: 1px solid #DCDFE6;
-  border-radius: 2px;
-  box-sizing: border-box;
-  width: 20px;
-  height: 20px;
-  background-color: #FFF;
-  z-index: 1;
-  transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),background-color .25s cubic-bezier(.71,-.46,.29,1.46);
-}*/
+.el-table{
+  border: 1px solid #D0D3D4;
+}
 </style>

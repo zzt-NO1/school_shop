@@ -17,12 +17,12 @@
               或者将图片拖到此处
             </div>
           </div>
-          <div class="upload_warp_text">
+          <!--<div class="upload_warp_text">
             选中{{params.idle.picBase64List.length}}个图片，共{{bytesToSize(this.params.size)}}
             <span class="ml20 c-red">[单个图片附件的最大尺寸为10MB]</span>
-          </div>
+          </div>-->
           <input @change="fileChange($event)" type="file" id="upload_file" multiple style="display: none">
-          <div class="upload_warp_img" v-show="params.idle.picBase64List.length!=0">
+          <div class="upload_warp_img" v-if="params.idle.picBase64List.length!=0">
             <div class="upload_warp_img_div" v-for="(item,index) of params.idle.picBase64List" :key="index">
               <div class="upload_warp_img_div_top">
                <!-- <div class="upload_warp_img_div_text">
@@ -35,11 +35,7 @@
           </div>
         </div>
         <div class="upload1" >
-          <span style="font-size: 30px;color: #2c3e50;margin-top: 20px">闲置品信息修改</span>
-          <!--<p style="margin: auto;height: 40px;margin-top: 15px">
-            <label style="margin-right: 15px;color: #2c3e50"><input type="radio" name="radioType" value="0" @click="selectUploadType(0)" checked="checked" />出售</label>
-            <label style="margin-right: 15px;color: #2c3e50"><input type="radio" name="radioType" value="1" @click="selectUploadType(1)"/>出租</label>
-          </p>-->
+          <p><span style="font-size: 30px;color: #2c3e50;">闲置品信息修改</span></p>
           <!----------------------------------出售品信息------------------------------------------------------------------->
           <div class="upload-msg" v-if="params.idle.rentAndSellMark===0">
             <div class="form-group">
@@ -168,7 +164,7 @@
               </ul>
             </div>
             <div class="form-group" >
-              <input class="in_text" type="submit" value="提交发布申请" @click="submitClick">
+              <input class="in_text" type="submit" value="提交修改" @click="submitClick">
             </div>
           </div>
         </div>
@@ -196,7 +192,8 @@ export default {
       params:{
         imgList: [],//图片
         size: 0,
-        idle:{}
+        idle:{},
+        idleId:0
       },
       rule:'',
       resultMsg:null,
@@ -220,14 +217,14 @@ export default {
       console.log("提交");
       console.log(this.params);
       const _this = this;
-      if (this.params.title==''||this.params.description==''||this.params.goodType==''||this.params.qualityValue==''||this.params.address==''){
+      if (this.params.idle.title==''||this.params.idle.describe==''||this.params.idle.type==''||this.params.idle.quality==''||this.params.idle.address==''){
         alert("请填写完整信息再提交！")
       }else {
-        this.params.price = parseInt(this.params.price)
-        this.params.transWay = parseInt(this.params.transWay)
-        this.params.isFree = parseInt(this.params.isFree)
-        this.params.rentOrSellMark = parseInt(this.params.rentOrSellMark)
-        this.params.count = parseInt(this.params.count)
+        this.params.idle.price = parseInt(this.params.idle.price)
+        this.params.idle.transWay = parseInt(this.params.idle.transWay)
+        this.params.idle.isFree = parseInt(this.params.idle.isFree)
+        this.params.idle.rentAndSellMark = parseInt(this.params.idle.rentOrSellMark)
+        this.params.idle.count = parseInt(this.params.idle.count)
         axios.post('http://localhost:8181/issueIdle/addIdle', {
           params: this.params
         }).then(function (res) {
@@ -264,21 +261,14 @@ export default {
       );
     },
 
-    selectUploadType(typeValue){//选择出租或出售类型
-      if(typeValue==1){
-        this.params.rentOrSellMark=1;
-      }else {
-        this.params.rentOrSellMark=0;
-      }
-    },
     addRule(rule){
-      this.params.rent_rules.push(rule);
+      this.params.idle.ruleList.push(rule);
       this.rule='';
-      console.log("增加后："+this.params.rent_rules)
+      console.log("增加后："+this.params.idle.ruleList)
     },
     delItem: function (item) {
-      this.params.rent_rules.splice(this.params.rent_rules.indexOf(item), 1);
-      console.log("删减后："+this.params.rent_rules)
+      this.params.idle.ruleList.splice(this.params.idle.ruleList.indexOf(item), 1);
+      console.log("删减后："+this.params.idle.ruleList)
     },
     fileClick(){
       document.getElementById('upload_file').click()
@@ -294,20 +284,18 @@ export default {
       }
     },
     fileAdd(file){ //将图片转换成base64
-      this.params.size = this.params.size + file.size;//总大小
       let reader = new FileReader();
       reader.vue = this;
       reader.readAsDataURL(file);
       reader.onload = function () {
         file.src = this.result;
-        this.vue.params.imgList.push({
-          file
-        });
+        this.vue.params.idle.picBase64List.push(file.src);
       }
     },
     fileDel(index){
-      this.params.size = this.params.size - this.params.imgList[index].file.size;//总大小
-      this.params.imgList.splice(index, 1);
+      let _this = this
+      console.log("index="+index)
+      _this.params.idle.picBase64List.splice(index,1);
     },
     bytesToSize(bytes){
       if (bytes === 0) return '0 B';
@@ -335,7 +323,7 @@ export default {
       if (null == student){
         return false;
       }else {
-        this.params.studentAccount = student.account;
+        this.params.idle.studentAccount = student.account;
         return true;
       }
     },
@@ -363,10 +351,6 @@ export default {
 <style scoped>
 @import "../../views/闲置信息修改页面/css/style.css";
 
-/*.upload-msg{
-  text-align: left;
-  margin-left: 40px;
-}*/
 .fleft{
   float: left;
   width: 45%;
@@ -484,101 +468,5 @@ export default {
   margin: auto;
   text-align: center;
 }
-.ml20{
-  margin-left: 20px;
-}
-.c-red{
-  color: red;
-}
-/*.bgcolor{
-  background-color: #2196F3;
-  color: white;
-  font-size: 15px;
-}
-.row{
-  text-align: left;
-  margin-left: 20px;
-}*/
+
 </style>
-
-<!--<script>
-import axios from "axios";
-
-export default {
-  name: "ModifyIdleInfo",
-  data() {
-    return {
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
-      params:{
-        studentAccount:'',
-        idleId:0,
-        idle:{},
-      }
-    }
-  },
-  methods: {
-    //判断是否已登录
-    judgeLogin(){
-      let student = JSON.parse(sessionStorage.getItem('student'));
-      if (null == student){
-        return false;
-      }else {
-        this.params.studentAccount = student.account;
-        return true;
-      }
-    },
-    getIdleInfoById(id){
-      const _this = this
-      this.params.idleId = id;
-      axios.post('http://localhost:8181/idleInfo/getIdleInfoByIdleId',{
-        params: this.params
-      }).then(function (res) {
-            console.log(res.data);
-            if (res.data != null && res.data.searchStatus) {//成功
-              console.log('闲置品查询成功');
-              _this.params.idle = res.data.idle;
-            } else {
-              console.log('闲置品查询失败');
-              return '';
-            }
-          }
-      );
-    },
-  },
-  created() {
-    if (this.judgeLogin()){//已登录
-      console.log("进入闲置信息修改页...")
-      let idleId = this.$route.query.idleId
-      this.params.idleId = parseInt(idleId)
-      console.log("idleId=" + idleId)
-      this.getIdleInfoById(parseInt(idleId))
-    }else {
-      window.alert("尚未登录，请前往登录页面进行登录！")
-      this.$router.push({path:"/login"})
-    }
-  }
-}
-</script>-->
-
-<!--
-<style scoped>
-.ModifyPage-body{
-  width: 60%;
-  height: 100%;
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 2px dashed #2196F3;
-  border-radius: 20px;
-  padding: 1% 5% 5% 5%;
-}
-</style>-->
