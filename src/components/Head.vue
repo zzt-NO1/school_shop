@@ -86,7 +86,7 @@ export default {
         switch (page){
           case 'postGood': this.$router.push({path:"/postGood"}); break;
           case 'shoppingCart': this.$router.push({path:"/shoppingCart"}); break;
-          case 'postRecord': this.$router.push({path:"/login"}); break;
+          case 'postRecord': this.$router.push({path:"/issueRecord"}); break;
           case 'buyRecord': this.$router.push({path:"/login"}); break;
           case 'messageCenter': this.$router.push({path:"/login"}); break;
           case 'personal': this.$router.push({path:"/login"}); break;

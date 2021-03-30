@@ -198,8 +198,14 @@ name: "ShoppingCart",
 
   created() {
     let stu = JSON.parse(sessionStorage.getItem('student'));
-    this.params.studentAccount = stu.account;
-    this.getCartIdle();
+    if (null == stu){
+      this.loginStatus = false;
+      alert("尚未登录！即将跳转登录页面...");
+      this.$router.push({path:"/login"});
+    }else {
+      this.params.studentAccount = stu.account;
+      this.getCartIdle();
+    }
   },
 }
 </script>
