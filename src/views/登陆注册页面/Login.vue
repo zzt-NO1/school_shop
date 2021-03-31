@@ -18,21 +18,15 @@
           <h1 style="text-align: left" class="plat-title">校园闲置物品交易平台</h1>
           <br/><br/>
           <div class="name" >
-           <!-- <span class="tips-login">用户名</span>
-            <input type="text" v-model="userName" name="" placeholder="请输入用户名" class="user-input">-->
-            <el-input placeholder="请输入账号" v-model="userName" style="width: 280px">
-              <template slot="prepend" style="background-color: #2c3e50">账号</template>
-            </el-input>
+            <span class="tips-login">用户名</span>
+            <input type="text" v-model="userName" name="" placeholder="请输入用户名" class="user-input">
           </div>
           <div class="code" >
-            <!--<span class="tips-login">密码</span>
-            <input type="password" v-model="password" name="" placeholder="请输入密码"  class="user-input">-->
-            <el-input placeholder="请输入密码" v-model="password" show-password style="width: 280px;">
-              <template slot="prepend" style="background-color: #2c3e50">密码</template>
-            </el-input>
+            <span class="tips-login">密码</span>
+            <input type="password" v-model="password" name="" placeholder="请输入密码"  class="user-input">
           </div>
           <div class="submit" >
-            <el-button @click="login()" class="submitbutton" style="cursor: pointer;width: 280px" >登 录</el-button>
+            <el-button @click="login()" class="submitbutton" style="cursor: pointer">登 录</el-button>
             <!--<input type="submit" id="" name="" value="登    录" @click="login()" class="submitbutton" style="cursor: pointer">-->
           </div>
         </div>
@@ -103,18 +97,7 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 @import "../../views/登陆注册页面/css/normalize.css";
 @import "../../views/登陆注册页面/css/login.css";
-
-.el-input-group__prepend {
-  border-right: 0;
-  background-color: #2c3e50!important;
-  border-radius: 8px 0px 0px 8px!important;
-  color: white!important;
-}
-.el-input-group--prepend .el-input__inner, .el-input-group__append {
-  border-radius: 0px 8px 8px 0px;
-}
-
 </style>
