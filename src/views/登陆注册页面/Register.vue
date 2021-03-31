@@ -16,33 +16,52 @@
       <div class="mod-reg">
         <div class="reg-content2">
           <h1 style="text-align: left" class="plat-title">校园闲置物品交易平台</h1>
-          <div class="name" >
+     <!--     <div class="name" >
             <span class="tips-register">用户名</span>
             <input type="text"  name="" placeholder="请设置用户名" class="user-input">
           </div>
-
+-->
           <div class="nickname" >
-            <span class="tips-register">昵称</span>
-            <input type="text"  name="" placeholder="请设置昵称" class="user-input">
+            <!--<span class="tips-register">昵称</span>
+            <input type="text"  name="" placeholder="请设置昵称" class="user-input">-->
+            <el-input placeholder="请设置昵称" style="width: 320px">
+              <template  slot="prepend"><span style="color: whitesmoke">昵称</span></template>
+            </el-input>
           </div>
 
           <div class="phone" >
-            <span class="tips-register">手机号</span>
-            <input type="text"  name="" placeholder="请输入有效手机号" class="user-input">
+            <!--<span class="tips-register">手机号</span>
+            <input type="text"  name="" placeholder="请输入有效手机号" class="user-input">-->
+            <el-input placeholder="请输入手机号" style="width: 320px">
+              <template  slot="prepend"><span style="color: whitesmoke">手机</span></template>
+            </el-input>
           </div>
 
           <div class="code" >
-            <span class="tips-register">密码</span>
-            <input type="password"  name="" placeholder="请设置密码" class="user-input">
+            <!--<span class="tips-register">密码</span>
+            <input type="password"  name="" placeholder="请设置密码" class="user-input">-->
+            <el-input placeholder="请输入密码" show-password style="width: 320px">
+              <template  slot="prepend"><span style="color: whitesmoke;;">密码</span></template>
+            </el-input>
           </div>
 
           <div class="recode" >
-            <span class="tips-register">确认密码</span>
-            <input type="password"  name="" placeholder="请再次输入密码" class="user-input">
+            <!--<span class="tips-register">确认密码</span>
+            <input type="password"  name="" placeholder="请再次输入密码" class="user-input">-->
+            <el-input placeholder="请输入密码" show-password style="width: 320px">
+              <template  slot="prepend"><span style="color: whitesmoke">确认密码</span></template>
+            </el-input>
+          </div>
+          <div class="recode" >
+            <!--<span class="tips-register">学校</span>
+            <input type="text"  name="" placeholder="请选择学校" class="user-input">-->
+            <el-select placeholder="请选择学校"  style="width: 320px">
+             <!--     <template  slot="prepend">学校名称</template>-->
+            </el-select>
           </div>
 
           <div class="submit" >
-            <input type="submit" id="" name="" value="注册" class="submitbutton" style="cursor: pointer">
+            <el-button  class="submitbutton" style="cursor: pointer;width: 320px;background-color: #2c3e50!important;color: whitesmoke!important;">注册</el-button>
           </div>
 
         </div>

@@ -18,15 +18,21 @@
           <h1 style="text-align: left" class="plat-title">校园闲置物品交易平台</h1>
           <br/><br/>
           <div class="name" >
-            <span class="tips-login">用户名</span>
-            <input type="text" v-model="userName" name="" placeholder="请输入用户名" class="user-input">
+           <!-- <span class="tips-login">用户名</span>
+            <input type="text" v-model="userName" name="" placeholder="请输入用户名" class="user-input">-->
+            <el-input placeholder="请输入账号" v-model="userName" style="width: 280px;border-color: #666666!important;">
+              <template slot="prepend"><span style="color: whitesmoke">账号</span></template>
+            </el-input>
           </div>
           <div class="code" >
-            <span class="tips-login">密码</span>
-            <input type="password" v-model="password" name="" placeholder="请输入密码"  class="user-input">
+            <!--<span class="tips-login">密码</span>
+            <input type="password" v-model="password" name="" placeholder="请输入密码"  class="user-input">-->
+            <el-input placeholder="请输入密码" v-model="password" show-password style="width: 280px">
+              <template  slot="prepend"><span style="color: whitesmoke">密码</span></template>
+            </el-input>
           </div>
           <div class="submit" >
-            <el-button @click="login()" class="submitbutton" style="cursor: pointer">登 录</el-button>
+            <el-button @click="login()" class="submitbutton" style="cursor: pointer;width: 280px;background-color: #2c3e50!important;color: whitesmoke!important;">登 录</el-button>
             <!--<input type="submit" id="" name="" value="登    录" @click="login()" class="submitbutton" style="cursor: pointer">-->
           </div>
         </div>
