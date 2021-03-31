@@ -38,7 +38,7 @@
         <el-table-column prop="count" label="操作">
           <template slot-scope="scope">
               <el-button slot="reference" type="danger" plain @click="delIdleFromCart(scope.row.id)"><i class="el-icon-delete"> </i> 删除</el-button>
-              <span v-if="scope.row.validMark===0" style=" color: #B3B6B7;margin-left: 14px;" >已下架</span>
+              <span v-if="scope.row.validMark===0 || scope.row.remain===0 || scope.row.passMark!=1" style=" color: #B3B6B7;margin-left: 14px;" >已下架</span>
           </template>
         </el-table-column>
       </el-table>
@@ -175,7 +175,8 @@ name: "ShoppingCart",
     },
     checkSelect (row) {
       let isChecked = true;
-      if (row.passMark != 1 || row.validMark===0 || row.rentAndSellMark != this.typeMark && this.params.arrID.length != 0 ) { // 判断里面是否存在某个参数
+      //scope.row.validMark!=0 && scope.row.remain!=0 && scope.row.passMark===1
+      if (row.remain===0 || row.passMark != 1 || row.validMark===0 || row.rentAndSellMark != this.typeMark && this.params.arrID.length != 0 ) { // 判断里面是否存在某个参数
         isChecked = false
       }
       return isChecked

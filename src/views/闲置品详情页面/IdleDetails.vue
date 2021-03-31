@@ -18,7 +18,7 @@
       </div>
       <div class="msg-wrapper">
         <h2>
-          <p class="title-p">{{modelData.title}}</p>
+          <p class="title-p">{{modelData.title}}<span v-if="modelData.validMark===0 || modelData.remain===0 || modelData.passMark!=1">(下架)</span></p>
           <span v-if="modelData.rentAndSellMark===0" style="background-color: #6699CC; color: whitesmoke" class="type-span">出售</span>
           <span v-if="modelData.rentAndSellMark===1" style="background-color: #669999; color: whitesmoke" class="type-span">出租</span></h2>
         <div>
@@ -218,29 +218,37 @@ export default {
       console.log("studentAccount="+this.params.studentAccount)
       console.log("idleId="+this.params.idleId)
       if (this.judgeLogin()){//已登录
-        axios.post('http://localhost:8181/cartOperate/addIdleToCart',{
-          params: this.params
-        }).then(function (res) {
-              console.log(res.data);
-              if (res.data != null && res.data.addResult) {//成功
-                _this.$message({
-                  message: '闲置品已成功添加至购物车',
-                  type: 'success',
-                  showClose:true
-                });
-                console.log('成功添加至购物车');
-                //window.alert("已添加至购物车！")
-              } else {
-                _this.$message({
-                  message: '添加至购物车失败,请稍后重试！',
-                  type: 'error',
-                  showClose:true
-                });
-                console.log('添加至购物车失败');
-                return false;
+        if (this.modelData.validMark===0 || this.modelData.remain===0 || this.modelData.passMark!=1){//下架商品
+          this.$notify({
+            title: '提示信息',
+            message: '已下架物品无法加至购物车哦！',
+            position: 'bottom-right'
+          });
+        }else {
+          axios.post('http://localhost:8181/cartOperate/addIdleToCart',{
+            params: this.params
+          }).then(function (res) {
+                console.log(res.data);
+                if (res.data != null && res.data.addResult) {//成功
+                  _this.$message({
+                    message: '闲置品已成功添加至购物车',
+                    type: 'success',
+                    showClose:true
+                  });
+                  console.log('成功添加至购物车');
+                  //window.alert("已添加至购物车！")
+                } else {
+                  _this.$message({
+                    message: '添加至购物车失败,请稍后重试！',
+                    type: 'error',
+                    showClose:true
+                  });
+                  console.log('添加至购物车失败');
+                  return false;
+                }
               }
-            }
-        );
+          );
+        }
       }else {
         window.alert("尚未登录，请前往登录页面进行登录！")
         this.$router.push({path:"/login"})

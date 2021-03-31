@@ -42,7 +42,8 @@
         </el-table-column>
         <el-table-column prop="passMark" label="审批状态" width="100">
           <template slot-scope="scope">
-            <span v-if="scope.row.passMark==0">审批中</span>
+            <span v-if="scope.row.passMark==0&&scope.row.validMark!=0">审批中</span>
+            <span v-if="scope.row.passMark==0&&scope.row.validMark==0">审批中断</span>
             <span v-if="scope.row.passMark==1">审批通过</span>
             <span v-if="scope.row.passMark==2">审批不通过</span>
           </template>
@@ -59,7 +60,7 @@
             <el-button v-if="scope.row.validMark===0 || scope.row.remain===0" type="primary" disabled plain><i class="el-icon-edit"></i>修改</el-button>
             <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0" type="primary" plain @click="goToModifyPage(scope.row.id)"><i class="el-icon-edit"></i>修改</el-button>
             <el-button v-if="scope.row.validMark===0 || scope.row.remain===0 || scope.row.passMark===2" type="danger" disabled plain><i class="el-icon-sold-out"></i>下架</el-button>
-            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0 && scope.row.passMark!=2" type="danger" plain><i class="el-icon-sold-out"></i>下架</el-button>
+            <el-button v-if="scope.row.validMark!=0 && scope.row.remain!=0 && scope.row.passMark!=2" type="danger" plain @click="offShelfIdleByIdleId(scope.row.id)"><i class="el-icon-sold-out"></i>下架</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -83,6 +84,7 @@ name: "IssueRecord",
       idleId: 0,//测试用
       params:{
         studentAccount:'',
+        idleId:0,
       }
     }
   },
@@ -136,6 +138,34 @@ name: "IssueRecord",
     goToModifyPage(idleId){
       console.log("modify-idleId="+idleId)
       this.$router.push({path:'/modifyIdleInfo',query:{idleId:idleId}})
+    },
+    //下架闲置品
+    offShelfIdleByIdleId(idleId){
+      const _this = this
+      _this.params.idleId = idleId
+      axios.post('http://localhost:8181/idleInfo/offShelfIdle',{
+        params: this.params
+      }).then(function (res) {
+            console.log(res.data);
+            if (res.data != null && res.data.dealResult) {//成功
+              console.log(idleId+'下架成功');
+              _this.$message({
+                message:'闲置品下架成功！',
+                type:'success'
+              })
+              setTimeout(function(){
+                location.reload();
+              },1000);
+            } else {
+              console.log(idleId+'下架失败');
+              _this.$message({
+                message:'下架失败，请稍后重试！',
+                type:'error'
+              })
+              return '';
+            }
+          }
+      );
     }
   },
   created() {
