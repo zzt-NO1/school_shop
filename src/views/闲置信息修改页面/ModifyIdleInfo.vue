@@ -1,10 +1,5 @@
 <template>
   <div id="uploadGood">
-    <!------------------------背景---------------------------------------------------->
-    <!--<div id="background" class="wall"></div>
-    <div id="midground" class="wall"></div>
-    <div id="foreground" class="wall"></div>
-    <div id="top" class="wall"></div>-->
     <div class="hello">
       <form ref="upload_form">
         <div class="upload">
@@ -17,10 +12,6 @@
               或者将图片拖到此处
             </div>
           </div>
-          <!--<div class="upload_warp_text">
-            选中{{params.idle.picBase64List.length}}个图片，共{{bytesToSize(this.params.size)}}
-            <span class="ml20 c-red">[单个图片附件的最大尺寸为10MB]</span>
-          </div>-->
           <input @change="fileChange($event)" type="file" id="upload_file" multiple style="display: none">
           <div class="upload_warp_img" v-if="params.idle.picBase64List.length!=0">
             <div class="upload_warp_img_div" v-for="(item,index) of params.idle.picBase64List" :key="index">
@@ -91,7 +82,7 @@
               <textarea class="in_text form-field" type="text" v-model="params.idle.describe" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;" required="required"/>
             </div>
             <div class="form-group" >
-              <input class="in_text" type="submit" value="提交发布申请" @click="submitClick">
+              <input class="in_text" type="submit" value="提交修改" @click="submitClick">
             </div>
           </div>
           <!------------------------------出租品信息--------------------------------------------------------->
@@ -109,7 +100,7 @@
               </select>
             </div>
             <div class="form-group fright">
-              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.price" half placeholder="预期价格" autocomplete="no" required="required"/>
+              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.idle.price" half placeholder="预期价格" autocomplete="no" required="required"/>
               <span v-if="params.idle.rentAndSellMark===1">元/天*</span>
             </div>
             <div class="form-group fleft">
@@ -223,21 +214,29 @@ export default {
         this.params.idle.price = parseInt(this.params.idle.price)
         this.params.idle.transWay = parseInt(this.params.idle.transWay)
         this.params.idle.isFree = parseInt(this.params.idle.isFree)
-        this.params.idle.rentAndSellMark = parseInt(this.params.idle.rentOrSellMark)
+        this.params.idle.rentAndSellMark = parseInt(this.params.idle.rentAndSellMark)
         this.params.idle.count = parseInt(this.params.idle.count)
-        axios.post('http://localhost:8181/issueIdle/addIdle', {
+        console.log("加油")
+        axios.post('http://localhost:8181/issueIdle/updateIdleInfo', {
           params: this.params
         }).then(function (res) {
               console.log(res.data);
               _this.resultMsg = res.data;
-              if (_this.resultMsg.postResult) {//登录成功
-                console.log("发布成功");
-                alert("发布成功！请耐心等待审核结果......");
-                _this.$router.go(0);
-                //_this.$router.push('/postGood');
+              if (_this.resultMsg.updateResult) {//登录成功
+                console.log("修改成功");
+                _this.$message({
+                  message:'修改成功！请耐心等待审核结果...',
+                  type:'success'
+                })
+                //alert("修改成功！请耐心等待审核结果......");
+                _this.$router.push({path:'/issueRecord'})
               } else {
-                console.log('发布失败!!');
-                alert("发布失败！请稍后重试！");
+                console.log('修改失败!!');
+                _this.$message({
+                  message:'修改失败！请稍后重试！',
+                  type:'success'
+                })
+                //alert("修改失败！请稍后重试！");
                 return false;
               }
             }

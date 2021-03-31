@@ -92,7 +92,7 @@ name: "ShoppingCart",
               })
               setTimeout(function(){
                 location.reload();
-              },3000);
+              },2000);
               //location.reload()
               //_this.$router.push({path:'/shoppingCart'})
             } else {
