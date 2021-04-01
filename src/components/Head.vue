@@ -10,7 +10,7 @@
                 <el-dropdown>
                   <span class="user">{{ studentName }}<i class="el-icon-arrow-down el-icon--right"></i></span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>个人中心</el-dropdown-item>
+                    <el-dropdown-item><a @click="toPage('personalInfo')">个人中心</a></el-dropdown-item>
                     <el-dropdown-item ><a @click="loadout">退出登录</a></el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -95,7 +95,7 @@ export default {
           case 'postRecord': this.$router.push({path:"/issueRecord"}); break;
           case 'buyRecord': this.$router.push({path:"/login"}); break;
           case 'messageCenter': this.$router.push({path:"/login"}); break;
-          case 'personal': this.$router.push({path:"/login"}); break;
+          case 'personalInfo': this.$router.push({path:"/personalInfo"}); break;
           case 'orderCenter': this.$router.push({path:"/login"}); break;
           default: this.$router.push({path:"/login"});
         }
