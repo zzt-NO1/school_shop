@@ -18,7 +18,7 @@
       </div>
       <div class="msg-wrapper">
         <h2>
-          <p class="title-p">{{modelData.title}}<span v-if="modelData.validMark===0 || modelData.remain===0 || modelData.passMark!=1">(下架)</span></p>
+          <p class="title-p">{{modelData.title}}<span v-if="modelData.validMark===0 || modelData.remain===0 || modelData.passMark!=1" style="font-family: 仿宋">(下架)</span></p>
           <span v-if="modelData.rentAndSellMark===0" style="background-color: #6699CC; color: whitesmoke" class="type-span">出售</span>
           <span v-if="modelData.rentAndSellMark===1" style="background-color: #669999; color: whitesmoke" class="type-span">出租</span></h2>
         <div>
@@ -40,7 +40,7 @@
             <div class="quan2"></div>
             <div class="quan3">
               <div class="cat-word" style="font-size: 14px; color: #666666">
-                <span style="font-size: 17px;color: #FF6600">{{modelData.quality}}</span>好物件,仅剩<span style="color: #FF6600;font-size: 18px">{{modelData.count}}</span>件了喔！先到先得！
+                <span style="font-size: 17px;color: #FF6600">{{modelData.quality}}</span>好物件,仅剩<span style="color: #FF6600;font-size: 18px">{{modelData.remain}}</span>件了喔！先到先得！
               </div>
             </div>
             <span class="stand" style="font-size: 14px;">类型:{{modelData.type}}</span>
@@ -163,7 +163,8 @@ export default {
         ruleList:[
           '完整归还',
           '弄丢赔钱'
-        ]
+        ],
+        remain:0,
       },
       params:{
         studentAccount: null,
@@ -219,10 +220,18 @@ export default {
       console.log("idleId="+this.params.idleId)
       if (this.judgeLogin()){//已登录
         if (this.modelData.validMark===0 || this.modelData.remain===0 || this.modelData.passMark!=1){//下架商品
-          this.$notify({
+          /*this.$notify({
             title: '提示信息',
             message: '已下架物品无法加至购物车哦！',
             position: 'bottom-right'
+          });*/
+          this.$alert('已下架物品无法加至购物车哦！', '提示信息', {
+            confirmButtonText: '确定',
+            /*callback: action => {
+              this.$message({
+                type: 'info'
+              });
+            }*/
           });
         }else {
           axios.post('http://localhost:8181/cartOperate/addIdleToCart',{
