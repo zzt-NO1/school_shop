@@ -24,7 +24,7 @@
           <div class="nickname" >
             <!--<span class="tips-register">昵称</span>
             <input type="text"  name="" placeholder="请设置昵称" class="user-input">-->
-            <el-input placeholder="请设置昵称" style="width: 320px" v-model="params.nickName">
+            <el-input placeholder="请设置昵称" style="width: 320px" v-model="params.nickname">
               <template  slot="prepend"><span style="color: whitesmoke">昵称</span></template>
             </el-input>
           </div>
@@ -36,7 +36,11 @@
               <template  slot="prepend"><span style="color: whitesmoke">手机</span></template>
             </el-input>
           </div>
-
+          <div class="recode">
+            <el-input placeholder="请输入邮箱" v-model="params.email" style="width: 320px">
+              <template  slot="prepend"><span style="color: whitesmoke">邮箱</span></template>
+            </el-input>
+          </div>
           <div class="code" >
             <!--<span class="tips-register">密码</span>
             <input type="password"  name="" placeholder="请设置密码" class="user-input">-->
@@ -52,6 +56,7 @@
               <template  slot="prepend"><span style="color: whitesmoke">确认密码</span></template>
             </el-input>
           </div>
+
           <div class="recode" >
             <!--<span class="tips-register">学校</span>
             <input type="text"  name="" placeholder="请选择学校" class="user-input">-->
@@ -65,7 +70,7 @@
             </el-select>
           </div>
           <div class="submit" >
-            <el-button  class="submitbutton" style="cursor: pointer;width: 320px;background-color: #2c3e50!important;color: whitesmoke!important;">注册</el-button>
+            <el-button @click="register" class="submitbutton" style="cursor: pointer;width: 320px;background-color: #2c3e50!important;color: whitesmoke!important;">注册</el-button>
           </div>
         </div>
         <div class="picture"></div>
@@ -99,17 +104,46 @@ export default {
     return{
       schoolList:[],
       params:{
-        nickName:'',
+        nickname:'',
         phone:'',
         password:'',
         password2:'',
         schoolId:null,
+        email:''
       }
     }
   },
   methods:{
     login() {
       this.$router.push({path:"/login"})
+    },
+    register(){
+      const _this = this;
+      axios.post('http://localhost:8181/student/register',{
+        params:this.params
+      }).then(function (res) {
+            console.log(res.data);
+            if (res.data != null && res.data.registerResult) {//成功
+              console.log("注册成功");
+              _this.$message({
+                message: '注册成功！请前往登录页面登录！',
+                type: 'success',
+                showClose:true
+              });
+              setTimeout(function(){
+                _this.$router.push({path:"/login"})
+              },500);
+            } else {
+              _this.$message({
+                message: '注册失败！请稍后重试或联系管理员QQ:1351224490',
+                type: 'error',
+                showClose:true
+              });
+              console.log('注册失败');
+              return '';
+            }
+          }
+      );
     },
     getAllSchool(){//获取全部闲置品类型
       const _this = this;

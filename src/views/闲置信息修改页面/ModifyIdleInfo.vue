@@ -216,7 +216,6 @@ export default {
         this.params.idle.isFree = parseInt(this.params.idle.isFree)
         this.params.idle.rentAndSellMark = parseInt(this.params.idle.rentAndSellMark)
         this.params.idle.count = parseInt(this.params.idle.count)
-        console.log("加油")
         axios.post('http://localhost:8181/issueIdle/updateIdleInfo', {
           params: this.params
         }).then(function (res) {

@@ -7,13 +7,19 @@
         <ul class="main" v-if="loginStatus">
             <li class="li1" >
               <a class="main-a" href="#">
-                <span class="user iconfont">{{ studentName }}&#xe78b;</span>
+                <el-dropdown>
+                  <span class="user">{{ studentName }}<i class="el-icon-arrow-down el-icon--right"></i></span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>个人中心</el-dropdown-item>
+                    <el-dropdown-item ><a @click="loadout">退出登录</a></el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
                 <img src="../views/商品展示页面/image/img.jpg" />
               </a>
-              <ul class="drop menu1 ull">
+              <!--<ul class="drop menu1 ull">
                 <li class="li2"><a class="menu1-a" href="#">个人资料</a></li>
                 <li class="li2"><a class="menu1-a" href="#" @click="loadout">退出登录</a></li>
-              </ul>
+              </ul>-->
             </li>
           </ul>
         <ul class="user" v-if="!loginStatus">
@@ -124,7 +130,7 @@ export default {
 @import "../assets/iconfont/iconfont.css";
 .li1 {
   margin: -15px 0 0 0;
-  width: 120px;
+  width: 180px;
 }
 .li1:hover {
   color: #2d8cf0;
