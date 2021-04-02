@@ -45,11 +45,26 @@
       </el-form-item>
       <el-form-item >
         <el-button v-if="modify" type="primary" @click="changeModify">修改信息</el-button>
-        <el-button v-if="modify" type="primary">修改密码</el-button>
+        <el-button v-if="modify" type="primary" @click="dialogFormVisible = true">修改密码</el-button>
       </el-form-item>
       <el-form-item>
         <el-button v-if="!modify" type="primary" @click="updateStudentInfo">保存</el-button>
       </el-form-item>
+
+      <el-dialog title="密码修改" :visible.sync="dialogFormVisible" >
+        <el-form>
+          <el-form-item label="原密码" style="margin-left: 150px">
+            <el-input v-model="oldPassword" type="password" autocomplete="off" style="width: 300px"></el-input>
+          </el-form-item>
+          <el-form-item label="新密码" style="margin-left: 150px">
+            <el-input v-model="newPassword" type="password" autocomplete="off" style="width: 300px"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="changePassword">确 定</el-button>
+        </div>
+      </el-dialog>
     </el-form>
   </div>
 </div>
@@ -57,43 +72,21 @@
 
 <script>
 import axios from "axios";
+import CryptoJs from "crypto-js";
 
 export default {
 name: "PersonalInfo",
   data() {
     return {
+      oldPassword:'',
+      newPassword:'',
+      dialogFormVisible:false,
       t:[],
       modify:true,
       addressList:['1','2','3'],
       params:{
         student:{}
       },
-      /*rules: {
-        nickname: [
-          { required: true, message: '请输入昵称', trigger: 'blur' },
-        ],
-        studentNum: [
-          { required: true, message: '请输入学号', trigger: 'blur' },
-        ],
-        realName: [
-          { required: true, message: '请输入真实姓名', trigger: 'blur' },
-        ],
-        email: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' },
-        ],
-        address: [
-          { required: true, message: '请输入地址', trigger: 'blur' },
-        ],
-        phone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-        ],
-        schoolName: [
-          { required: true, message: '请输入学校名称', trigger: 'blur' },
-        ],
-        sex: [
-          { required: true, message: '请选择性别', trigger: 'blur' },
-        ],
-      }*/
     }
   },
   methods: {
@@ -148,6 +141,80 @@ name: "PersonalInfo",
             }
         );
       }
+    },
+    /**
+     * 加密
+     */
+    encrypt(word) {
+      let key = CryptoJs.enc.Utf8.parse("4E7FF1C1F04F4B36");
+      let srcs = CryptoJs.enc.Utf8.parse(word);
+      let encrypted = CryptoJs.AES.encrypt(srcs, key, {
+        mode: CryptoJs.mode.ECB,
+        padding: CryptoJs.pad.Pkcs7
+      });
+      return encrypted.toString();
+    },
+    /**
+     * 解密
+     */
+    decrypt(word) {
+      let key = CryptoJs.enc.Utf8.parse("4E7FF1C1F04F4B36");
+      let decrypt = CryptoJs.AES.decrypt(word, key, {
+        mode: CryptoJs.mode.ECB,
+        padding: CryptoJs.pad.Pkcs7
+      });
+      return CryptoJs.enc.Utf8.stringify(decrypt).toString();
+    },
+    changePassword(){
+      if (this.encrypt(this.oldPassword)!=this.params.student.password){
+        _this.$message({
+          message:"原密码不正确！",
+          type: 'warn'
+        })
+        return false
+      }
+      if (this.newPassword==null || this.newPassword==''){
+        _this.$message({
+          message:"新密码不能为空！",
+          type: 'warn'
+        })
+        return false
+      }
+      let encryptStr = this.encrypt(this.newPassword);
+      let _this = this
+      console.log("原密码："+this.params.student.password)
+      console.log("原密码#："+this.oldPassword)
+      console.log("新密码："+this.newPassword)
+      axios.post('http://localhost:8181/student/updatePassword', {
+        account: this.params.student.account,
+        password: encryptStr //加密过后的密码
+      }).then(function (res) {
+            console.log(res.data)
+            if (res.data!=null && res.data.changeResult) {//修改成功
+              console.log("修改密码成功");
+              _this.$message({
+                message:"密码修改成功！",
+                type: 'success'
+              })
+              _this.oldPassword = ''
+              _this.newPassword = ''
+              _this.dialogFormVisible = false
+              _this.$alert('修改密码后请重新登录', '提示信息', {
+                confirmButtonText: '确定',
+              });
+              _this.$router.push({path:'/login'})
+            } else {
+              _this.$message({
+                message:"密码修改失败！",
+                type: 'error'
+              })
+              _this.oldPassword = ''
+              _this.newPassword = ''
+              _this.dialogFormVisible = false
+              return false
+            }
+          }
+      );
     },
     changeModify(){
       this.modify = !this.modify

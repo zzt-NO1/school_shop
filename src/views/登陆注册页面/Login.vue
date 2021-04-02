@@ -60,7 +60,6 @@
 
 <script>
 import axios from "axios";
-
 import CryptoJs from 'crypto-js'
 export default {
   data(){

@@ -97,6 +97,7 @@
 
 <script>
 import axios from "axios";
+import CryptoJs from "crypto-js";
 
 export default {
   name: "Register",
@@ -117,8 +118,24 @@ export default {
     login() {
       this.$router.push({path:"/login"})
     },
+    encrypt(word) {
+      let key = CryptoJs.enc.Utf8.parse("4E7FF1C1F04F4B36");
+      let srcs = CryptoJs.enc.Utf8.parse(word);
+      let encrypted = CryptoJs.AES.encrypt(srcs, key, {
+        mode: CryptoJs.mode.ECB,
+        padding: CryptoJs.pad.Pkcs7
+      });
+      return encrypted.toString();
+    },
     register(){
+      if(this.params.password!=this.params.password2){
+        this.$alert('两次密码不一致！', '提示信息', {
+          confirmButtonText: '确定',
+        });
+        return false
+      }
       const _this = this;
+      this.params.password = this.encrypt(this.params.password)
       axios.post('http://localhost:8181/student/register',{
         params:this.params
       }).then(function (res) {
