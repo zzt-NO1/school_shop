@@ -61,6 +61,7 @@
 <script>
 import axios from "axios";
 
+import CryptoJs from 'crypto-js'
 export default {
   data(){
     return{
@@ -73,11 +74,12 @@ export default {
       this.$router.push({path:"/register"})
     },
     login() {
-      console.log(this.userName+' '+this.password)
+      let passwordEncry = this.encrypt(this.password)
+      console.log(this.userName+' '+passwordEncry)
       const _this = this;
       axios.post('http://localhost:8181/student/login', {
         account: this.userName,
-        password: this.password
+        password: passwordEncry
       }).then(function (res) {
             console.log(res.data);
             _this.resultMsg = res.data;
@@ -98,8 +100,40 @@ export default {
             }
           }
       );
+    },
+    /**
+     * 加密
+     */
+    encrypt(word) {
+      let key = CryptoJs.enc.Utf8.parse("4E7FF1C1F04F4B36");
+      let srcs = CryptoJs.enc.Utf8.parse(word);
+      let encrypted = CryptoJs.AES.encrypt(srcs, key, {
+        mode: CryptoJs.mode.ECB,
+        padding: CryptoJs.pad.Pkcs7
+      });
+      return encrypted.toString();
+    },
+
+    /**
+     * 解密
+     */
+    decrypt(word) {
+      let key = CryptoJs.enc.Utf8.parse("4E7FF1C1F04F4B36");
+      let decrypt = CryptoJs.AES.decrypt(word, key, {
+        mode: CryptoJs.mode.ECB,
+        padding: CryptoJs.pad.Pkcs7
+      });
+      return CryptoJs.enc.Utf8.stringify(decrypt).toString();
     }
-  }
+
+  },
+/*  created() {
+    let str1 = this.encrypt("123456")
+    console.log("加密后="+str1)
+    let str2 = this.decrypt(str1)
+    console.log("解密后="+str2)
+    /!*this.encrypt("123456")*!/
+  }*/
 }
 </script>
 
