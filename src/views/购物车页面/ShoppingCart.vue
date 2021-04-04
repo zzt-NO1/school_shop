@@ -47,7 +47,7 @@
         <div class="sumOfPrice" style="width: 25%;height: 30px;margin-top: 20px;float: right;margin-right: 40px">
           <span v-if="typeMark===0" style="color: red;font-size: 23px;">总计:￥{{params.allSum}}元</span>
           <span v-if="typeMark===1" style="color: red;font-size: 23px;">总计:￥{{params.allSum}}元/天</span>
-          <el-button style="margin-left: 20px;" type="primary" plain>立即结算</el-button>
+          <el-button v-if="params.arrID.length>0" style="margin-left: 20px;" type="primary" plain @click="goToConfirmPage">立即下单</el-button>
         </div>
       </div>
     </div>
@@ -76,6 +76,17 @@ name: "ShoppingCart",
     }
   },
   methods: {
+    //跳转订单确认页面
+    goToConfirmPage(){
+      if (null != localStorage.getItem("buyList")||null!=localStorage.getItem("rentList")){
+        this.$router.push({path:'/orderConfirm'})
+      }else {
+        this.$message({
+          message:'请先选择要结算的物品',
+          type:'error'
+        })
+      }
+    },
     delIdleFromCart(idleId){//从购物车删除闲置品
       let _this = this
       console.log('idelId=='+idleId)
@@ -106,11 +117,7 @@ name: "ShoppingCart",
           }
       );
     },
-    /*reloadPage(){
-      setTimeout(function(){
-        location.reload();
-      },3000);
-    },*/
+
     getCartIdle(){
       const _this = this
       axios.post('http://localhost:8181/cartOperate/getAllIdleInCart',{
@@ -190,9 +197,22 @@ name: "ShoppingCart",
       let list = this.idleInfos.filter(item=>{
         return this.params.arrID.includes(item.id )
       })
-
+      let buyList =[]
       for (let i = 0; i < list.length; i++) {
         this.params.allSum = this.params.allSum + list[i].price * list[i].buyCount
+        let idAndCount={id:0,count:0}
+        idAndCount.id = list[i].id
+        idAndCount.count = list[i].buyCount
+        buyList.push(idAndCount)
+      }
+      if (buyList.length>0){
+        if (this.typeMark==0){//出售的
+          localStorage.setItem("typeMark",JSON.stringify(this.typeMark))
+          localStorage.setItem("buyList",JSON.stringify(buyList))
+        }else {//出租的
+          localStorage.setItem("typeMark",this.typeMark)
+          localStorage.setItem("rentList",JSON.stringify(buyList))
+        }
       }
       console.log("sum="+this.params.allSum)
     }
@@ -200,6 +220,8 @@ name: "ShoppingCart",
   },
 
   created() {
+    localStorage.setItem("buyList",null)
+    localStorage.setItem("rentList",null)
     let stu = JSON.parse(sessionStorage.getItem('student'));
     if (null == stu){
       this.loginStatus = false;

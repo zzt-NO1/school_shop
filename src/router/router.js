@@ -13,6 +13,7 @@ import ShoppingCart from "../views/购物车页面/ShoppingCart";
 import IssueRecord from "../views/发布记录页面/IssueRecord";
 import ModifyIdleInfo from "../views/闲置信息修改页面/ModifyIdleInfo";
 import PersonalInfo from "../views/个人资料页面/PersonalInfo";
+import OrderConfirm from "../views/订单详情页面/OrderConfirm";
 
 export default new Router({
     routes:[
@@ -81,6 +82,13 @@ export default new Router({
         {
             path: '/personalInfo',
             component: PersonalInfo,
+            meta: {
+                keepAlive: true
+            }
+        },
+        {
+            path: '/orderConfirm',
+            component: OrderConfirm,
             meta: {
                 keepAlive: true
             }
