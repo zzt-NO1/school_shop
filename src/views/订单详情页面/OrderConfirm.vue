@@ -85,7 +85,7 @@
                 <label style="cursor: pointer">{{scope.row.title}}</label>
               </template>
             </el-table-column>
-            <el-table-column prop="price" width="240">
+            <el-table-column prop="price" width="280">
               <template slot-scope="scope">
                 <span v-if="scope.row.rentAndSellMark==0">出售价格：￥{{scope.row.price}}元</span>
                 <span v-if="scope.row.rentAndSellMark==1">出租价格：￥{{scope.row.price}}元/天</span>
