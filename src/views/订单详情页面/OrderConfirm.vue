@@ -15,7 +15,7 @@
             <span style="margin-left: 20px;">联系方式：<span style="color: #409EFF;font-size: 16px">{{phone}}</span></span>
           </el-form-item>
           <el-form-item label="" style="text-align: left;margin-left: 25px" size="small">
-            <span >收件地址：<span style="color: #409EFF;font-size: 16px">{{address}}</span></span>
+            <span >快递收件地址：<span style="color: #409EFF;font-size: 16px">{{address}}</span></span>
           </el-form-item>
           <el-dialog title="收件信息修改" :visible.sync="dialogFormVisible" >
               <el-form>
@@ -25,7 +25,7 @@
                 <el-form-item label="手机号码" style="margin-left: 150px">
                   <el-input v-model="phone" type="text" autocomplete="off" style="width: 300px;float: left;margin-left: 12px"></el-input>
                 </el-form-item>
-                <el-form-item label="收件地址" style="margin-left: 150px">
+                <el-form-item label="快递收件地址" style="margin-left: 150px">
                   <el-input v-model="address" type="text" autocomplete="off" style="width: 300px;float: left;margin-left: 12px"></el-input>
                 </el-form-item>
                 <span style="font-size: 14px;color: #c4c4c4">tips: 请按省/区(直辖市)-市-县-镇(地区)-街道等顺序填写详细地址</span>
@@ -39,27 +39,13 @@
       </div>
       <div class="PayInfo">
         <el-divider></el-divider>
-        <p style="text-align: left"><span style="color: #123D64;font-size: 18px"><B>取件方式</B></span></p>
-        <el-form>
-          <el-form-item>
-            <p>
-              <el-radio-group v-model="transWay" style="float:left;margin-left: 25px;">
-                <el-radio :label="1">校内线下</el-radio>
-                <el-radio :label="2">快递物流</el-radio>
-              </el-radio-group>
-            </p>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div class="PayInfo">
-        <el-divider></el-divider>
         <p style="text-align: left"><span style="color: #123D64;font-size: 18px"><B>支付方式</B></span></p>
         <el-form>
           <el-form-item>
             <p>
               <el-radio-group v-model="payWay" style="float:left;margin-left: 25px;">
-                <el-radio :label="0">校内线下支付</el-radio>
-                <el-radio :label="1">线上支付</el-radio>
+               <!-- <el-radio :label="0" :disabled="params.transWay===2">校内线下支付</el-radio>-->
+                <el-radio :label="1" >线上支付</el-radio>
               </el-radio-group>
             </p>
           </el-form-item>
@@ -80,16 +66,28 @@
                 </el-image>
               </template>
             </el-table-column>
-            <el-table-column prop="title">
+            <el-table-column prop="title" width="160">
               <template slot-scope="scope">
-                <label style="cursor: pointer">{{scope.row.title}}</label>
+                <label style="cursor: pointer"><b>{{scope.row.title}}</b></label>
               </template>
             </el-table-column>
             <el-table-column prop="price" width="280">
               <template slot-scope="scope">
-                <span v-if="scope.row.rentAndSellMark==0">出售价格：￥{{scope.row.price}}元</span>
-                <span v-if="scope.row.rentAndSellMark==1">出租价格：￥{{scope.row.price}}元/天</span>
-                <span style="margin-left: 16px"><span style="font-size: 18px;color:#409EFF;">×{{scope.row.buyCount}}</span>(数量)</span>
+                <span v-if="scope.row.rentAndSellMark==0">出售价格：<span style="color: #FF4F2C">￥<span style="color: #FF4F2C;font-size: 18px">{{scope.row.price}}</span>元</span></span>
+                <span v-if="scope.row.rentAndSellMark==1">出租价格：<span style="color: #FF4F2C">￥<span style="color: #FF4F2C;font-size: 18px">{{scope.row.price}}</span>元/天</span></span>
+                <span style="margin-left: 16px"><span style="font-size: 18px;color:#FF4F2C;">×{{scope.row.buyCount}}</span>(数量)</span>
+                <p style="text-align: left"><span style="float: left;margin-left: 1px;margin-bottom: 10px;margin-top: -10px;color: #669999">
+                  <i class="el-icon-location-information"></i>{{scope.row.address}}</span>
+                </p>
+                <el-radio-group v-model="scope.row.selectTransWay" style="float:left;">
+                  <el-radio :label="1" :disabled="scope.row.transWay===2">校内自取</el-radio>
+                  <el-radio :label="2" :disabled="scope.row.transWay===1">快递物流</el-radio>
+                </el-radio-group><br/>
+              </template>
+            </el-table-column>
+            <el-table-column prop="title" label="备注信息">
+              <template slot-scope="scope">
+                <textarea v-model="scope.row.remarks" placeholder="备注信息..."></textarea>
               </template>
             </el-table-column>
           </el-table>
@@ -98,9 +96,8 @@
             <span v-if="rentAndSellMark===1" style="float: left;margin-left: 8px"> 共租用<span style="color: #409EFF;font-size: 20px"> {{dayCount}} </span>天</span>
             <span style="float: right">订单总额:<span style="color: #FF4F2C">￥<span style="font-size: 24px">{{sum}}</span>元</span></span>
           </el-form-item>
-
           <el-form-item style="margin-bottom:60px">
-            <el-button style="float: right" type="primary">提交订单</el-button>
+            <el-button style="float: right" type="primary" @click.once="submitOrder">提交订单</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -116,14 +113,11 @@ name: "OrderDetail",
   data(){
     return{
       dialogFormVisible:false,
-      buyerAccount:'',//
       ownerAccount:'',//
       buyerName:'zzt',//
       phone:'18897881725',//
       address:'钦州市长安街',//
-      payWay:0,//默认0 0校内线下支付，1线上支付
-      transWay:1,//1校内线下交易，2快递
-      rentAndSellMark: 0,
+
       idles:[{}],//
       student:{},//
       addressList:[
@@ -131,8 +125,14 @@ name: "OrderDetail",
           '南山街'
       ],
       dayCount:1,
+      buyerAccount:'',//账号主人
+      buyerMsg:'',//收件人信息：姓名、联系方式、地址
+      payWay:1,//默认1 0校内线下支付，1线上支付
+      transWay:1,//1校内线下交易，2快递
+      rentAndSellMark: 0,
       params:{
-        idAndCountList:[],
+        idAndCountList:[],//闲置品id以及购买数量
+        orderInfoList:[]
       },
       oldName:'',
       oldPhone:'',
@@ -182,12 +182,55 @@ name: "OrderDetail",
     },
     //向后端提交订单
     submitOrder(){
-      //TODO
+      if (this.buyerName==''||this.buyerName==null||this.phone==''||this.phone==null||this.address==''||this.address==null){
+        this.$message({
+          message:'请先完善收件人信息',
+          type:'error'
+        })
+      }else {
+        this.buyerMsg = this.buyerName+' '+this.phone+' '+this.address
+        for (let i = 0; i < this.idles.length; i++) {
+          let orderInfo = {idle:{},buyerAccount:'',receivingMsg:'',dayCount:1,rentAndSellMark:0,}
+          orderInfo.idle = this.idles[i]
+          orderInfo.buyerAccount = this.buyerAccount
+          orderInfo.receivingMsg = this.buyerMsg
+          orderInfo.dayCount = this.dayCount
+          orderInfo.rentAndSellMark = this.rentAndSellMark
+          this.params.orderInfoList.push(orderInfo)
+        }
+        const _this = this
+        axios.post('http://localhost:8181/orderOperate/createNewOrder',{
+          params: this.params
+        }).then(function (res) {
+              console.log(res.data);
+              if (res.data != null && res.data.createResult) {//成功
+                _this.$message({
+                  message:'订单提交成功！',
+                  type:'success'
+                })
+                console.log('订单提交成功');
+                let orderIdList = res.data.orderIdList
+                console.log("orderIdList="+JSON.stringify(orderIdList))
+                _this.params.orderInfoList=[]
+              } else {
+                _this.$message({
+                  message:'订单提交失败！请稍后重试！',
+                  type:'error'
+                })
+                console.log('订单提交失败')
+                _this.$router.go(0)
+                return '';
+              }
+            }
+        );
+      }
+
     }
   },
   created() {
     if (this.judgeLogin()){//登录成功的
       this.student = JSON.parse(sessionStorage.getItem("student"));
+      this.buyerAccount = this.student.account
       this.buyerName = this.student.realName
       this.phone = this.student.phone
       this.address = this.student.addressList[0]
@@ -211,10 +254,9 @@ name: "OrderDetail",
         let s=0
         for (let i = 0; i < this.idles.length; i++) {
           s+=this.dayCount*this.idles[i].price*this.idles[i].buyCount
-
-          console.log("s+="+this.dayCount+","+this.idles[i].price+","+this.idles[i].buyCount)
+          //console.log("s+="+this.dayCount+","+this.idles[i].price+","+this.idles[i].buyCount)
         }
-        console.log("s="+s)
+        //console.log("s="+s)
         return s
       }else {
         let s=0
@@ -230,7 +272,7 @@ name: "OrderDetail",
 
 <style scoped>
 .OrderDetail-body{
-  width:50%;
+  width:70%;
   height: auto;
   margin-top: 30px;
   margin-left: auto;

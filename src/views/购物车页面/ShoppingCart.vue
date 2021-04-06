@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column prop="count" label="购买数量" width="210">
           <template slot-scope="scope">
-            <el-input-number @change="getSum" v-model="scope.row.buyCount"  :min="1" :max="scope.row.count" size="small"></el-input-number>
+            <el-input-number @change="getSum" v-model="scope.row.buyCount"  :min="1" :max="scope.row.remain" size="small"></el-input-number>
           </template>
         </el-table-column>
         <el-table-column prop="count" label="操作">
