@@ -211,7 +211,7 @@ name: "OrderDetail",
                 console.log('订单提交成功');
                 let orderIdList = res.data.orderIdList
                 console.log("orderIdList="+JSON.stringify(orderIdList))
-                _this.params.orderInfoList=[]
+                _this.$router.push({path:'/orderPay',query:{orderIdList:JSON.stringify(orderIdList)}})
               } else {
                 _this.$message({
                   message:'订单提交失败！请稍后重试！',
