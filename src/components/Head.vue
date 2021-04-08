@@ -96,7 +96,7 @@ export default {
           case 'buyRecord': this.$router.push({path:"/login"}); break;
           case 'messageCenter': this.$router.push({path:"/login"}); break;
           case 'personalInfo': this.$router.push({path:"/personalInfo"}); break;
-          case 'orderCenter': this.$router.push({path:"/login"}); break;
+          case 'orderCenter': this.$router.push({path:"/orderCenter"}); break;
           default: this.$router.push({path:"/login"});
         }
       }else {

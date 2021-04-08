@@ -14,7 +14,8 @@ import IssueRecord from "../views/发布记录页面/IssueRecord";
 import ModifyIdleInfo from "../views/闲置信息修改页面/ModifyIdleInfo";
 import PersonalInfo from "../views/个人资料页面/PersonalInfo";
 import OrderConfirm from "../views/订单详情页面/OrderConfirm";
-import OrderPay from "../views/订单详情页面/OrderPay"
+import OrderPay from "../views/订单详情页面/OrderPay";
+import OrderCenter from "../views/订单中心页面/OrderCenter"
 
 export default new Router({
     routes:[
@@ -97,6 +98,13 @@ export default new Router({
         {
             path: '/orderPay',
             component: OrderPay,
+            meta: {
+                keepAlive: true
+            }
+        },
+        {
+            path: '/orderCenter',
+            component: OrderCenter,
             meta: {
                 keepAlive: true
             }

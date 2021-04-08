@@ -89,7 +89,6 @@ name: "ShoppingCart",
     },
     delIdleFromCart(idleId){//从购物车删除闲置品
       let _this = this
-      console.log('idelId=='+idleId)
       this.params.delIdleID = idleId
       axios.post('http://localhost:8181/cartOperate/delIdleFromCart',{
         params: this.params
