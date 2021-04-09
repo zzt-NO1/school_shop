@@ -17,7 +17,7 @@
               </div>
               <div style="width: 55%;height: 100%;float: left;margin-left: 20px">
                 <p style="text-align: left">
-                  <span style="font-size: 18px"><B>{{item.idle.title}}</B></span>
+                  <a @click="goToIdleDetails(item.idle.id)" style="cursor: pointer"><span style="font-size: 18px"><B>{{item.idle.title}}</B></span></a>
                 </p>
                 <p style="text-align: left;color: #999999;font-size: 14px">
                   <span style="margin-right: 20px">单价: <span style="color: #FC8770">￥<span>{{item.idle.price}}元</span></span></span>
@@ -72,7 +72,7 @@
               </div>
               <div style="width: 55%;height: 100%;float: left;margin-left: 20px">
                 <p style="text-align: left">
-                  <span style="font-size: 18px"><B>{{item.idle.title}}</B></span>
+                  <a @click="goToIdleDetails(item.idle.id)" style="cursor: pointer"><span style="font-size: 18px"><B>{{item.idle.title}}</B></span></a>
                 </p>
                 <p style="text-align: left;color: #999999;font-size: 14px">
                   <span style="margin-right: 20px">单价: <span style="color: #FC8770">￥<span>{{item.idle.price}}元/天</span></span></span>
@@ -132,7 +132,7 @@
               </div>
               <div style="width: 55%;height: 100%;float: left;margin-left: 20px">
                 <p style="text-align: left">
-                  <span style="font-size: 18px"><B>{{item.idle.title}}</B></span>
+                  <a @click="goToIdleDetails(item.idle.id)" style="cursor: pointer"><span style="font-size: 18px"><B>{{item.idle.title}}</B></span></a>
                 </p>
                 <p style="text-align: left;color: #999999;font-size: 14px">
                   <span style="margin-right: 20px">单价: <span style="color: #FC8770">￥<span>{{item.idle.price}}元</span></span></span>
@@ -186,7 +186,7 @@
               </div>
               <div style="width: 55%;height: 100%;float: left;margin-left: 20px">
                 <p style="text-align: left">
-                  <span style="font-size: 18px"><B>{{item.idle.title}}</B></span>
+                  <a @click="goToIdleDetails(item.idle.id)" style="cursor: pointer"><span style="font-size: 18px"><B>{{item.idle.title}}</B></span></a>
                 </p>
                 <p style="text-align: left;color: #999999;font-size: 14px">
                   <span style="margin-right: 20px">单价: <span style="color: #FC8770">￥<span>{{item.idle.price}}元/天</span></span></span>
@@ -262,6 +262,7 @@ name: "OrderCenter",
       student:{},
       params:{
         studentAccount:'',
+        idleId:'',
       }
     }
   },
@@ -308,6 +309,10 @@ name: "OrderCenter",
         return true
       }
     },
+    //进入详情页
+    goToIdleDetails(idleId){
+      this.$router.push({path:'/idleDetails',query:{idleId: idleId}});
+    }
   },
   created() {
     if (!this.judgeLogin()){//没登录
