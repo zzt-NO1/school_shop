@@ -7,6 +7,8 @@
         <el-tab-pane name="second">
             <template slot="label">
               我出售的
+              <el-badge :value="forSellListNews.length" style="margin-top: 10px" v-if="forSellListNews!=null && forSellListNews.length!=0">
+              </el-badge>
             </template>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forSellList" :key="index">
             <div style="height: 110px;margin: auto" >
@@ -57,7 +59,12 @@
           </el-card>
         </el-tab-pane>
 <!------------------------------------------------------------------------------------------------------------------------->
-        <el-tab-pane label="我出租的" name="third">
+        <el-tab-pane  name="third">
+          <template slot="label">
+            我出租的
+            <el-badge :value="forRentListNews.length" style="margin-top: 10px" v-if="forRentListNews!=null && forRentListNews.length!=0">
+            </el-badge>
+          </template>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forRentList" :key="index">
             <div style="height: 110px;margin: auto" >
               <div style="width: 13%;height: 100%;float: left">
@@ -112,7 +119,12 @@
           </el-card>
         </el-tab-pane>
 <!------------------------------------------------------------------------------------------------------------------------->
-        <el-tab-pane label="我购买的" name="fourth">
+        <el-tab-pane  name="fourth">
+          <template slot="label">
+            我购买的
+            <el-badge :value="buyListNews.length" style="margin-top: 10px" v-if="buyListNews!=null && buyListNews.length!=0">
+            </el-badge>
+          </template>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forSellList" :key="index">
             <div style="height: 110px;margin: auto" >
               <div style="width: 13%;height: 100%;float: left">
@@ -161,7 +173,12 @@
           </el-card>
         </el-tab-pane>
 <!------------------------------------------------------------------------------------------------------------------------->
-        <el-tab-pane label="我租用的" name="fifth">
+        <el-tab-pane name="fifth">
+          <template slot="label">
+            我租用的
+            <el-badge :value="rentListNews.length" style="margin-top: 10px" v-if="rentListNews!=null && rentListNews.length!=0">
+            </el-badge>
+          </template>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forRentList" :key="index">
             <div style="height: 110px;margin: auto" >
               <div style="width: 13%;height: 100%;float: left">
@@ -237,6 +254,11 @@ name: "OrderCenter",
       forRentList:[],
       forSellList:[],
       allOrderList:[],
+      rentListNews:[],
+      buyListNews:[],
+      newsCount:0,
+      forRentListNews:[],
+      forSellListNews:[],
       student:{},
       params:{
         studentAccount:'',
@@ -255,10 +277,25 @@ name: "OrderCenter",
            _this.forRentList = res.data.forRentOrderList
            _this.forSellList = res.data.forSellOrderList
            _this.allOrderList = res.data.allOrderList
-           console.log("??"+JSON.stringify(res.data))
+           //console.log("??"+JSON.stringify(res.data))
          } else{
            _this.$message.error("暂未查询到数据！")
          }
+      })
+    },
+    //获取最新通知
+    getNewNotice(){
+      let _this = this
+      axios.post('http://localhost:8181/notice/getNewNotice',{
+        params: this.params
+      }).then(function (res) {
+        if (null != res.data && res.data.noticeResult){
+          _this.rentListNews = res.data.type4List
+          _this.buyListNews = res.data.type3List
+          _this.forRentListNews = res.data.type2List
+          _this.forSellListNews = res.data.type1List
+          _this.newsCount = res.data.newsCount
+        }
       })
     },
     //判断是否已登录
@@ -280,6 +317,7 @@ name: "OrderCenter",
     }
     this.params.studentAccount = this.student.account
     this.getOrderRecordList()
+    this.getNewNotice()
   }
 }
 </script>

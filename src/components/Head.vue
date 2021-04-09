@@ -47,7 +47,12 @@
           <li ><label @click="toPage('messageCenter')"><span class="iconfont">&#xe70a; 消息中心</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li ><label @click="toPage('orderCenter')"><span class="iconfont">&#xe645; 订单中心</span></label></li>
+          <li >
+            <label @click="toPage('orderCenter')">
+              <span class="iconfont">&#xe645; 订单中心</span>
+              <el-badge :value="newsCount" v-if="newsCount!=0"></el-badge>
+            </label>
+          </li>
         </ul>
       </div>
     </div>
@@ -56,6 +61,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Head",
   data(){
@@ -64,6 +70,14 @@ export default {
       loginStatus: false,
       finalType:'all',
       delayTime:300,
+      rentListNews:[],
+      buyListNews:[],
+      newsCount:0,
+      forRentListNews:[],
+      forSellListNews:[],
+      params: {
+        studentAccount:'',
+      }
     }
   },
   created() {
@@ -73,6 +87,8 @@ export default {
     }else {
       this.loginStatus = true;
       this.studentName = stu.nickname;
+      this.params.studentAccount = stu.account
+      this.getNewNotice()
       return true;
     }
   },
@@ -104,7 +120,21 @@ export default {
         this.$router.push({path:"/login"});
       }
     },
-
+    //获取最新通知
+    getNewNotice(){
+      let _this = this
+      axios.post('http://localhost:8181/notice/getNewNotice',{
+        params: this.params
+      }).then(function (res) {
+        if (null != res.data && res.data.noticeResult){
+          _this.rentListNews = res.data.type4List
+          _this.buyListNews = res.data.type3List
+          _this.forRentListNews = res.data.type2List
+          _this.forSellListNews = res.data.type1List
+          _this.newsCount = res.data.newsCount
+        }
+      })
+    },
     //判断是否已登录
     judgeLogin(){
       let student = JSON.parse(sessionStorage.getItem('student'));
@@ -115,10 +145,10 @@ export default {
         return true;
       }
     },
-  loadout(){
-      sessionStorage.clear();
-      this.$router.push({path:"/login"});
-  }
+    loadout(){
+        sessionStorage.clear();
+        this.$router.push({path:"/login"});
+    }
   },
   mounted() {
   },
