@@ -32,12 +32,20 @@
                   <span v-if="item.statusCode===1">对方已付款，等待发货</span>
                   <span v-if="item.statusCode===2">等待买家确认收货</span>
                   <span v-if="item.statusCode===5">等待系统退款给买家</span>
-                  <span v-if="item.statusCode===6">订单结束</span>
+                  <span v-if="item.statusCode===6||item.statusCode===8">订单结束</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===1">
                 <el-button type="primary" plain style="margin:auto">确认发货</el-button>
-                <el-button type="danger" plain style="margin: 10px auto">拒绝订单</el-button>
+                <template>
+                  <el-popconfirm
+                      title="亲，真的要拒绝TA吗？"
+                      @confirm="refuseOrder(item.orderId)"
+                  >
+                    <el-button type="danger" plain style="margin: 10px auto" slot="reference">拒绝订单</el-button>
+                  </el-popconfirm>
+                </template>
+                <!--<el-button type="danger" plain style="margin: 10px auto" slot="reference">拒绝订单</el-button>-->
               </div>
             </div>
             <el-collapse>
@@ -154,6 +162,7 @@
                   <span v-if="item.statusCode===2">等待确认收货</span>
                   <span v-if="item.statusCode===5">等待系统退款</span>
                   <span v-if="item.statusCode===6">订单结束</span>
+                  <span v-if="item.statusCode===8">退款成功，订单结束</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===2">
@@ -275,11 +284,32 @@ name: "OrderCenter",
       params:{
         studentAccount:'',
         idleId:'',
-        noticeIdList:[]
+        noticeIdList:[],
+        orderId:[]
       }
     }
   },
   methods:{
+    //拒绝订单
+    refuseOrder(orderId){
+      this.$message.warning('系统正在给对方退款，请耐心等候结果')
+      this.params.orderId = orderId
+      console.log("hhh="+orderId)
+      let _this = this
+      axios.post('http://localhost:8181/orderOperate/refuseOrder',{
+        params: this.params
+      }).then(function (res) {
+        if (null != res.data && res.data.refuseResult){
+          _this.rentList = res.data.rentOrderList
+          _this.buyList = res.data.buyOrderList
+          _this.forRentList = res.data.forRentOrderList
+          _this.forSellList = res.data.forSellOrderList
+          _this.allOrderList = res.data.allOrderList
+          this.$message.success('已成功拒绝订单')
+        }
+        _this.getNewNotice()
+      })
+    },
     getOrderRecordList(){
       let _this = this
       axios.post('http://localhost:8181/orderOperate/getOrderListByStudentAccount',{
@@ -332,7 +362,7 @@ name: "OrderCenter",
         params: this.params
       }).then(function (res) {
         if(res!=null){
-          console.log("删除最新通知")
+          console.log("")
         }
         _this.params.noticeIdList=[]
       })
@@ -363,12 +393,12 @@ name: "OrderCenter",
         this.forRentListNews=[]
       }else if (this.activeName=='fourth'){
         for (let i = 0; i < this.buyListNews.length; i++) {
-          this.params.noticeIdList.push(this.forSellListNews[i].id)
+          this.params.noticeIdList.push(this.buyListNews[i].id)
         }
         this.buyListNews=[]
       }else if (this.activeName=='fifth'){
         for (let i = 0; i < this.rentListNews.length; i++) {
-          this.params.noticeIdList.push(this.forSellListNews[i].id)
+          this.params.noticeIdList.push(this.rentListNews[i].id)
         }
         this.rentListNews=[]
       }
