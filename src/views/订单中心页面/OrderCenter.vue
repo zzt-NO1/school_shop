@@ -10,6 +10,9 @@
               <el-badge :value="forSellListNews.length" style="margin-top: 10px" v-if="forSellListNews!=null && forSellListNews.length!=0">
               </el-badge>
             </template>
+          <div v-if="forSellList.length===0||forSellList===null">
+            <h3>暂无数据</h3>
+          </div>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forSellList" :key="index">
             <div style="height: 110px;margin: auto" >
               <div style="width: 13%;height: 100%;float: left">
@@ -65,6 +68,9 @@
             <el-badge :value="forRentListNews.length" style="margin-top: 10px" v-if="forRentListNews!=null && forRentListNews.length!=0">
             </el-badge>
           </template>
+          <div v-if="forRentList.length===0||forRentList===null">
+            <h3>暂无数据</h3>
+          </div>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forRentList" :key="index">
             <div style="height: 110px;margin: auto" >
               <div style="width: 13%;height: 100%;float: left">
@@ -125,7 +131,10 @@
             <el-badge :value="buyListNews.length" style="margin-top: 10px" v-if="buyListNews!=null && buyListNews.length!=0">
             </el-badge>
           </template>
-          <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forSellList" :key="index">
+          <div v-if="buyList.length===0||buyList===null">
+            <h3>暂无数据</h3>
+          </div>
+          <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in buyList" :key="index">
             <div style="height: 110px;margin: auto" >
               <div style="width: 13%;height: 100%;float: left">
                 <el-image :src="item.idle.pictures" :preview-src-list="[item.idle.pictures]" :key="item.orderId" style="width: 100%;height: 100%"></el-image>
@@ -179,7 +188,10 @@
             <el-badge :value="rentListNews.length" style="margin-top: 10px" v-if="rentListNews!=null && rentListNews.length!=0">
             </el-badge>
           </template>
-          <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forRentList" :key="index">
+          <div v-if="rentList.length===0||rentList===null">
+            <h3>暂无数据</h3>
+          </div>
+          <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in rentList" :key="index">
             <div style="height: 110px;margin: auto" >
               <div style="width: 13%;height: 100%;float: left">
                 <el-image :src="item.idle.pictures" :preview-src-list="[item.idle.pictures]" :key="item.orderId" style="width: 100%;height: 100%"></el-image>
@@ -263,6 +275,7 @@ name: "OrderCenter",
       params:{
         studentAccount:'',
         idleId:'',
+        noticeIdList:[]
       }
     }
   },
@@ -312,6 +325,17 @@ name: "OrderCenter",
     //进入详情页
     goToIdleDetails(idleId){
       this.$router.push({path:'/idleDetails',query:{idleId: idleId}});
+    },
+    delNewNotice(){
+      let _this = this
+      axios.post('http://localhost:8181/notice/delNewNotice',{
+        params: this.params
+      }).then(function (res) {
+        if(res!=null){
+          console.log("删除最新通知")
+        }
+        _this.params.noticeIdList=[]
+      })
     }
   },
   created() {
@@ -323,6 +347,33 @@ name: "OrderCenter",
     this.params.studentAccount = this.student.account
     this.getOrderRecordList()
     this.getNewNotice()
+  },
+  watch:{
+    activeName:function (){
+      console.log("activeName=="+this.activeName)
+      if (this.activeName=='second'){
+        for (let i = 0; i < this.forSellListNews.length; i++) {
+          this.params.noticeIdList.push(this.forSellListNews[i].id)
+        }
+        this.forSellListNews=[]
+      }else if (this.activeName=='third'){
+        for (let i = 0; i < this.forRentListNews.length; i++) {
+          this.params.noticeIdList.push(this.forRentListNews[i].id)
+        }
+        this.forRentListNews=[]
+      }else if (this.activeName=='fourth'){
+        for (let i = 0; i < this.buyListNews.length; i++) {
+          this.params.noticeIdList.push(this.forSellListNews[i].id)
+        }
+        this.buyListNews=[]
+      }else if (this.activeName=='fifth'){
+        for (let i = 0; i < this.rentListNews.length; i++) {
+          this.params.noticeIdList.push(this.forSellListNews[i].id)
+        }
+        this.rentListNews=[]
+      }
+      this.delNewNotice()
+    }
   }
 }
 </script>

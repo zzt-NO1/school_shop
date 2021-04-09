@@ -82,6 +82,7 @@ name: "OrderPay",
     },
     //确认支付
     paySubmit(){
+      this.params.orderIdList=[]
       for (let i = 0; i < this.orderInfoList.length; i++) {
         this.params.orderIdList.push(this.orderInfoList[i].orderId)
       }
@@ -165,6 +166,7 @@ name: "OrderPay",
           console.log(res.data);
           if (res.data != null && res.data.searchResult) {//成功
             _this.orderInfoList = res.data.orderRecordList;
+            console.log("orderRecordList="+_this.orderInfoList.length)
           } else {
             console.log('查询失败');
             _this.$message({

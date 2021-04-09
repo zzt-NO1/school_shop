@@ -93,12 +93,12 @@
           </div>
         </div>
         <div>
-          <div class="owner">某某人:某某联系方式</div>
+          <!--<div class="owner">某某人:某某联系方式</div>-->
           <div class="btn-div1 ">
             <input type="button" class="p-btn" value="加入购物车" @click="addIdleToCart">
           </div>
           <div class="btn-div2 ">
-            <input type="button" class="p-btn" value="立即下单">
+            <input type="button" class="p-btn" value="立即下单" @click="goToConfirmPage">
           </div>
         </div>
       </div>
@@ -174,6 +174,36 @@ export default {
 
   },
   methods: {
+    //跳转订单确认页面
+    goToConfirmPage(){
+      if (this.modelData.validMark===0 || this.modelData.remain===0 || this.modelData.passMark!=1){//下架商品
+        this.$alert('已下架物品无法加至购物车哦！', '提示信息', {
+          confirmButtonText: '确定',
+        });
+      }else {
+        let buyList=[]
+        let idAndCount={id:0,count:0}
+        if (this.modelData.rentAndSellMark==0){//出售的
+          idAndCount.id = this.modelData.id
+          idAndCount.count = 1
+          buyList.push(idAndCount)
+          localStorage.setItem("typeMark",JSON.stringify(this.modelData.rentAndSellMark))
+          localStorage.setItem("buyList",JSON.stringify(buyList))
+        }else {//出租的
+          idAndCount.id = this.modelData.id
+          idAndCount.count = 1
+          buyList.push(idAndCount)
+          localStorage.setItem("typeMark",this.modelData.rentAndSellMark)
+          localStorage.setItem("rentList",JSON.stringify(buyList))
+        }
+        console.log("idAndCount"+JSON.stringify(idAndCount))
+        if (null != localStorage.getItem("buyList")||null!=localStorage.getItem("rentList")){
+          this.$router.push({path:'/orderConfirm'})
+        }
+      }
+
+    },
+
     btnClick(index){
      /* let btn = document.getElementsByClassName('face-button')*/
       console.log("index="+index)
@@ -220,18 +250,8 @@ export default {
       console.log("idleId="+this.params.idleId)
       if (this.judgeLogin()){//已登录
         if (this.modelData.validMark===0 || this.modelData.remain===0 || this.modelData.passMark!=1){//下架商品
-          /*this.$notify({
-            title: '提示信息',
-            message: '已下架物品无法加至购物车哦！',
-            position: 'bottom-right'
-          });*/
           this.$alert('已下架物品无法加至购物车哦！', '提示信息', {
             confirmButtonText: '确定',
-            /*callback: action => {
-              this.$message({
-                type: 'info'
-              });
-            }*/
           });
         }else {
           axios.post('http://localhost:8181/cartOperate/addIdleToCart',{

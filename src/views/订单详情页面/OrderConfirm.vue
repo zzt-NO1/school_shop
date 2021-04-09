@@ -238,10 +238,12 @@ name: "OrderDetail",
       this.rentAndSellMark = typeMark
       if (typeMark == 0){//出售
         this.params.idAndCountList = JSON.parse(localStorage.getItem("buyList"));
+        localStorage.setItem("buyList",null)
       }else {//出租
         this.params.idAndCountList = JSON.parse(localStorage.getItem("rentList"));
+        localStorage.setItem("rentList",null)
       }
-      console.log("list="+this.params.idAndCountList)
+      console.log("list="+JSON.stringify(this.params.idAndCountList))
       this.getIdleList()
     }else {
       alert("尚未登录！即将跳转登录页面...");

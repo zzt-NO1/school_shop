@@ -148,9 +148,13 @@ export default {
     loadout(){
         sessionStorage.clear();
         this.$router.push({path:"/login"});
-    }
+    },
   },
-  mounted() {
+  mounted(){
+    this.getNewNotice();
+    this.timer = setInterval(() => {
+      setTimeout(this.getNewNotice, 0)
+    }, 1000*5)
   },
 }
 </script>
