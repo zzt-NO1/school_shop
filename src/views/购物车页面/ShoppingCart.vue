@@ -61,6 +61,7 @@ export default {
 name: "ShoppingCart",
   data() {
     return {
+      student:{},
       typeMark:0,
      /* IdleID:0,*/
       finalColor:true,
@@ -78,7 +79,12 @@ name: "ShoppingCart",
   methods: {
     //跳转订单确认页面
     goToConfirmPage(){
-      if (null != localStorage.getItem("buyList")||null!=localStorage.getItem("rentList")){
+      if (this.student.infoPerfectionMark != 1){
+        this.$alert('已下架物品无法加至购物车哦！', '温馨提示', {
+          confirmButtonText: '确定',
+        });
+        this.$router.push({path:'/personalInfo'})
+      }else if (null != localStorage.getItem("buyList")||null!=localStorage.getItem("rentList")){
         this.$router.push({path:'/orderConfirm'})
       }else {
         this.$message({
@@ -227,6 +233,7 @@ name: "ShoppingCart",
       alert("尚未登录！即将跳转登录页面...");
       this.$router.push({path:"/login"});
     }else {
+      this.student = stu
       this.params.studentAccount = stu.account;
       this.getCartIdle();
     }

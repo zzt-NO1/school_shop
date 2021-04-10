@@ -90,7 +90,12 @@ export default {
                 message:"登录成功！",
                 type: 'success'
               })
-              _this.$router.push('/goods');
+              if (_this.resultMsg.student.infoPerfectionMark!=1){
+                _this.$message.warning('请先完善您的个人信息！')
+                _this.$router.push('/personalInfo');
+              }else {
+                _this.$router.push('/goods');
+              }
               //console.log(JSON.parse(sessionStorage.getItem("user")))
             } else {
               alert("您的账号或密码不正确！请重试！");

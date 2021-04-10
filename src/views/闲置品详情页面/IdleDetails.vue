@@ -134,6 +134,7 @@ export default {
       slip:'',
       active: true,
       btnValue:0,
+      student:[],
       pic: require('../闲置品详情页面/img/5.jpg'),
       picBase64List:[
         {
@@ -176,32 +177,41 @@ export default {
   methods: {
     //跳转订单确认页面
     goToConfirmPage(){
-      if (this.modelData.validMark===0 || this.modelData.remain===0 || this.modelData.passMark!=1){//下架商品
-        this.$alert('已下架物品无法加至购物车哦！', '提示信息', {
-          confirmButtonText: '确定',
-        });
+      if (!this.judgeLogin()){//t没登录
+        window.alert("尚未登录，请前往登录页面进行登录！")
+        this.$router.push({path:"/login"})
       }else {
-        let buyList=[]
-        let idAndCount={id:0,count:0}
-        if (this.modelData.rentAndSellMark==0){//出售的
-          idAndCount.id = this.modelData.id
-          idAndCount.count = 1
-          buyList.push(idAndCount)
-          localStorage.setItem("typeMark",JSON.stringify(this.modelData.rentAndSellMark))
-          localStorage.setItem("buyList",JSON.stringify(buyList))
-        }else {//出租的
-          idAndCount.id = this.modelData.id
-          idAndCount.count = 1
-          buyList.push(idAndCount)
-          localStorage.setItem("typeMark",this.modelData.rentAndSellMark)
-          localStorage.setItem("rentList",JSON.stringify(buyList))
-        }
-        console.log("idAndCount"+JSON.stringify(idAndCount))
-        if (null != localStorage.getItem("buyList")||null!=localStorage.getItem("rentList")){
-          this.$router.push({path:'/orderConfirm'})
+        if (this.modelData.validMark===0 || this.modelData.remain===0 || this.modelData.passMark!=1){//下架商品
+          this.$alert('已下架物品无法加至购物车哦！', '提示信息', {
+            confirmButtonText: '确定',
+          });
+        }else if (this.student.infoPerfectionMark != 1){
+          this.$alert('请先到个人中心完善个人信息哦！', '温馨提示', {
+            confirmButtonText: '确定',
+          });
+          this.$router.push({path:'/personalInfo'})
+        }else {
+          let buyList=[]
+          let idAndCount={id:0,count:0}
+          if (this.modelData.rentAndSellMark==0){//出售的
+            idAndCount.id = this.modelData.id
+            idAndCount.count = 1
+            buyList.push(idAndCount)
+            localStorage.setItem("typeMark",JSON.stringify(this.modelData.rentAndSellMark))
+            localStorage.setItem("buyList",JSON.stringify(buyList))
+          }else {//出租的
+            idAndCount.id = this.modelData.id
+            idAndCount.count = 1
+            buyList.push(idAndCount)
+            localStorage.setItem("typeMark",this.modelData.rentAndSellMark)
+            localStorage.setItem("rentList",JSON.stringify(buyList))
+          }
+          console.log("idAndCount"+JSON.stringify(idAndCount))
+          if (null != localStorage.getItem("buyList")||null!=localStorage.getItem("rentList")){
+            this.$router.push({path:'/orderConfirm'})
+          }
         }
       }
-
     },
 
     btnClick(index){
@@ -289,6 +299,7 @@ export default {
       if (null == student){
         return false;
       }else {
+        this.student= student
         this.studentName = student.nickname;
         this.params.studentAccount = student.account;
         return true;

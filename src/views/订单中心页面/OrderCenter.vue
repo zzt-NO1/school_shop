@@ -15,8 +15,8 @@
             <h3>暂无数据</h3>
           </div>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forSellList" :key="index">
-            <div style="height: 110px;margin: auto" >
-              <div style="width: 13%;height: 100%;float: left">
+            <div style="height: 130px;margin: auto" >
+              <div style="width: 13%;height: 110px;float: left">
                 <el-image :src="item.idle.pictures" :preview-src-list="[item.idle.pictures]" :key="item.orderId" style="width: 100%;height: 100%"></el-image>
               </div>
               <div style="width: 55%;height: 100%;float: left;margin-left: 20px">
@@ -36,6 +36,10 @@
                   <span v-if="item.statusCode===6">对方已确认收货，请注意查收货款，订单结束</span>
                   <span v-if="item.statusCode===7">对方超时未支付，订单关闭</span>
                   <span v-if="item.statusCode===8">您已拒绝订单，订单关闭</span>
+                </p>
+                <p style="color: #999999;text-align: left;font-size: 14px">备注信息:
+                 <span v-if="item.remark!=null && item.remark!=''">{{item.remark}}</span>
+                  <span v-if="item.remark==null ||item.remark==''">暂无</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===1">
@@ -88,8 +92,8 @@
             <h3>暂无数据</h3>
           </div>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in forRentList" :key="index">
-            <div style="height: 110px;margin: auto" >
-              <div style="width: 13%;height: 100%;float: left">
+            <div style="height: 130px;margin: auto" >
+              <div style="width: 13%;height: 110px;float: left">
                 <el-image :src="item.idle.pictures" :preview-src-list="[item.idle.pictures]" :key="item.orderId" style="width: 100%;height: 100%"></el-image>
               </div>
               <div style="width: 55%;height: 100%;float: left;margin-left: 20px">
@@ -112,6 +116,10 @@
                   <span v-if="item.statusCode===6">您已确认收回，订单结束</span>
                   <span v-if="item.statusCode===7">对方超时未支付，订单关闭</span>
                   <span v-if="item.statusCode===8">您已拒绝订单，订单关闭</span>
+                </p>
+                <p style="color: #999999;text-align: left;font-size: 14px">备注信息:
+                  <span v-if="item.remark!=null && item.remark!=''">{{item.remark}}</span>
+                  <span v-if="item.remark==null ||item.remark==''">暂无</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===1">
@@ -175,8 +183,8 @@
             <h3>暂无数据</h3>
           </div>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in buyList" :key="index">
-            <div style="height: 110px;margin: auto" >
-              <div style="width: 13%;height: 100%;float: left">
+            <div style="height: 130px;margin: auto" >
+              <div style="width: 13%;height: 110px;float: left">
                 <el-image :src="item.idle.pictures" :preview-src-list="[item.idle.pictures]" :key="item.orderId" style="width: 100%;height: 100%"></el-image>
               </div>
               <div style="width: 55%;height: 100%;float: left;margin-left: 20px">
@@ -195,6 +203,10 @@
                   <span v-if="item.statusCode===5">等待系统退款</span>
                   <span v-if="item.statusCode===6">您已确认收货，订单结束</span>
                   <span v-if="item.statusCode===8">对方取消了该订单，系统已为您退款成功，订单关闭</span>
+                </p>
+                <p style="color: #999999;text-align: left;font-size: 14px">备注信息:
+                  <span v-if="item.remark!=null && item.remark!=''">{{item.remark}}</span>
+                  <span v-if="item.remark==null ||item.remark==''">暂无</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===2">
@@ -238,8 +250,8 @@
             <h3>暂无数据</h3>
           </div>
           <el-card shadow="hover" class="el-card-item"  v-for="(item,index) in rentList" :key="index">
-            <div style="height: 110px;margin: auto" >
-              <div style="width: 13%;height: 100%;float: left">
+            <div style="height: 130px;margin: auto" >
+              <div style="width: 13%;height: 110px;float: left">
                 <el-image :src="item.idle.pictures" :preview-src-list="[item.idle.pictures]" :key="item.orderId" style="width: 100%;height: 100%"></el-image>
               </div>
               <div style="width: 55%;height: 100%;float: left;margin-left: 20px">
@@ -261,6 +273,10 @@
                   <span v-if="item.statusCode===5">等待系统退款</span>
                   <span v-if="item.statusCode===6">对方已确认收回，订单结束</span>
                   <span v-if="item.statusCode===8">对方取消了该订单，系统已为您退款成功，订单关闭</span>
+                </p>
+                <p style="color: #999999;text-align: left;font-size: 14px">备注信息:
+                  <span v-if="item.remark!=null && item.remark!=''">{{item.remark}}</span>
+                  <span v-if="item.remark==null ||item.remark==''">暂无</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===2">
