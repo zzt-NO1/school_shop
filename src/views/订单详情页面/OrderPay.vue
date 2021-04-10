@@ -182,11 +182,12 @@ name: "OrderPay",
     sum:function (){
       let s = 0
       for (let i = 0; i < this.orderInfoList.length; i++) {
-        if (this.orderInfoList[i].rentAndSellMark==0){
-          s += this.orderInfoList[i].price*this.orderInfoList[i].buyCount
+        s += this.orderInfoList[i].price
+        /*if (this.orderInfoList[i].rentAndSellMark==0){
+          s += this.orderInfoList[i].price//!*this.orderInfoList[i].buyCount
         }else {
-          s += this.orderInfoList[i].price*this.orderInfoList[i].buyCount*this.orderInfoList[i].dayCount
-        }
+          s += this.orderInfoList[i].price //!*this.orderInfoList[i].buyCount  //!*this.orderInfoList[i].dayCount
+        }*/
       }
       return s
     },

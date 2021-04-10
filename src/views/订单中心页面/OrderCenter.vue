@@ -4,6 +4,7 @@
     <h2>订单中心</h2>
     <div class="top_tap">
       <el-tabs v-model="activeName" type="border-card">
+<!--我出售的----------------------------------------------------------------------------------------------------------------------->
         <el-tab-pane name="second">
             <template slot="label">
               我出售的
@@ -32,12 +33,19 @@
                   <span v-if="item.statusCode===1">对方已付款，等待发货</span>
                   <span v-if="item.statusCode===2">等待买家确认收货</span>
                   <span v-if="item.statusCode===5">等待系统退款给买家</span>
-                  <span v-if="item.statusCode===6||item.statusCode===8">订单结束</span>
+                  <span v-if="item.statusCode===6">对方已确认收货，请注意查收货款，订单结束</span>
+                  <span v-if="item.statusCode===7">对方超时未支付，订单关闭</span>
+                  <span v-if="item.statusCode===8">您已拒绝订单，订单关闭</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===1">
-                <el-button type="primary" plain style="margin:auto">确认发货</el-button>
                 <template>
+                  <el-popconfirm
+                      title="亲，请再次确认您是否发货了哦！"
+                      @confirm="confirmDelivery(item.orderId)"
+                  >
+                    <el-button type="primary" plain style="margin:auto" slot="reference">确认发货</el-button>
+                  </el-popconfirm>
                   <el-popconfirm
                       title="亲，真的要拒绝TA吗？"
                       @confirm="refuseOrder(item.orderId)"
@@ -69,7 +77,7 @@
             </el-collapse>
           </el-card>
         </el-tab-pane>
-<!------------------------------------------------------------------------------------------------------------------------->
+<!--我出租的----------------------------------------------------------------------------------------------------------------------->
         <el-tab-pane  name="third">
           <template slot="label">
             我出租的
@@ -101,12 +109,36 @@
                   <span v-if="item.statusCode===3">等待对方归还</span>
                   <span v-if="item.statusCode===4">等待主人确认收回</span>
                   <span v-if="item.statusCode===5">等待系统退款给买家</span>
-                  <span v-if="item.statusCode===6">订单结束</span>
+                  <span v-if="item.statusCode===6">您已确认收回，订单结束</span>
+                  <span v-if="item.statusCode===7">对方超时未支付，订单关闭</span>
+                  <span v-if="item.statusCode===8">您已拒绝订单，订单关闭</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===1">
-                <el-button type="primary" plain style="margin:auto">确认发货</el-button>
-                <el-button type="danger" plain style="margin: 10px auto">拒绝订单</el-button>
+                <template>
+                  <el-popconfirm
+                      title="亲，请再次确认您是否发货了哦！"
+                      @confirm="confirmDelivery(item.orderId)"
+                  >
+                    <el-button type="primary" plain style="margin:auto" slot="reference">确认发货</el-button>
+                  </el-popconfirm>
+                  <el-popconfirm
+                      title="亲，真的要拒绝TA吗？"
+                      @confirm="refuseOrder(item.orderId)"
+                  >
+                    <el-button type="danger" plain style="margin: 10px auto" slot="reference">拒绝订单</el-button>
+                  </el-popconfirm>
+                </template>
+              </div>
+              <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===4">
+                <template>
+                  <el-popconfirm
+                      title="亲，请再次确认您是否收回了您的物品！"
+                      @confirm="confirmTakeBack(item.orderId)"
+                  >
+                    <el-button type="danger" plain style="margin:auto" slot="reference">确认收回</el-button>
+                  </el-popconfirm>
+                </template>
               </div>
             </div>
             <el-collapse>
@@ -123,7 +155,7 @@
                   <div v-if="item.transTime!=null">发货时间:<span style="margin-left: 20px">{{item.transTime}}</span></div>
                   <div v-if="item.receiveTime!=null">收货时间:<span style="margin-left: 20px">{{item.receiveTime}}</span></div>
                   <div v-if="item.returnTime!=null">对方归还时间:<span style="margin-left: 20px">{{item.returnTime}}</span></div>
-                  <div v-if="item.takeBackTime!=null">主人确认收回时间:<span style="margin-left: 20px">{{item.takeBackTime}}</span></div>
+                  <div v-if="item.takeBackTime!=null">确认收回时间:<span style="margin-left: 20px">{{item.takeBackTime}}</span></div>
                   <div v-if="item.refundTime!=null">退款时间:<span style="margin-left: 20px">{{item.refundTime}}</span></div>
                   <div v-if="item.transWay!=0">取货方式:<span style="margin-left: 20px" v-if="item.transWay===1">校内自取({{item.idle.address}})</span>
                     <span style="margin-left: 20px" v-if="item.transWay===2">快递邮寄</span></div>
@@ -132,7 +164,7 @@
             </el-collapse>
           </el-card>
         </el-tab-pane>
-<!------------------------------------------------------------------------------------------------------------------------->
+<!--我购买的----------------------------------------------------------------------------------------------------------------------->
         <el-tab-pane  name="fourth">
           <template slot="label">
             我购买的
@@ -159,14 +191,19 @@
                 <p style="color: #999999;text-align: left;font-size: 14px">订单状态:
                   <span v-if="item.statusCode===0">等待付款</span>
                   <span v-if="item.statusCode===1">已付款，等待对方发货</span>
-                  <span v-if="item.statusCode===2">等待确认收货</span>
+                  <span v-if="item.statusCode===2">对方已发货，等待确认收货</span>
                   <span v-if="item.statusCode===5">等待系统退款</span>
-                  <span v-if="item.statusCode===6">订单结束</span>
-                  <span v-if="item.statusCode===8">退款成功，订单结束</span>
+                  <span v-if="item.statusCode===6">您已确认收货，订单结束</span>
+                  <span v-if="item.statusCode===8">对方取消了该订单，系统已为您退款成功，订单关闭</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===2">
-                <el-button type="primary" plain style="margin:auto">确认收货</el-button>
+                <el-popconfirm
+                    title="亲，请再次确认您是否收到货了哦！"
+                    @confirm="confirmReceive(item.orderId,item.rentAndSellMark)"
+                >
+                  <el-button type="primary" plain style="margin:auto" slot="reference">确认收货</el-button>
+                </el-popconfirm>
               </div>
             </div>
             <el-collapse>
@@ -190,7 +227,7 @@
             </el-collapse>
           </el-card>
         </el-tab-pane>
-<!------------------------------------------------------------------------------------------------------------------------->
+<!--我租用的----------------------------------------------------------------------------------------------------------------------->
         <el-tab-pane name="fifth">
           <template slot="label">
             我租用的
@@ -218,18 +255,29 @@
                 <p style="color: #999999;text-align: left;font-size: 14px">订单状态:
                   <span v-if="item.statusCode===0">等待付款</span>
                   <span v-if="item.statusCode===1">已付款，等待对方发货</span>
-                  <span v-if="item.statusCode===2">等待确认收货</span>
+                  <span v-if="item.statusCode===2">对方已发货，等待确认收货</span>
                   <span v-if="item.statusCode===3">等待归还</span>
-                  <span v-if="item.statusCode===4">等待主人确认收回</span>
+                  <span v-if="item.statusCode===4">等待对方确认收回</span>
                   <span v-if="item.statusCode===5">等待系统退款</span>
-                  <span v-if="item.statusCode===6">订单结束</span>
+                  <span v-if="item.statusCode===6">对方已确认收回，订单结束</span>
+                  <span v-if="item.statusCode===8">对方取消了该订单，系统已为您退款成功，订单关闭</span>
                 </p>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===2">
-                <el-button type="primary" plain style="margin:auto">确认收货</el-button>
+                <el-popconfirm
+                    title="亲，请再次确认您是否收到货了哦！"
+                    @confirm="confirmReceive(item.orderId,item.rentAndSellMark)"
+                >
+                  <el-button type="primary" plain style="margin:auto" slot="reference">确认收货</el-button>
+                </el-popconfirm>
               </div>
               <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===3">
-                <el-button type="primary" plain style="margin:auto">确认归还</el-button>
+                <el-popconfirm
+                    title="亲，请再次确认您是否已归还租用物品哦！"
+                    @confirm="confirmReturn(item.orderId)"
+                >
+                  <el-button type="danger" plain style="margin:auto" slot="reference">确认归还</el-button>
+                </el-popconfirm>
               </div>
             </div>
             <el-collapse>
@@ -245,8 +293,8 @@
                   <div v-if="item.payTime!=null">付款时间:<span style="margin-left: 20px">{{item.payTime}}</span></div>
                   <div v-if="item.transTime!=null">发货时间:<span style="margin-left: 20px">{{item.transTime}}</span></div>
                   <div v-if="item.receiveTime!=null">收货时间:<span style="margin-left: 20px">{{item.receiveTime}}</span></div>
-                  <div v-if="item.returnTime!=null">对方归还时间:<span style="margin-left: 20px">{{item.returnTime}}</span></div>
-                  <div v-if="item.takeBackTime!=null">主人确认收回时间:<span style="margin-left: 20px">{{item.takeBackTime}}</span></div>
+                  <div v-if="item.returnTime!=null">归还时间:<span style="margin-left: 20px">{{item.returnTime}}</span></div>
+                  <div v-if="item.takeBackTime!=null">确认收回时间:<span style="margin-left: 20px">{{item.takeBackTime}}</span></div>
                   <div v-if="item.refundTime!=null">退款时间:<span style="margin-left: 20px">{{item.refundTime}}</span></div>
                   <div v-if="item.transWay!=0">取货方式:<span style="margin-left: 20px" v-if="item.transWay===1">校内自取({{item.idle.address}})</span>
                     <span style="margin-left: 20px" v-if="item.transWay===2">快递邮寄</span></div>
@@ -285,16 +333,95 @@ name: "OrderCenter",
         studentAccount:'',
         idleId:'',
         noticeIdList:[],
-        orderId:[]
+        orderId:'',
+        mark:0,
       }
     }
   },
   methods:{
+    //确认收回
+    confirmTakeBack(orderId){
+      this.$message.warning('系统正在处理，请耐心等候结果')
+      this.params.orderId = orderId
+      let _this = this
+      axios.post('http://localhost:8181/orderOperate/confirmTakeBack',{
+        params: this.params
+      }).then(function (res) {
+        if (null != res.data && res.data.updateResult){
+          _this.rentList = res.data.rentOrderList
+          _this.buyList = res.data.buyOrderList
+          _this.forRentList = res.data.forRentOrderList
+          _this.forSellList = res.data.forSellOrderList
+          _this.allOrderList = res.data.allOrderList
+          _this.$message.success('已确认归还')
+        }
+        _this.getNewNotice()
+      })
+    },
+    //确认归还
+    confirmReturn(orderId){
+      this.$message.warning('系统正在处理，请耐心等候结果')
+      this.params.orderId = orderId
+      let _this = this
+      axios.post('http://localhost:8181/orderOperate/confirmReturn',{
+        params: this.params
+      }).then(function (res) {
+        if (null != res.data && res.data.updateResult){
+          _this.rentList = res.data.rentOrderList
+          _this.buyList = res.data.buyOrderList
+          _this.forRentList = res.data.forRentOrderList
+          _this.forSellList = res.data.forSellOrderList
+          _this.allOrderList = res.data.allOrderList
+          _this.$message.success('已确认归还')
+        }
+        _this.getNewNotice()
+      })
+    },
+    //确认收货
+    confirmReceive(orderId,mark){
+      this.$message.warning('系统正在处理，请耐心等候结果')
+      this.params.mark = mark
+      this.params.orderId = orderId
+      let _this = this
+      axios.post('http://localhost:8181/orderOperate/confirmReceive',{
+        params: this.params
+      }).then(function (res) {
+        if (null != res.data && res.data.updateResult){
+          _this.rentList = res.data.rentOrderList
+          _this.buyList = res.data.buyOrderList
+          _this.forRentList = res.data.forRentOrderList
+          _this.forSellList = res.data.forSellOrderList
+          _this.allOrderList = res.data.allOrderList
+          _this.$message.success('已确认收货')
+        }
+        _this.getNewNotice()
+      })
+    },
+    //确认发货
+    confirmDelivery(orderId){
+      this.$message.warning('系统正在处理，请耐心等候结果')
+      this.params.orderId = orderId
+      //console.log("hhh="+orderId)
+      let _this = this
+      axios.post('http://localhost:8181/orderOperate/confirmDelivery',{
+        params: this.params
+      }).then(function (res) {
+        if (null != res.data && res.data.updateResult){
+          _this.rentList = res.data.rentOrderList
+          _this.buyList = res.data.buyOrderList
+          _this.forRentList = res.data.forRentOrderList
+          _this.forSellList = res.data.forSellOrderList
+          _this.allOrderList = res.data.allOrderList
+          _this.$message.success('已确认发货')
+        }
+        _this.getNewNotice()
+      })
+    },
     //拒绝订单
     refuseOrder(orderId){
       this.$message.warning('系统正在给对方退款，请耐心等候结果')
       this.params.orderId = orderId
-      console.log("hhh="+orderId)
+      //console.log("hhh="+orderId)
       let _this = this
       axios.post('http://localhost:8181/orderOperate/refuseOrder',{
         params: this.params
