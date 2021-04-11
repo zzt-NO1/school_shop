@@ -3,7 +3,7 @@
   <div class="OrderCenter-body">
     <h2>订单中心</h2>
     <div class="top_tap">
-      <el-tabs v-model="activeName" type="border-card">
+      <el-tabs v-model="activeName" type="border-card" v-loading="loading">
 <!--我出售的----------------------------------------------------------------------------------------------------------------------->
         <el-tab-pane name="second">
             <template slot="label">
@@ -333,6 +333,7 @@ export default {
 name: "OrderCenter",
   data(){
     return{
+      loading:true,
       activeName:'second',
       rentList:[],
       buyList:[],
@@ -454,6 +455,7 @@ name: "OrderCenter",
       })
     },
     getOrderRecordList(){
+      this.loading = true
       let _this = this
       axios.post('http://localhost:8181/orderOperate/getOrderListByStudentAccount',{
         params: this.params
@@ -465,10 +467,12 @@ name: "OrderCenter",
            _this.forSellList = res.data.forSellOrderList
            _this.allOrderList = res.data.allOrderList
            //console.log("??"+JSON.stringify(res.data))
+           _this.loading=false
          } else{
            _this.$message.error("暂未查询到数据！")
          }
       })
+
     },
     //获取最新通知
     getNewNotice(){
