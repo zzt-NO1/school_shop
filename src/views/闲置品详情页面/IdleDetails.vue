@@ -1,7 +1,7 @@
 <template>
   <div class="detailsPage">
     <!-- BUTTONS (input/labels) -->
-    <div class="page-body">
+    <div class="page-body" v-loading="loading">
       <!-- SLIDES -->
       <div class="slide-wrapper">
         <div id="slide-role">
@@ -130,6 +130,7 @@ export default {
 
   data() {
     return{
+      loading:true,
       val: '50%',
       slip:'',
       active: true,
@@ -247,6 +248,7 @@ export default {
             if (res.data != null && res.data.searchStatus) {//成功
               console.log('闲置品查询成功');
               _this.modelData = res.data.idle;
+              _this.loading=false
             } else {
               console.log('闲置品查询失败');
               return '';

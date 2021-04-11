@@ -3,7 +3,7 @@
     <div class="cartPage-body">
       <h1>购物车</h1>
       <el-divider></el-divider>
-      <el-table :data="idleInfos" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}" border style="margin: auto" @click="getSum"  @row-click="handleCurrentChange" @selection-change="seleChange" :cell-style="cellStyle">
+      <el-table v-loading="loading" :data="idleInfos" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}" border style="margin: auto" @click="getSum"  @row-click="handleCurrentChange" @selection-change="seleChange" :cell-style="cellStyle">
         <el-table-column
             class-name="el-table"
             type="selection"
@@ -61,6 +61,7 @@ export default {
 name: "ShoppingCart",
   data() {
     return {
+      loading:true,
       student:{},
       typeMark:0,
      /* IdleID:0,*/
@@ -132,6 +133,7 @@ name: "ShoppingCart",
             if (res.data != null) {//成功
               console.log('购物车查询成功');
               _this.idleInfos = res.data.idleInfoList;
+              _this.loading=false
             } else {
               console.log('购物车查询失败');
               return '';

@@ -7,7 +7,7 @@
           <el-radio v-model="selectType"  label="0" border @change="filterIdle">出售</el-radio>
           <el-radio v-model="selectType"  label="1" border @change="filterIdle">出租</el-radio>
       </p>
-      <el-table :data="filIdleList" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}"  border style="margin: auto;" :row-style="rowStyle" :cell-style="cellStyle">
+      <el-table v-loading="loading" :data="filIdleList" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}"  border style="margin: auto;" :row-style="rowStyle" :cell-style="cellStyle">
         <el-table-column prop="pictures" width="140">
           <template slot-scope="scope">
             <el-image :src="scope.row.pictures" :preview-src-list="[scope.row.pictures]" :key="scope.row.id" style="width: 100px;height: 100px">
@@ -78,6 +78,7 @@ export default {
 name: "IssueRecord",
   data(){
     return{
+      loading:true,
       selectType:"2",
       idleList:[],
       filIdleList:[],
@@ -99,6 +100,7 @@ name: "IssueRecord",
               console.log('发布记录查询成功');
               _this.idleList = res.data.idleList;
               _this.filIdleList = _this.idleList;
+              _this.loading=false
             } else {
               console.log('发布记录查询失败');
               return '';

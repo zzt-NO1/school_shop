@@ -373,6 +373,7 @@ name: "OrderCenter",
           _this.$message.success('已确认归还')
         }
         _this.getNewNotice()
+        _this.$router.go(0)
       })
     },
     //确认归还
@@ -392,6 +393,7 @@ name: "OrderCenter",
           _this.$message.success('已确认归还')
         }
         _this.getNewNotice()
+        _this.$router.go(0)
       })
     },
     //确认收货
@@ -412,6 +414,7 @@ name: "OrderCenter",
           _this.$message.success('已确认收货')
         }
         _this.getNewNotice()
+        _this.$router.go(0)
       })
     },
     //确认发货
@@ -432,6 +435,7 @@ name: "OrderCenter",
           _this.$message.success('已确认发货')
         }
         _this.getNewNotice()
+        _this.$router.go(0)
       })
     },
     //拒绝订单
@@ -452,6 +456,7 @@ name: "OrderCenter",
           this.$message.success('已成功拒绝订单')
         }
         _this.getNewNotice()
+        _this.$router.go(0)
       })
     },
     getOrderRecordList(){

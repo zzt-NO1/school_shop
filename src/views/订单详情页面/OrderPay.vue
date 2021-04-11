@@ -1,6 +1,6 @@
 <template>
   <div class="OrderPay">
-    <div class="OrderPay-body">
+    <div class="OrderPay-body" v-loading="loading">
       <h2 style="color:#123D64;">订单支付</h2>
       <el-form>
         <p style="text-align: right;width: 70%;margin: auto;color: #666666">剩余支付时间:<span style="color: red;font-size: 20px"> {{minutes}} 分 {{second}} 秒</span></p>
@@ -58,6 +58,7 @@ export default {
 name: "OrderPay",
   data(){
     return{
+      loading:true,
       payBtn:false,
       student:{},
       orderInfoList: [],
@@ -166,6 +167,7 @@ name: "OrderPay",
           console.log(res.data);
           if (res.data != null && res.data.searchResult) {//成功
             _this.orderInfoList = res.data.orderRecordList;
+            _this.loading=false
             console.log("orderRecordList="+_this.orderInfoList.length)
           } else {
             console.log('查询失败');

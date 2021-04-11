@@ -1,6 +1,6 @@
 <template>
   <div class="OrderDetail">
-    <div class="OrderDetail-body">
+    <div class="OrderDetail-body" v-loading="loading">
       <h1 style="color:#123D64;">订单确认</h1>
       <div class="ReciInfo">
         <el-divider></el-divider>
@@ -112,6 +112,7 @@ export default {
 name: "OrderDetail",
   data(){
     return{
+      loading:true,
       dialogFormVisible:false,
       ownerAccount:'',//
       buyerName:'zzt',//
@@ -172,6 +173,7 @@ name: "OrderDetail",
             if (res.data != null) {//成功
               console.log('查询成功');
               _this.idles = res.data.idleList;
+              _this.loading=false
               console.log("_this.idles="+res.data)
             } else {
               console.log('查询失败');

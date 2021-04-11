@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" >
     <!--搜索栏 begin-->
     <div class="search-div">
       <div class="key">
@@ -31,23 +31,25 @@
     <!--搜索栏 end-->
     <hr style="width: 80%"/>
     <!--列表展示区 begin-->
-    <div class="goodList-div">
+    <div class="goodList-div" style="margin-top: 40px" >
       <div class="gallery-wrapper" >
-        <div class="white-panel" v-for="(item,index) in idleList" :key="index">
-          <a href="#" @click="goToIdleDetails(item.id)">
-            <div style="position: relative;">
-              <img v-if="item.pictures===null || item.pictures===''" src="../../assets/img/noPics.png" class="thumb">
-              <img v-bind:src="item.pictures" class="thumb">
-              <span v-if="item.rentAndSellMark===0" style="background-color: #6666FF; color: whitesmoke" class="tag tag-wrap card-tag">出售</span>
-              <span v-if="item.rentAndSellMark===1" style="background-color: #669999; color: whitesmoke" class="tag tag-wrap card-tag">出租</span>
+          <el-form v-loading="loading">
+            <div class="white-panel" v-for="(item,index) in idleList" :key="index">
+              <a href="#" @click="goToIdleDetails(item.id)">
+                <div style="position: relative;">
+                  <img v-if="item.pictures===null || item.pictures===''" src="../../assets/img/noPics.png" class="thumb">
+                  <img v-bind:src="item.pictures" class="thumb">
+                  <span v-if="item.rentAndSellMark===0" style="background-color: #6666FF; color: whitesmoke" class="tag tag-wrap card-tag">出售</span>
+                  <span v-if="item.rentAndSellMark===1" style="background-color: #669999; color: whitesmoke" class="tag tag-wrap card-tag">出租</span>
+                </div>
+                <p class="idle-p card-title"><span class="iconfont" style="font-size: 16px">&#xe719;</span> {{item.title}}</p>
+                <p class="idle-p p-price" v-if="item.rentAndSellMark===0"><span class="iconfont" style="font-size: 13px">&#xe7d1;</span>价格:<span class="card-price flag-sell" >￥{{item.price}} </span>元</p>
+                <p class="idle-p p-price" v-if="item.rentAndSellMark===1"><span class="iconfont" style="font-size: 13px">&#xe7d1;</span>价格:<span class="card-price flag-rent">￥{{item.price}} </span>元/天</p>
+                <p class="idle-p"><span class="iconfont location">&#xe651;{{item.address}}</span></p>
+              </a>
             </div>
-            <p class="idle-p card-title"><span class="iconfont" style="font-size: 16px">&#xe719;</span> {{item.title}}</p>
-            <p class="idle-p p-price" v-if="item.rentAndSellMark===0"><span class="iconfont" style="font-size: 13px">&#xe7d1;</span>价格:<span class="card-price flag-sell" >￥{{item.price}} </span>元</p>
-            <p class="idle-p p-price" v-if="item.rentAndSellMark===1"><span class="iconfont" style="font-size: 13px">&#xe7d1;</span>价格:<span class="card-price flag-rent">￥{{item.price}} </span>元/天</p>
-            <p class="idle-p"><span class="iconfont location">&#xe651;{{item.address}}</span></p>
-          </a>
+          </el-form>
         </div>
-      </div>
     </div>
     <!--列表展示区 end-->
   </div>
@@ -61,6 +63,7 @@ export default {
   name: "Goods",
   data(){
     return {
+      loading:true,
       goodTypes:[],
       finalType:2,//租售类型
       goodType: '',//闲置品类型
@@ -70,7 +73,7 @@ export default {
       delayTime:300,
       schoolName:'',
       idleList:[
-        {
+        /*{
           icon:'el-icon-lx-people',
           pictures: require('../../assets/img/1.jpg'),
           title:1,
@@ -115,7 +118,7 @@ export default {
           goodType:'food',
           rentAndSellMark:0
         },
-
+*/
       ],
       allIdleList:[],
       idleListMap:null,
@@ -127,6 +130,7 @@ export default {
     }
   },
   created() {
+    this.loading=true
     this.goodTypes = this.getAllGoodType();
     let stu = JSON.parse(sessionStorage.getItem('student'));
     if (null == stu){
@@ -138,6 +142,7 @@ export default {
       this.params.schoolId = stu.schoolId;
       console.log("this.params.schoolId="+this.params.schoolId)
       this.idleListMap = this.getIdleListBySchoolId(this.params.schoolId);
+      //this.loading=false
       return true;
     }
   },
@@ -184,6 +189,7 @@ export default {
               console.log('闲置品查询成功');
               _this.idleList = res.data.idleList;
               _this.allIdleList = res.data.idleList;
+              _this.loading = false
             } else {
               console.log('闲置品查询失败');
               return '';
