@@ -110,7 +110,7 @@ export default {
           case 'shoppingCart': this.$router.push({path:"/shoppingCart"}); break;
           case 'postRecord': this.$router.push({path:"/issueRecord"}); break;
           case 'buyRecord': this.$router.push({path:"/login"}); break;
-          case 'messageCenter': this.$router.push({path:"/login"}); break;
+          case 'messageCenter': this.$router.push({path:"/chatRoom"}); break;
           case 'personalInfo': this.$router.push({path:"/personalInfo"}); break;
           case 'orderCenter': this.$router.push({path:"/orderCenter"}); break;
           default: this.$router.push({path:"/login"});
@@ -154,7 +154,7 @@ export default {
     this.getNewNotice();
     this.timer = setInterval(() => {
       setTimeout(this.getNewNotice, 0)
-    }, 1000*5)
+    }, 1000*50)
   },
 }
 </script>

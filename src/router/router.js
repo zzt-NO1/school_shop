@@ -16,12 +16,13 @@ import PersonalInfo from "../views/个人资料页面/PersonalInfo";
 import OrderConfirm from "../views/订单详情页面/OrderConfirm";
 import OrderPay from "../views/订单详情页面/OrderPay";
 import OrderCenter from "../views/订单中心页面/OrderCenter"
+import ChatRoom from "../views/聊天页面/ChatRoom"
 
 export default new Router({
     routes:[
         {
             path:'/',
-            redirect:'goods',
+            redirect:'/login',
             meta: {
                 keepAlive: true
             }
@@ -105,6 +106,13 @@ export default new Router({
         {
             path: '/orderCenter',
             component: OrderCenter,
+            meta: {
+                keepAlive: true
+            }
+        },
+        {
+            path: '/chatRoom',
+            component: ChatRoom,
             meta: {
                 keepAlive: true
             }

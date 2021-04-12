@@ -24,6 +24,8 @@
     "eslint-plugin-vue": "^6.2.2",
     "install": "^0.13.0",
     "jquery": "^3.6.0",
+    "less": "^4.1.1",
+    "less-loader": "^8.1.0",
     "vue-directive-image-previewer": "^2.2.2",
     "vue-template-compiler": "^2.6.11"
   },
