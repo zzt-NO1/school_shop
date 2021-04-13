@@ -76,10 +76,10 @@
         <div style="float: left;width: 75%;height: 90%;">
           <div style="float: left;width: 100%;height: 70%;border: 1px solid #E0E0E0">
             <div v-for="(item,index) in messageList" :key="index" style="width: 100%">
-              <p v-if="item.userLocation==='l'" style="text-align: left;margin-top: 0px">
+              <p v-if="item.userLocation==='l'" style="text-align: left;margin-top: 20px">
                 <span style="margin-left: 10px">{{item.mess}}</span>
               </p>
-              <p v-if="item.userLocation==='r'" style="text-align: right;margin-top: 0px">
+              <p v-if="item.userLocation==='r'" style="text-align: right;margin-top: 20px">
                 <span style="margin-right: 10px">{{item.mess}}</span>
               </p>
             </div>
@@ -233,14 +233,23 @@ export default {
           _this.friendAccounts = res.message
           for (let friend of _this.friendAccounts){
             if (friend==_this.params.studentAccount){
-              _this.friendAccounts.remove(friend)
+              //_this.friendAccounts.remove(friend)
               break
             }
           }
         }else {
-          let m = {userLocation:"l",mess:res.message}
-          console.log("toName="+res.toName)
-          _this.messageList.push(m)
+          console.log("res.fromName="+res.fromName)
+          let m = {userLocation:"l",mess:res.message,name:res.fromName}
+          let msgListStr = sessionStorage.getItem(res.fromName)
+          if (msgListStr == null){
+            _this.messageList=[]
+          }else {
+            _this.messageList = JSON.parse(msgListStr)
+            _this.messageList.push(m)
+          }
+          let saveStr = JSON.stringify(_this.messageList)
+          sessionStorage.setItem(res.fromName,saveStr)
+          console.log("fromName="+res.fromName)
         }
       };
 
@@ -256,12 +265,39 @@ export default {
     },
     // 发送消息
     sendMessage: function() {
-      let socketMsg = {"message": this.messageValue, "toName": this.toName};
-      let m = {userLocation:"r",mess:this.messageValue}
-      this.messageList.push(m)
+      let socketMsg = {"message": this.messageValue, "toName": this.toName}
+      let m = {userLocation:"r",mess:this.messageValue,name:this.toName}
+      let msgListStr = sessionStorage.getItem(this.toName)
+      if (msgListStr == null){
+        this.messageList=[]
+      }else {
+        this.messageList = JSON.parse(msgListStr)
+        this.messageList.push(m)
+      }
+      let saveStr = JSON.stringify(this.messageList)
+      sessionStorage.setItem(this.toName,saveStr)
+      //this.messageList.push(m)
       this.websocket.send(JSON.stringify(socketMsg));
       this.messageValue=''
+      /*sessionStorage.setItem(this.toName,mm)
+      let chatDataStr = sessionStorage.getItem(this.toName)
+      let chatData = JSON.parse(chatDataStr)
+      let s = {userLocation:"r",mess:this.messageValue}
+      chatData.push(s)
+      console.log("chatData="+chatDataStr)
+      console.log("JSON.parse(chatData)="+chatData)*/
     },
+  },
+  watch:{
+    toName:function (){
+      if (this.toName==''||this.toName==null){
+        this.messageList = []
+      }else {
+        let chatStr = sessionStorage.getItem(this.toName)
+        let msgList = JSON.parse(chatStr)
+        this.messageList = msgList
+      }
+    }
   },
   mounted(){
     this.getNewNotice();
