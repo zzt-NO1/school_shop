@@ -134,6 +134,7 @@ export default {
     this.goodTypes = this.getAllGoodType();
     let stu = JSON.parse(sessionStorage.getItem('student'));
     if (null == stu){
+      setTimeout(this.loading=false,1000*20)
       this.loginStatus = false;
     }else {
       this.loginStatus = true;

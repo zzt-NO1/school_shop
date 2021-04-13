@@ -16,10 +16,6 @@
                 </el-dropdown>
                 <img src="../views/商品展示页面/image/img.jpg" />
               </a>
-              <!--<ul class="drop menu1 ull">
-                <li class="li2"><a class="menu1-a" href="#">个人资料</a></li>
-                <li class="li2"><a class="menu1-a" href="#" @click="loadout">退出登录</a></li>
-              </ul>-->
             </li>
           </ul>
         <ul class="user" v-if="!loginStatus">
@@ -44,9 +40,6 @@
           <li><label @click="toPage('buyGood')"><span class="iconfont">&#xe699; 购买记录</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li ><label @click="toPage('messageCenter')"><span class="iconfont">&#xe70a; 消息中心</span></label></li>
-        </ul>
-        <ul class="guide-ul">
           <li >
             <label @click="toPage('orderCenter')">
               <span class="iconfont">&#xe645; 订单中心</span>
@@ -54,9 +47,51 @@
             </label>
           </li>
         </ul>
+        <ul class="guide-ul">
+          <li ><label @click="drawer = true"><span class="iconfont">&#xe70a;消息中心</span></label></li>
+        </ul>
       </div>
     </div>
     <!--头部导航 end-->
+    <el-drawer
+        title="在线聊天"
+        :visible.sync="drawer"
+        :direction="direction"
+        style="z-index: -1"
+        size="45%">
+      <div style="width: 96%;height: 84%;margin: auto;border-radius: 10px">
+        <div class="head-chat-div" style="width: 100% ;height: 10%; background-color: #2c3e50;color:whitesmoke;border-radius: 10px 10px 0px 0px">
+          <p v-if="student!=null" style="float: left"><span style="margin-left: 20px">{{student.nickname}}</span>
+            <span v-if="friendAccounts.includes(params.studentAccount)">在线</span>
+            <span v-if="!friendAccounts.includes(params.studentAccount)">离线</span>
+            <span v-if="toName!=''" style="margin-left: 200px"><span style="color: #F5F5F5;font-size: 18px">{{toName}}</span></span>
+          </p>
+        </div>
+        <div style="float: left;width: 25%;height: 90%;background-color:#F5F5F5;border: 1px solid #E0E0E0;border-radius: 0px 0px 0px 10px">
+          <p v-for="item in friendAccounts" :key="item" style="text-align: left;" v-show="params.studentAccount!==item">
+            <a @click="toName=item"><label style="margin-left: 20px">{{item}}</label></a>
+          </p>
+          <el-divider></el-divider>
+        </div>
+        <div style="float: left;width: 75%;height: 90%;">
+          <div style="float: left;width: 100%;height: 70%;border: 1px solid #E0E0E0">
+            <div v-for="(item,index) in messageList" :key="index" style="width: 100%">
+              <p v-if="item.userLocation==='l'" style="text-align: left;margin-top: 0px">
+                <span style="margin-left: 10px">{{item.mess}}</span>
+              </p>
+              <p v-if="item.userLocation==='r'" style="text-align: right;margin-top: 0px">
+                <span style="margin-right: 10px">{{item.mess}}</span>
+              </p>
+            </div>
+          </div>
+          <div style="float: left;width: 100%;height: 30%;border: 1px solid #E0E0E0;border-radius: 0px 0px 10px 0px">
+              <textarea v-if="toName!=''" style="border: 0px;width: 100%;height: 80%;margin: auto" v-model="messageValue"></textarea>
+              <el-button v-if="toName!=''" size="small" style="width: 15%;height: 22%;margin-top: -10px;float: right;margin-right: 5px;" @click="sendMessage()">发送</el-button>
+          </div>
+        </div>
+      </div>
+    </el-drawer>
+
   </div>
 </template>
 
@@ -77,7 +112,15 @@ export default {
       forSellListNews:[],
       params: {
         studentAccount:'',
-      }
+      },
+      websocket: null, // WebSocket对象
+      messageList: [], // 消息列表
+      messageValue: "", // 消息内容
+      drawer: false,
+      direction: 'rtl',
+      student:null,
+      friendAccounts:[],
+      toName: '',
     }
   },
   created() {
@@ -88,6 +131,8 @@ export default {
       this.loginStatus = true;
       this.studentName = stu.nickname;
       this.params.studentAccount = stu.account
+      this.student = stu
+      this.connectWebSocket()
       this.getNewNotice()
       return true;
     }
@@ -110,7 +155,7 @@ export default {
           case 'shoppingCart': this.$router.push({path:"/shoppingCart"}); break;
           case 'postRecord': this.$router.push({path:"/issueRecord"}); break;
           case 'buyRecord': this.$router.push({path:"/login"}); break;
-          case 'messageCenter': this.$router.push({path:"/chatRoom"}); break;
+          case 'messageCenter': this.$router.push({path:"/chatRoom"});this.$router.go(0); break;
           case 'personalInfo': this.$router.push({path:"/personalInfo"}); break;
           case 'orderCenter': this.$router.push({path:"/orderCenter"}); break;
           default: this.$router.push({path:"/login"});
@@ -142,12 +187,80 @@ export default {
         return false;
       }else {
         this.studentName = student.nickname;
+        this.student = student
         return true;
       }
     },
     loadout(){
         sessionStorage.clear();
         this.$router.push({path:"/login"});
+    },
+    /*websocket连接服务器*/
+    connectWebSocket() {
+      if (this.websocket!=null){
+        return true
+      }
+      console.log("建立连接");
+      let _this = this;
+      //判断当前浏览器是否支持WebSocket
+      if ("WebSocket" in window) {
+        this.websocket = new WebSocket(
+            "ws://localhost:8181/websocket/" + this.params.studentAccount
+        );
+      } else {
+        alert("不支持建立socket连接");
+      }
+
+      //连接发生错误的回调方法
+      this.websocket.onerror = function() {
+
+      };
+
+      //连接成功建立的回调方法
+      this.websocket.onopen = function(event) {
+        console.log(event)
+      };
+
+      //接收到消息的回调方法
+      this.websocket.onmessage = function(event) {
+        //获取服务器端推送过来的消息
+        let dataStr = event.data
+        //将dataStr转换为json对象
+        let res = JSON.parse(dataStr)
+        console.log("res="+ JSON.stringify(res))
+        //判断是否为系统消息
+        if (res.system){
+          _this.friendAccounts = res.message
+          for (let friend of _this.friendAccounts){
+            if (friend==_this.params.studentAccount){
+              _this.friendAccounts.remove(friend)
+              break
+            }
+          }
+        }else {
+          let m = {userLocation:"l",mess:res.message}
+          console.log("toName="+res.toName)
+          _this.messageList.push(m)
+        }
+      };
+
+      //连接关闭的回调方法
+      this.websocket.onclose = function() {
+
+      };
+
+      //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+      window.onbeforeunload = function() {
+        this.websocket.close();
+      };
+    },
+    // 发送消息
+    sendMessage: function() {
+      let socketMsg = {"message": this.messageValue, "toName": this.toName};
+      let m = {userLocation:"r",mess:this.messageValue}
+      this.messageList.push(m)
+      this.websocket.send(JSON.stringify(socketMsg));
+      this.messageValue=''
     },
   },
   mounted(){
@@ -220,10 +333,6 @@ export default {
   }
 }
 
-.ull {
-  list-style: none;
-}
-
 
 .wrapper{
   width: 100%;
@@ -266,18 +375,10 @@ export default {
   height: 20px;
   float: left;
 }
-.search-div{
-  width: 80%;
-  height: 40px;
-  margin: auto;
-}
+
 label{
   cursor: pointer
 }
-.key{
-  height: 50px;
-  margin-left: fill;
-  text-align: left;
-  position: relative;
-}
+
+
 </style>
