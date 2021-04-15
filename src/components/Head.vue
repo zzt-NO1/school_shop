@@ -37,18 +37,18 @@
           <li><label @click="toPage('postRecord')"><span class="iconfont">&#xe800; 发布记录</span></label></li>
         </ul>
         <ul class="guide-ul">
-          <li><label @click="toPage('buyGood')"><span class="iconfont">&#xe699; 购买记录</span></label></li>
-        </ul>
-        <ul class="guide-ul">
           <li >
             <label @click="toPage('orderCenter')">
-              <span class="iconfont">&#xe645; 订单中心</span>
+              <span class="iconfont">&#xe645; 订单记录</span>
               <el-badge :value="newsCount" v-if="newsCount!=0"></el-badge>
             </label>
           </li>
         </ul>
         <ul class="guide-ul">
-          <li ><label @click="drawer = true"><span class="iconfont">&#xe70a;消息中心</span></label></li>
+          <li ><label @click="drawer = true">
+            <span class="iconfont">&#xe70a;消息中心</span>
+            <el-badge :value="messageCount" v-if="messageCount!=0"></el-badge>
+          </label></li>
         </ul>
       </div>
     </div>
@@ -64,29 +64,45 @@
           <p v-if="student!=null" style="float: left"><span style="margin-left: 20px">{{student.nickname}}</span>
             <span v-if="friendAccounts.includes(params.studentAccount)">在线</span>
             <span v-if="!friendAccounts.includes(params.studentAccount)">离线</span>
-            <span v-if="toName!=''" style="margin-left: 200px"><span style="color: #F5F5F5;font-size: 18px">{{toName}}</span></span>
+            <span v-if="friend.account!=''" style="margin-left: 300px">
+              <span style="color: #F5F5F5;font-size: 18px">{{friend.nickName}}</span>
+            </span>
           </p>
         </div>
-        <div style="float: left;width: 25%;height: 90%;background-color:#F5F5F5;border: 1px solid #E0E0E0;border-radius: 0px 0px 0px 10px">
-          <p v-for="item in friendAccounts" :key="item" style="text-align: left;" v-show="params.studentAccount!==item">
-            <a @click="toName=item"><label style="margin-left: 20px">{{item}}</label></a>
+        <div style="float: left;width: 25%;height: 90%;background-color:#F5F5F5;border: 1px solid #E0E0E0;border-radius: 0px 0px 0px 10px;overflow: auto">
+          <div v-if="friendList.length<=0" style="margin: 80px auto"><span style="color: silver">暂无内容</span></div>
+          <p v-for="item in friendList" :key="item.account" style="text-align: left;" v-show="params.studentAccount!==item.account">
+            <img src="../views/商品展示页面/image/img.jpg" style="width: 38px;height: 38px;border-radius: 50%;margin-left: 10px" />
+            <a @click="changeToName(item)">
+              <label style="margin-left: 20px">
+                <span>{{item.nickName}}</span>
+              </label>
+            </a>
+            <el-badge :value="item.newRecordNum" v-if="item.newRecordNum!=0"></el-badge>
+            <el-divider></el-divider>
           </p>
-          <el-divider></el-divider>
+
         </div>
-        <div style="float: left;width: 75%;height: 90%;">
-          <div style="float: left;width: 100%;height: 70%;border: 1px solid #E0E0E0">
+        <div id="messageShow" style="float: left;width: 75%;height: 90%;">
+          <div style="float: left;width: 100%;height: 348px;border: 1px solid #E0E0E0;overflow: auto" >
             <div v-for="(item,index) in messageList" :key="index" style="width: 100%">
-              <p v-if="item.userLocation==='l'" style="text-align: left;margin-top: 20px">
-                <span style="margin-left: 10px">{{item.mess}}</span>
+              <p v-if="item.fromName===toName" style="text-align: left;margin-top: 20px">
+                <img src="../views/商品展示页面/image/img.jpg" style="width: 38px;height: 38px;border-radius: 50%;margin-left: 8px" />
+                <span style="margin-left: 10px;background: #C0EACC;border-radius: 10px;padding: 5px">
+                  <span style="margin-left: 10px;margin-right: 10px">{{item.content}}</span>
+                </span>
               </p>
-              <p v-if="item.userLocation==='r'" style="text-align: right;margin-top: 20px">
-                <span style="margin-right: 10px">{{item.mess}}</span>
+              <p v-if="item.fromName===params.studentAccount" style="text-align: right;margin-top: 20px">
+                <span style="margin-left: 10px;margin-right: 10px;background: #A3D0EE;border-radius: 10px;padding: 5px">
+                  <span style="margin-left: 10px;margin-right: 10px">{{item.content}}</span>
+                </span>
+                <img src="../views/商品展示页面/image/img.jpg" style="margin-right: 8px;width: 38px;height: 38px;border-radius: 50%" />
               </p>
             </div>
           </div>
           <div style="float: left;width: 100%;height: 30%;border: 1px solid #E0E0E0;border-radius: 0px 0px 10px 0px">
-              <textarea v-if="toName!=''" style="border: 0px;width: 100%;height: 80%;margin: auto" v-model="messageValue"></textarea>
-              <el-button v-if="toName!=''" size="small" style="width: 15%;height: 22%;margin-top: -10px;float: right;margin-right: 5px;" @click="sendMessage()">发送</el-button>
+              <textarea v-if="toName!=''&&toName!=null" style="border: 0px;width: 100%;height: 80%;margin: auto" v-model="messageValue"></textarea>
+              <el-button v-if="toName!=''&&toName!=null" size="small" style="width: 15%;height: 22%;margin-top: -10px;float: right;margin-right: 5px;" @click="sendMessage()" @keyup.enter="sendMessage()">发送</el-button>
           </div>
         </div>
       </div>
@@ -120,7 +136,11 @@ export default {
       direction: 'rtl',
       student:null,
       friendAccounts:[],
+      friendList:[],
       toName: '',
+      nickname:'',
+      friend:{},
+      messageCount:0
     }
   },
   created() {
@@ -134,6 +154,7 @@ export default {
       this.student = stu
       this.connectWebSocket()
       this.getNewNotice()
+      this.getFriendList()
       return true;
     }
   },
@@ -154,7 +175,6 @@ export default {
           case 'postGood': this.$router.push({path:"/postGood"}); break;
           case 'shoppingCart': this.$router.push({path:"/shoppingCart"}); break;
           case 'postRecord': this.$router.push({path:"/issueRecord"}); break;
-          case 'buyRecord': this.$router.push({path:"/login"}); break;
           case 'messageCenter': this.$router.push({path:"/chatRoom"});this.$router.go(0); break;
           case 'personalInfo': this.$router.push({path:"/personalInfo"}); break;
           case 'orderCenter': this.$router.push({path:"/orderCenter"}); break;
@@ -179,6 +199,16 @@ export default {
           _this.newsCount = res.data.newsCount
         }
       })
+    },
+    changeToName(item){
+      this.friend = item
+      this.toName = this.friend.account
+      for (let i of this.friendList) {
+        if (i.account==this.friend.account){
+          this.messageCount = this.messageCount - i.newRecordNum
+          i.newRecordNum = 0
+        }
+      }
     },
     //判断是否已登录
     judgeLogin(){
@@ -229,8 +259,8 @@ export default {
         let res = JSON.parse(dataStr)
         console.log("res="+ JSON.stringify(res))
         //判断是否为系统消息
-        if (res.system){
-          _this.friendAccounts = res.message
+        if (res.systemMark){
+          _this.friendAccounts = res.content
           for (let friend of _this.friendAccounts){
             if (friend==_this.params.studentAccount){
               //_this.friendAccounts.remove(friend)
@@ -238,18 +268,26 @@ export default {
             }
           }
         }else {
-          console.log("res.fromName="+res.fromName)
-          let m = {userLocation:"l",mess:res.message,name:res.fromName}
+          console.log("res.content="+res.content)
+          let msg = res.content
           let msgListStr = sessionStorage.getItem(res.fromName)
           if (msgListStr == null){
             _this.messageList=[]
           }else {
             _this.messageList = JSON.parse(msgListStr)
+            let m = {id:'',fromName:res.fromName,toName:res.toName,content:msg,createTime:res.createTime,readMark:res.readMark,systemMark:res.systemMark}
             _this.messageList.push(m)
           }
           let saveStr = JSON.stringify(_this.messageList)
           sessionStorage.setItem(res.fromName,saveStr)
-          console.log("fromName="+res.fromName)
+          //console.log("sessionStorage.setItem(res.fromName,saveStr)====="+sessionStorage.getItem(res.fromName))
+          for (let friend of _this.friendList) {
+            if (friend.account == res.fromName){
+              friend.newRecordNum++
+              _this.messageCount++
+              break
+            }
+          }
         }
       };
 
@@ -266,27 +304,50 @@ export default {
     // 发送消息
     sendMessage: function() {
       let socketMsg = {"message": this.messageValue, "toName": this.toName}
-      let m = {userLocation:"r",mess:this.messageValue,name:this.toName}
+      let time = this.$moment(new Date).format('YYYY-MM-DD  HH:mm:ss')
+      let m = {id:'',fromName:this.params.studentAccount,toName:this.toName,content:this.messageValue,createTime:time,readMark:0,systemMark:false}
       let msgListStr = sessionStorage.getItem(this.toName)
       if (msgListStr == null){
         this.messageList=[]
       }else {
         this.messageList = JSON.parse(msgListStr)
-        this.messageList.push(m)
       }
+      this.messageList.push(m)
       let saveStr = JSON.stringify(this.messageList)
       sessionStorage.setItem(this.toName,saveStr)
       //this.messageList.push(m)
       this.websocket.send(JSON.stringify(socketMsg));
       this.messageValue=''
-      /*sessionStorage.setItem(this.toName,mm)
-      let chatDataStr = sessionStorage.getItem(this.toName)
-      let chatData = JSON.parse(chatDataStr)
-      let s = {userLocation:"r",mess:this.messageValue}
-      chatData.push(s)
-      console.log("chatData="+chatDataStr)
-      console.log("JSON.parse(chatData)="+chatData)*/
     },
+    //获取好友列表
+    getFriendList(){
+      let _this = this
+      axios.post('http://localhost:8181/chat/getAllFriends',{
+        params: this.params
+      }).then(function (res) {
+        if (null != res.data && res.data.getResult){
+          _this.friendList = res.data.friendList
+          //console.log("friendList="+JSON.stringify(_this.friendList))
+          _this.getLeaveMsg()
+        }
+      })
+    },
+    //获取留言信息
+    getLeaveMsg(){
+      for (let f of this.friendList){
+        let fromName = f.account
+        let contentList = f.chatRecordList
+        //console.log("contentList==="+JSON.stringify(contentList))
+        if (null != contentList){
+          let listStr = JSON.stringify(contentList)
+          sessionStorage.setItem(fromName,listStr)
+          this.messageCount = this.messageCount + f.newRecordNum
+        }else {
+          let listStr = []
+          sessionStorage.setItem(fromName,listStr)
+        }
+      }
+    }
   },
   watch:{
     toName:function (){

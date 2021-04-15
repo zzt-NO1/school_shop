@@ -6,7 +6,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueDirectiveImagePreviewer from 'vue-directive-image-previewer';
 import 'vue-directive-image-previewer/dist/assets/style.css'
+import moment from 'moment'
 
+Vue.prototype.$moment = moment
 
 Vue.prototype.axios = Axios
 
