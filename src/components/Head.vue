@@ -45,7 +45,7 @@
           </li>
         </ul>
         <ul class="guide-ul">
-          <li ><label @click="drawer = true">
+          <li ><label @click="getFriendList(true)">
             <span class="iconfont">&#xe70a;消息中心</span>
             <el-badge :value="messageCount" v-if="messageCount!=0"></el-badge>
           </label></li>
@@ -71,33 +71,66 @@
         </div>
         <div style="float: left;width: 25%;height: 90%;background-color:#F5F5F5;border: 1px solid #E0E0E0;border-radius: 0px 0px 0px 10px;overflow: auto">
           <div v-if="friendList.length<=0" style="margin: 80px auto"><span style="color: silver">暂无内容</span></div>
-          <p v-for="item in friendList" :key="item.account" style="text-align: left;" v-show="params.studentAccount!==item.account">
-            <img src="../views/商品展示页面/image/img.jpg" style="width: 38px;height: 38px;border-radius: 50%;margin-left: 10px" />
-            <a @click="changeToName(item)">
-              <label style="margin-left: 20px">
-                <span>{{item.nickName}}</span>
-              </label>
-            </a>
-            <el-badge :value="item.newRecordNum" v-if="item.newRecordNum!=0"></el-badge>
-            <el-divider></el-divider>
-          </p>
+          <div v-for="item in friendList" :key="item.account" style="text-align: left;width: 100%;height: 40px;margin-top: 15px" v-show="params.studentAccount!==item.account">
+            <div style="width: 25%;float: left">
+              <img src="../views/商品展示页面/image/img.jpg" style="width: 38px;height: 38px;border-radius: 20%;margin-left: 10px" />
+            </div>
+            <div style="width: 72%;float: left;padding-top: 10px">
+              <a @click="changeToName(item)">
+                <label style="margin-left: 20px">
+                  <span v-if="item.account!==toName">{{item.nickName}}</span>
+                  <span v-if="item.account===toName" style="color:#c81623;">{{item.nickName}}</span>
+                </label>
+              </a>
+              <el-badge :value="item.newRecordNum" v-if="item.newRecordNum!=0"></el-badge>
+            </div>
+           <!-- <el-divider></el-divider>-->
+          </div>
 
         </div>
         <div id="messageShow" style="float: left;width: 75%;height: 90%;">
           <div style="float: left;width: 100%;height: 348px;border: 1px solid #E0E0E0;overflow: auto" >
             <div v-for="(item,index) in messageList" :key="index" style="width: 100%">
-              <p v-if="item.fromName===toName" style="text-align: left;margin-top: 20px">
-                <img src="../views/商品展示页面/image/img.jpg" style="width: 38px;height: 38px;border-radius: 50%;margin-left: 8px" />
-                <span style="margin-left: 10px;background: #C0EACC;border-radius: 10px;padding: 5px">
-                  <span style="margin-left: 10px;margin-right: 10px">{{item.content}}</span>
-                </span>
-              </p>
-              <p v-if="item.fromName===params.studentAccount" style="text-align: right;margin-top: 20px">
+              <div v-if="item.fromName===toName" style="text-align: left;margin-top: 20px;width: 100%">
+                <div style="float: left;width: 10%;">
+                  <img src="../views/商品展示页面/image/img.jpg" style="width: 38px;height: 38px;border-radius: 50%;margin-top: 5px;margin-left: 8px" />
+                </div>
+                <div style="float: left;width: 90%">
+                  <div>
+                    <span style="margin-left: 10px;margin-right: 10px;font-size: 10px;color: #999999">{{item.createTime}}</span>
+                  </div>
+                  <div>
+                    <p style="margin-top: 10px">
+                      <span style="margin-left: 10px;background: #C0EACC;border-radius: 10px;padding: 5px">
+                    <span style="margin-left: 10px;margin-right: 10px">{{item.content}}</span>
+                  </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div v-if="item.fromName===params.studentAccount" style="text-align: right;margin-top: 20px;width: 100%">
+                <div style="float: left;width: 90%">
+                  <div>
+                    <span style="margin-right: 10px;font-size: 10px;color: #999999">{{item.createTime}}</span>
+                  </div>
+                  <div>
+                    <p style="margin-top: 10px">
+                      <span style="background: #A3D0EE;border-radius: 10px;padding: 5px;margin-right: 10px">
+                        <span style="margin-left: 10px;margin-right: 10px">{{item.content}}</span>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div style="float: right;width: 10%">
+                  <img src="../views/商品展示页面/image/img.jpg" style="width: 38px;height: 38px;border-radius: 50%;margin-right: 8px;margin-top: 5px" />
+                </div>
+              </div>
+              <!--<p v-if="item.fromName===params.studentAccount" style="text-align: right;margin-top: 20px">
                 <span style="margin-left: 10px;margin-right: 10px;background: #A3D0EE;border-radius: 10px;padding: 5px">
                   <span style="margin-left: 10px;margin-right: 10px">{{item.content}}</span>
                 </span>
                 <img src="../views/商品展示页面/image/img.jpg" style="margin-right: 8px;width: 38px;height: 38px;border-radius: 50%" />
-              </p>
+              </p>-->
             </div>
           </div>
           <div style="float: left;width: 100%;height: 30%;border: 1px solid #E0E0E0;border-radius: 0px 0px 10px 0px">
@@ -140,7 +173,8 @@ export default {
       toName: '',
       nickname:'',
       friend:{},
-      messageCount:0
+      messageCount:0,
+      requestToName:'',
     }
   },
   created() {
@@ -154,7 +188,7 @@ export default {
       this.student = stu
       this.connectWebSocket()
       this.getNewNotice()
-      this.getFriendList()
+      this.getFriendList(false)
       return true;
     }
   },
@@ -175,7 +209,7 @@ export default {
           case 'postGood': this.$router.push({path:"/postGood"}); break;
           case 'shoppingCart': this.$router.push({path:"/shoppingCart"}); break;
           case 'postRecord': this.$router.push({path:"/issueRecord"}); break;
-          case 'messageCenter': this.$router.push({path:"/chatRoom"});this.$router.go(0); break;
+          case 'messageCenter': this.$router.go(0); break;
           case 'personalInfo': this.$router.push({path:"/personalInfo"}); break;
           case 'orderCenter': this.$router.push({path:"/orderCenter"}); break;
           default: this.$router.push({path:"/login"});
@@ -320,7 +354,8 @@ export default {
       this.messageValue=''
     },
     //获取好友列表
-    getFriendList(){
+    getFriendList(item){
+      this.drawer = item
       let _this = this
       axios.post('http://localhost:8181/chat/getAllFriends',{
         params: this.params
@@ -347,6 +382,30 @@ export default {
           sessionStorage.setItem(fromName,listStr)
         }
       }
+    },
+    //获取是否有人想要联系卖家
+    connectWithOwner(){
+      let ownerAccount = localStorage.getItem("owner")
+      if (null != ownerAccount && ownerAccount != ''){
+        let b = false
+        for (let f of this.friendList){
+          if (f.account == ownerAccount){
+            b=true
+            this.friend = f
+            break
+          }
+        }
+        if (!b){
+          this.requestToName = ownerAccount
+          console.log('ownerAccount==='+ownerAccount)
+          let newFriend = {account:ownerAccount,nickName:ownerAccount,chatRecordList:[],newRecordNum:0}
+          this.friendList.push(newFriend)
+          this.friend=newFriend
+        }
+        this.drawer = true
+        this.toName = ownerAccount
+        localStorage.removeItem("owner")
+      }
     }
   },
   watch:{
@@ -365,6 +424,9 @@ export default {
     this.timer = setInterval(() => {
       setTimeout(this.getNewNotice, 0)
     }, 1000*50)
+    this.timer = setInterval(() => {
+      setTimeout(this.connectWithOwner, 0)
+    }, 1000*0.5)
   },
 }
 </script>

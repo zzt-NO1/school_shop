@@ -17,6 +17,11 @@
         </button>
       </div>
       <div class="msg-wrapper">
+        <div style="width: 110px;float: left;margin-top: 10px">
+          <label style="font-size: 14px" class="chatWithOwner" @click="connectOwner(modelData.studentAccount)">
+            联系主人 <i class="el-icon-chat-dot-square"></i>
+          </label>
+        </div>
         <h2>
           <p class="title-p">{{modelData.title}}<span v-if="modelData.validMark===0 || modelData.remain===0 || modelData.passMark!=1" style="font-family: 仿宋">(下架)</span></p>
           <span v-if="modelData.rentAndSellMark===0" style="background-color: #6699CC; color: whitesmoke" class="type-span">出售</span>
@@ -160,6 +165,7 @@ export default {
         count:2,
         transWay: 0,
         isFree: 0,
+        studentAccount:'',
         address:'南校区六公寓',
         describe:'手感不错',
         ruleList:[
@@ -176,6 +182,11 @@ export default {
 
   },
   methods: {
+    //与主人联系
+    connectOwner(ownerAccount){
+      console.log("ownerAccount="+ownerAccount)
+      localStorage.setItem("owner",ownerAccount);
+    },
     //跳转订单确认页面
     goToConfirmPage(){
       if (!this.judgeLogin()){//t没登录
@@ -336,5 +347,10 @@ export default {
     width: ;
   }
 }*/
-
+.chatWithOwner{
+  color: #669999;
+}
+.chatWithOwner:hover{
+  color: #2d8cf0;
+}
 </style>
