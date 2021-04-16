@@ -125,12 +125,6 @@
                   <img src="../views/商品展示页面/image/img.jpg" style="width: 38px;height: 38px;border-radius: 50%;margin-right: 8px;margin-top: 5px" />
                 </div>
               </div>
-              <!--<p v-if="item.fromName===params.studentAccount" style="text-align: right;margin-top: 20px">
-                <span style="margin-left: 10px;margin-right: 10px;background: #A3D0EE;border-radius: 10px;padding: 5px">
-                  <span style="margin-left: 10px;margin-right: 10px">{{item.content}}</span>
-                </span>
-                <img src="../views/商品展示页面/image/img.jpg" style="margin-right: 8px;width: 38px;height: 38px;border-radius: 50%" />
-              </p>-->
             </div>
           </div>
           <div style="float: left;width: 100%;height: 30%;border: 1px solid #E0E0E0;border-radius: 0px 0px 10px 0px">
@@ -387,7 +381,7 @@ export default {
     connectWithOwner(){
       let ownerAccount = localStorage.getItem("owner")
       if (null != ownerAccount && ownerAccount != ''){
-        let b = false
+        /*let b = false
         for (let f of this.friendList){
           if (f.account == ownerAccount){
             b=true
@@ -402,8 +396,23 @@ export default {
           this.friendList.push(newFriend)
           this.friend=newFriend
         }
-        this.drawer = true
-        this.toName = ownerAccount
+        this.drawer = true*/
+        for (let i of this.friendList) {
+          if (i.account==ownerAccount){
+            this.friend = i
+            this.toName = i.account
+            break
+          }
+        }
+        this.getFriendList(true)
+/*
+        let friends = this.friendList.filter(item=>{
+          return item.account == ownerAccount
+        })
+        this.friend = friends[0]
+        this.toName = this.friend.nickName*/
+        console.log("friend---"+JSON.stringify(this.friend))
+        console.log("toName---"+this.toName)
         localStorage.removeItem("owner")
       }
     }
@@ -426,7 +435,7 @@ export default {
     }, 1000*50)
     this.timer = setInterval(() => {
       setTimeout(this.connectWithOwner, 0)
-    }, 1000*0.5)
+    }, 1000*0.1)
   },
 }
 </script>

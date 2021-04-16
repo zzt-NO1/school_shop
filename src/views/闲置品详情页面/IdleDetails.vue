@@ -177,6 +177,7 @@ export default {
       params:{
         studentAccount: null,
         idleId:null,
+        ownerAccount:'',
       }
     }
 
@@ -184,8 +185,25 @@ export default {
   methods: {
     //与主人联系
     connectOwner(ownerAccount){
-      console.log("ownerAccount="+ownerAccount)
-      localStorage.setItem("owner",ownerAccount);
+      if (this.judgeLogin()){
+        console.log("studentAccount=="+this.params.studentAccount)
+        console.log("ownerAccount="+ownerAccount)
+        this.addRelatedIdle(ownerAccount)
+        localStorage.setItem("owner",ownerAccount);
+      }else {
+        window.alert("尚未登录，请前往登录页面进行登录！")
+        this.$router.push({path:"/login"})
+      }
+    },
+    //为双方添加关联闲置品
+    addRelatedIdle(ownerAccount){
+      this.params.ownerAccount = ownerAccount;
+      axios.post('http://localhost:8181/chat/addIdleIdBetweenStudents',{
+        params: this.params
+      }).then(function (res) {
+            console.log(res.data)
+        }
+      );
     },
     //跳转订单确认页面
     goToConfirmPage(){
