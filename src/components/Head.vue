@@ -86,12 +86,35 @@
             </div>
            <!-- <el-divider></el-divider>-->
           </div>
-
         </div>
         <div id="messageShow" style="float: left;width: 75%;height: 90%;">
           <div style="float: left;width: 100%;height: 348px;border: 1px solid #E0E0E0;overflow: auto" >
-            <div v-for="(item,index) in messageList" :key="index" style="width: 100%">
-              <div v-if="item.fromName===toName" style="text-align: left;margin-top: 20px;width: 100%">
+            <div v-show="friend.idleList!=null && friend.idleList.length > 0" style="text-align: left">
+              <div v-for="(item,index) in friend.idleList" :key="index" style="border-radius: 10px;margin-left:12px;border: 1px solid #669999;float: left;width: 95%;padding: 10px;margin-top:10px;height: 60px">
+                <a style="cursor: pointer" @click="goToIdleDetails(item.id)">
+                  <div style="float: left">
+                    <el-image :src="item.pictures" style="width: 40px;height: 40px"></el-image>
+                  </div>
+                  <div style="float: left;margin-left: 20px;width: 355px">
+                    <div style="float: left;margin-top: 10px">
+                      <span style="color: #424949">{{item.title}}</span>
+                    </div>
+                    <div style="float: right">
+                      <div style="margin-right: 10px;text-align: center">
+                        <span style="color: #6699CC;font-size: 13px" v-if="item.rentAndSellMark===0">出售品</span>
+                        <span style="color: #669999;font-size: 13px" v-if="item.rentAndSellMark===1">出租品</span>
+                      </div>
+                      <div style="margin-right: 10px;text-align: center">
+                        <span style="color: #c81623;font-size: 13px" v-if="item.rentAndSellMark===0">￥{{item.price}}</span>
+                        <span style="color: #c81623;font-size: 13px" v-if="item.rentAndSellMark===1">￥{{item.price}}/天</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div v-for="(item,index) in messageList" :key="index" style="width: 100%;margin-top: 20px">
+              <div v-if="item.fromName===toName" style="text-align: left;margin-top: 30px;width: 100%">
                 <div style="float: left;width: 10%;">
                   <img src="../views/商品展示页面/image/img.jpg" style="width: 38px;height: 38px;border-radius: 50%;margin-top: 5px;margin-left: 8px" />
                 </div>
@@ -169,6 +192,7 @@ export default {
       friend:{},
       messageCount:0,
       requestToName:'',
+      page:''
     }
   },
   created() {
@@ -187,26 +211,36 @@ export default {
     }
   },
   methods:{
+    //进入详情页
+    goToIdleDetails(idleId){
+      localStorage.setItem("changeIdle",idleId)
+      this.$router.push({path:'/idleDetails',query:{idleId: idleId}});
+    },
     //跳转登录页面
     login() {
       this.$router.push({path:"/login"})
     },
     //
     toPage(page){
+      let oldPage = this.page
+      this.page = page
       console.log(page);
-      if (page==='goods'){
+      if (page=='goods'){
         this.$router.push({path:"/goods"});
-      }
-      else if (this.judgeLogin()){
+      } else if (this.judgeLogin()){
         this.loginStatus = true;
-        switch (page){
-          case 'postGood': this.$router.push({path:"/postGood"}); break;
-          case 'shoppingCart': this.$router.push({path:"/shoppingCart"}); break;
-          case 'postRecord': this.$router.push({path:"/issueRecord"}); break;
-          case 'messageCenter': this.$router.go(0); break;
-          case 'personalInfo': this.$router.push({path:"/personalInfo"}); break;
-          case 'orderCenter': this.$router.push({path:"/orderCenter"}); break;
-          default: this.$router.push({path:"/login"});
+        if (oldPage == page){
+          this.$router.go(0)
+        }else {
+          switch (page){
+            case 'postGood': this.$router.push({path:"/postGood"}); break;
+            case 'shoppingCart': this.$router.push({path:"/shoppingCart"}); break;
+            case 'postRecord': this.$router.push({path:"/issueRecord"}); break;
+            case 'messageCenter': this.$router.go(0); break;
+            case 'personalInfo': this.$router.push({path:"/personalInfo"}); break;
+            case 'orderCenter': this.$router.push({path:"/orderCenter"}); break;
+            default: this.$router.push({path:"/login"});
+          }
         }
       }else {
         window.alert("尚未登录！请先登录......")
@@ -381,22 +415,6 @@ export default {
     connectWithOwner(){
       let ownerAccount = localStorage.getItem("owner")
       if (null != ownerAccount && ownerAccount != ''){
-        /*let b = false
-        for (let f of this.friendList){
-          if (f.account == ownerAccount){
-            b=true
-            this.friend = f
-            break
-          }
-        }
-        if (!b){
-          this.requestToName = ownerAccount
-          console.log('ownerAccount==='+ownerAccount)
-          let newFriend = {account:ownerAccount,nickName:ownerAccount,chatRecordList:[],newRecordNum:0}
-          this.friendList.push(newFriend)
-          this.friend=newFriend
-        }
-        this.drawer = true*/
         for (let i of this.friendList) {
           if (i.account==ownerAccount){
             this.friend = i
@@ -405,14 +423,6 @@ export default {
           }
         }
         this.getFriendList(true)
-/*
-        let friends = this.friendList.filter(item=>{
-          return item.account == ownerAccount
-        })
-        this.friend = friends[0]
-        this.toName = this.friend.nickName*/
-        console.log("friend---"+JSON.stringify(this.friend))
-        console.log("toName---"+this.toName)
         localStorage.removeItem("owner")
       }
     }

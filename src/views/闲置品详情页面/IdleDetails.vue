@@ -338,7 +338,15 @@ export default {
     },
   },
   watch:{
-    '$route':'getParams'
+    '$route'(){
+      this.loading = true
+      let idleId = this.$route.query.idleId
+      if (idleId!=null&&idleId!=''){
+        this.params.idleId = parseInt(idleId)
+        this.getIdleInfoById(this.params.idleId)
+      }
+
+    }
   },
   created() {
     console.log("进入详情页...")
