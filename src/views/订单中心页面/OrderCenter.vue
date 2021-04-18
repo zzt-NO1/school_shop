@@ -202,6 +202,7 @@
                   <span v-if="item.statusCode===2">对方已发货，等待确认收货</span>
                   <span v-if="item.statusCode===5">等待系统退款</span>
                   <span v-if="item.statusCode===6">您已确认收货，订单结束</span>
+                  <span v-if="item.statusCode===7">订单超时未支付，订单关闭</span>
                   <span v-if="item.statusCode===8">对方取消了该订单，系统已为您退款成功，订单关闭</span>
                 </p>
                 <p style="color: #999999;text-align: left;font-size: 14px">备注信息:
@@ -272,6 +273,7 @@
                   <span v-if="item.statusCode===4">等待对方确认收回</span>
                   <span v-if="item.statusCode===5">等待系统退款</span>
                   <span v-if="item.statusCode===6">对方已确认收回，订单结束</span>
+                  <span v-if="item.statusCode===7">订单超时未支付，订单关闭</span>
                   <span v-if="item.statusCode===8">对方取消了该订单，系统已为您退款成功，订单关闭</span>
                 </p>
                 <p style="color: #999999;text-align: left;font-size: 14px">备注信息:

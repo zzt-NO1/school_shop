@@ -6,7 +6,7 @@
       <div class="user-avator">
         <ul class="main" v-if="loginStatus">
             <li class="li1" >
-              <a class="main-a" href="#">
+              <a class="main-a" @click="page=page">
                 <el-dropdown>
                   <span class="user">{{ studentName }}<i class="el-icon-arrow-down el-icon--right"></i></span>
                   <el-dropdown-menu slot="dropdown">
