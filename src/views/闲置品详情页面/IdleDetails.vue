@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%;height: 680px">
-    <div style="width: 70%;height: 100%;margin:auto;padding: 20px">
+    <div style="width: 70%;height: 100%;margin:auto;padding: 20px" v-loading="loading">
       <div style="width: 100%;margin-left: 5%">
         <div class="img-div" style="width: 25%;height: 300px;margin:auto;border: 1px solid lightgray;border-radius: 10px 0px 0px 0px;float: left">
           <el-carousel height="300px" style="width: 100%;margin: auto">
