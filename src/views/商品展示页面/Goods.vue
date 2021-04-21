@@ -35,7 +35,7 @@
       <div class="gallery-wrapper" >
           <el-form v-loading="loading">
             <div class="white-panel" v-for="(item,index) in idleList" :key="index">
-              <a href="#" @click="goToIdleDetails(item.id)">
+              <a @click="goToIdleDetails(item.id)">
                 <div style="position: relative;">
                   <img v-if="item.pictures===null || item.pictures===''" src="../../assets/img/noPics.png" class="thumb">
                   <img v-bind:src="item.pictures" class="thumb">

@@ -5,7 +5,7 @@
         <div class="img-div" style="width: 25%;height: 300px;margin:auto;border: 1px solid lightgray;border-radius: 10px 0px 0px 0px;float: left">
           <el-carousel height="300px" style="width: 100%;margin: auto">
             <el-carousel-item v-for="(item,index) in modelData.picBase64List" :key="index" style="width: 100%;">
-              <el-image class="medium" :src="item" style="height: 240px;width: 240px;margin: auto;border-radius: 10px;margin-top: 10px" :preview-src-list="[item]" fit="cover"></el-image>
+              <el-image class="medium" :src="item" style="height: 240px;width: 240px;margin: auto;border-radius: 10px" :preview-src-list="[item]" fit="cover"></el-image>
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -51,7 +51,7 @@
               <span v-if="modelData.rentAndSellMark===0" style="background-color:rgb(255 248 220); color:#F39C12;margin-top: -34px;opacity: 0.8" class="type-span">出售</span>
               <span v-if="modelData.rentAndSellMark===1" style="background-color:rgb(255 248 220); color:#F39C12;margin-top: -34px;opacity: 0.8" class="type-span">出租</span>
             </div>
-            <!--------猫-------------------------------------------------------------------------------------------------------------------->
+<!--------猫-------------------------------------------------------------------------------------------------------------------->
             <div style="width: 200px;height: 220px;float: left;margin-top: -233px;margin-left:445px">
               <div style="width: 163px;height: 75px;border: 1px solid #222222;float: left;margin-left: 50px;margin-top: -5px;margin-bottom:0px;border-radius: 50%;padding: 20px 0px 0px 0px" >
                 <div class="cat-word" style="font-size: 14px; color: #666666">
@@ -66,46 +66,46 @@
 
         </div>
       </div>
-      <!-----详情描述------------------------------------------------------------------------------------------------------------------>
-      <div  style="width: 90%;border: 1px solid #d9d9d9;border-radius:0px 0px 10px 10px;float: left;margin-left: 5%;">
-        <div style="background-color: #D7DBDD;text-align: center;height: 45px;width: 100%;border-radius: 0px 0px 0px 0px;padding-top: 10px">
-          <span class="iconfont" style="float: left;font-size: 35px;margin-top: -10px">&#xe719;</span>
-          <span style="font-size: 18px">闲置品详情</span>
-        </div>
-        <div style="width: 100%;height: 100%;margin-top: 0px">
-          <div style="width: 100%;height: 100%;margin-bottom: 50px;border-top: 1px solid #d9d9d9">
-            <div style="text-align: left">
-              <el-divider style="width: 80%" >
-                <span>详情</span>
-              </el-divider>
-              <div  style="width: 100%;margin-left: 20px"><span style="font-size: 16px">{{modelData.describe}}</span></div>
-            </div>
-            <div v-if="modelData.rentAndSellMark==1">
-              <el-divider style="width: 80%">
-                <span>租赁要求</span>
-              </el-divider>
-              <div style="width: 100%;margin-left: 20px;text-align: left">
-                <li v-for="(item,index) in modelData.ruleList" :key="index">{{item}}</li>
+<!-----详情描述------------------------------------------------------------------------------------------------------------------>
+        <div  style="width: 90%;border: 1px solid #d9d9d9;border-radius:0px 0px 10px 10px;float: left;margin-left: 5%;">
+          <div style="background-color: #D7DBDD;text-align: center;height: 45px;width: 100%;border-radius: 0px 0px 0px 0px;padding-top: 10px">
+            <span class="iconfont" style="float: left;font-size: 35px;margin-top: -10px">&#xe719;</span>
+            <span style="font-size: 18px">闲置品详情</span>
+          </div>
+          <div style="width: 100%;height: 100%;margin-top: 0px">
+            <div style="width: 100%;height: 100%;margin-bottom: 50px;border-top: 1px solid #d9d9d9">
+              <div style="text-align: left">
+                <el-divider style="width: 80%" >
+                  <span>详情</span>
+                </el-divider>
+                <div  style="width: 100%;margin-left: 20px"><span style="font-size: 16px">{{modelData.describe}}</span></div>
+              </div>
+              <div v-if="modelData.rentAndSellMark==1">
+                <el-divider style="width: 80%">
+                  <span>租赁要求</span>
+                </el-divider>
+                <div style="width: 100%;margin-left: 20px;text-align: left">
+                  <li v-for="(item,index) in modelData.ruleList" :key="index">{{item}}</li>
+                </div>
               </div>
             </div>
-          </div>
-          <div style="width: 100%;height: 100%;margin-bottom: 50px;border: 1px solid #d9d9d9">
-            <div v-for="(item,index) in modelData.picBase64List" :key="index" style="width: 100%;">
-              <el-image class="medium" :src="item" style="height: 100%;width:auto;margin: auto" :preview-src-list="[item]" fit="cover"></el-image>
+            <div style="width: 100%;height: 100%;margin-bottom: 50px;border: 1px solid #d9d9d9">
+              <div v-for="(item,index) in modelData.picBase64List" :key="index" style="width: 100%;">
+                <el-image class="medium" :src="item" style="height: 100%;width:auto;margin: auto" :preview-src-list="[item]" fit="cover"></el-image>
+              </div>
             </div>
-          </div>
 
+          </div>
         </div>
-      </div>
     </div>
   </div>
 </template>
-<!--<script src="../闲置品详情页面/js/index.js"></script>-->
+
 <script>
 import axios from "axios";
 
 export default {
-  name: "IdleDetails",
+  name: "testDetails",
 
   data() {
     return{
@@ -176,7 +176,7 @@ export default {
         params: this.params
       }).then(function (res) {
             console.log(res.data)
-        }
+          }
       );
     },
     //跳转订单确认页面
@@ -219,7 +219,7 @@ export default {
     },
 
     btnClick(index){
-     /* let btn = document.getElementsByClassName('face-button')*/
+      /* let btn = document.getElementsByClassName('face-button')*/
       console.log("index="+index)
 
       this.modelData.pictures = this.modelData.picBase64List[index]
@@ -336,23 +336,9 @@ export default {
 }
 </script>
 
+
 <style scoped>
 @import "../闲置品详情页面/css/style.css";
-
-/*@keyframes progressAnimationStrike {
-  from {
-    width: 0;
-  }
-  to {
-    width: ;
-  }
-}*/
-.chatWithOwner{
-  color: #669999;
-}
-.chatWithOwner:hover{
-  color: #2d8cf0;
-}
 .swing {
   margin: 0 auto;
   width: 0;

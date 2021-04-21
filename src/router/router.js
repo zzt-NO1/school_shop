@@ -17,6 +17,7 @@ import OrderConfirm from "../views/订单详情页面/OrderConfirm";
 import OrderPay from "../views/订单详情页面/OrderPay";
 import OrderCenter from "../views/订单中心页面/OrderCenter"
 import ChatRoom from "../views/聊天页面/ChatRoom"
+import NewIdleDetails from "../views/闲置品详情页面/NewIdleDetails"
 
 export default new Router({
     routes:[
@@ -113,6 +114,13 @@ export default new Router({
         {
             path: '/chatRoom',
             component: ChatRoom,
+            meta: {
+                keepAlive: true
+            }
+        },
+        {
+            path: '/newIdleDetails',
+            component: NewIdleDetails,
             meta: {
                 keepAlive: true
             }
