@@ -1,15 +1,15 @@
 <template>
-  <div style="width: 100%;height: 680px">
-    <div style="width: 70%;height: 100%;margin:auto;padding: 20px" v-loading="loading">
-      <div style="width: 100%;margin-left: 5%">
-        <div class="img-div" style="width: 25%;height: 300px;margin:auto;border: 1px solid lightgray;border-radius: 10px 0px 0px 0px;float: left">
+  <div style="width: 100%;height: auto">
+    <div style="width: 70%;height: 100%;margin:auto;padding: 20px;border-radius: 10px" v-loading="loading">
+      <div style="width: 100%;margin-left: 5%;background-color: white;opacity: 0.93;">
+        <div class="img-div" style="background-color: white;opacity: 0.93;width: 25%;height: 300px;margin:auto;border: 1px solid lightgray;border-radius: 10px 0px 0px 0px;float: left">
           <el-carousel height="300px" style="width: 100%;margin: auto">
             <el-carousel-item v-for="(item,index) in modelData.picBase64List" :key="index" style="width: 100%;">
               <el-image class="medium" :src="item" style="height: 240px;width: 240px;margin: auto;border-radius: 10px;margin-top: 10px" :preview-src-list="[item]" fit="cover"></el-image>
             </el-carousel-item>
           </el-carousel>
         </div>
-        <div class="msg-div" style="width: 65%;height: 300px;margin: auto;border: 1px solid lightgray;border-radius: 0px 10px 0px 0px;float: left">
+        <div class="msg-div" style="background-color: white;opacity: 0.93;width: 65%;height: 300px;margin: auto;border: 1px solid lightgray;border-radius: 0px 10px 0px 0px;float: left">
           <div style="width: 100%;height: 100%;">
             <div style="width: 100% ;height: 100%;float: left;">
               <div style="font-size: 19px;width: 100%;height:35px;padding:6px 60px 0px 30px;background-color: #D7DBDD;text-align:  center;border-radius: 0px 10px 0px 0px">{{modelData.title}}</div>
@@ -67,7 +67,7 @@
         </div>
       </div>
       <!-----详情描述------------------------------------------------------------------------------------------------------------------>
-      <div  style="width: 90%;border: 1px solid #d9d9d9;border-radius:0px 0px 10px 10px;float: left;margin-left: 5%;">
+      <div  style="background-color: white;opacity: 0.93;width: 90%;border: 1px solid #d9d9d9;border-radius:0px 0px 10px 10px;float: left;margin-left: 5%;">
         <div style="background-color: #D7DBDD;text-align: center;height: 45px;width: 100%;border-radius: 0px 0px 0px 0px;padding-top: 10px">
           <span class="iconfont" style="float: left;font-size: 35px;margin-top: -10px">&#xe719;</span>
           <span style="font-size: 18px">闲置品详情</span>

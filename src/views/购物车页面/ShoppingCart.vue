@@ -2,8 +2,7 @@
   <div class="Cart-Page">
     <div class="cartPage-body">
       <h1>购物车</h1>
-      <el-divider></el-divider>
-      <el-table v-loading="loading" :data="idleInfos" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}" border style="margin: auto" @click="getSum"  @row-click="handleCurrentChange" @selection-change="seleChange" :cell-style="cellStyle">
+      <el-table :show-header="false" v-loading="loading" :data="idleInfos" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}"   style="margin: auto;" :row-style="rowStyle" :cell-style="cellStyle" @click="getSum"  @row-click="handleCurrentChange" @selection-change="seleChange" >
         <el-table-column
             class-name="el-table"
             type="selection"
@@ -19,12 +18,31 @@
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="标题" >
+        <el-table-column prop="title" label="标题" width="560px">
           <template slot-scope="scope">
-            <a @click="goToIdleDetails(scope.row.id)" ><label style="cursor: pointer">{{scope.row.title}}</label></a>
+            <p style="text-align: left">
+              <a @click="goToIdleDetails(scope.row.id)" style="cursor: pointer"><span style="font-size: 18px"><B>{{scope.row.title}}</B></span></a>
+            </p>
+            <p style="text-align: left;color: #999999;font-size: 14px">
+              <span style="margin-right: 20px">单价:
+                <span style="color: #FC8770">￥
+                  <span v-if="scope.row.rentAndSellMark===0">{{scope.row.price}}元</span>
+                  <span v-if="scope.row.rentAndSellMark===1">{{scope.row.price}}元/天</span>
+                </span>
+              </span>
+              <span style="margin-right: 20px">购买数量: <span style="color: #FC8770">
+                <el-input-number @change="getSum" v-model="scope.row.buyCount"  :min="1" :max="scope.row.remain" size="mini" style="width: 90px"> </el-input-number>
+              </span></span>
+            </p>
+            <p style="text-align: left;color: #999999;font-size: 14px">
+              <span>总额：￥
+                <span v-if="scope.row.rentAndSellMark===0">{{scope.row.price*scope.row.buyCount}}元</span>
+                <span v-if="scope.row.rentAndSellMark===1">{{scope.row.price*scope.row.buyCount}}元/天</span>
+              </span>
+            </p>
           </template>
         </el-table-column>
-        <el-table-column prop="price" label="价格" width="180">
+       <!-- <el-table-column prop="price" label="价格" width="180">
           <template slot-scope="scope">
             <span v-if="scope.row.rentAndSellMark==0">出售价格：￥{{scope.row.price}}元</span>
             <span v-if="scope.row.rentAndSellMark==1">出租价格：￥{{scope.row.price}}元/天</span>
@@ -34,7 +52,7 @@
           <template slot-scope="scope">
             <el-input-number @change="getSum" v-model="scope.row.buyCount"  :min="1" :max="scope.row.remain" size="small"></el-input-number>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column prop="count" label="操作">
           <template slot-scope="scope">
               <el-button slot="reference" type="danger" plain @click="delIdleFromCart(scope.row.id)"><i class="el-icon-delete"> </i> 删除</el-button>
@@ -42,11 +60,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="height: 100px;width: 100%;margin: auto">
+      <div style="height: 80px;width: 100%;margin: auto">
         <span style="float: left;font-family: 楷体;color: #999999;font-size: 16px">tips:每次结算的商品需同时为出租或出售类型</span>
-        <div class="sumOfPrice" style="width: 25%;height: 30px;margin-top: 20px;float: right;margin-right: 40px">
-          <span v-if="typeMark===0" style="color: red;font-size: 23px;">总计:￥{{params.allSum}}元</span>
-          <span v-if="typeMark===1" style="color: red;font-size: 23px;">总计:￥{{params.allSum}}元/天</span>
+        <div class="sumOfPrice" style="width: 30%;height: 30px;margin-top: 20px;float: right;margin-right: 20px">
+          <span v-if="typeMark===0" style="color: red;font-size: 20px;">总计:￥{{params.allSum}}元</span>
+          <span v-if="typeMark===1" style="color: red;font-size: 20px;">总计:￥{{params.allSum}}元/天</span>
           <el-button v-if="params.arrID.length>0" style="margin-left: 20px;" type="primary" plain @click="goToConfirmPage">立即下单</el-button>
         </div>
       </div>
@@ -222,7 +240,11 @@ name: "ShoppingCart",
         }
       }
       console.log("sum="+this.params.allSum)
-    }
+    },
+
+    rowStyle(){
+      return "border: 2px solid #B3B6B7";
+    },
 
   },
 

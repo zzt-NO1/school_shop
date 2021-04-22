@@ -1,6 +1,6 @@
 <template>
   <div class="OrderPay">
-    <div class="OrderPay-body" v-loading="loading">
+    <div class="OrderPay-body" v-loading="loading" style="background-color: white;border-radius: 10px">
       <h2 style="color:#123D64;">订单支付</h2>
       <el-form>
         <p style="text-align: right;width: 70%;margin: auto;color: #666666">剩余支付时间:<span style="color: red;font-size: 20px"> {{minutes}} 分 {{second}} 秒</span></p>

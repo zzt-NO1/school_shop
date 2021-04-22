@@ -1,6 +1,6 @@
 <template>
 <div class="personalInfo">
-  <div class="personalInfo-body">
+  <div class="personalInfo-body" style="background-color: white">
     <h1>个人中心</h1>
     <p>当前信用积分:100</p>
     <el-form label-position="left" :model="params.student" ref="ruleForm" label-width="120px" class="demo-ruleForm" style="text-align: left">
@@ -247,12 +247,13 @@ name: "PersonalInfo",
 <style scoped>
 .personalInfo-body{
   width: 60%;
-  height: 900px;
+  height: 750px;
   margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
   border: 1px solid #2196F3;
   border-radius: 10px;
+  opacity: 0.9;
 }
 .demo-ruleForm{
   margin-left: 210px;

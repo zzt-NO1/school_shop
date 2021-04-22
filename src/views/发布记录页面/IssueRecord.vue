@@ -1,6 +1,6 @@
 <template>
   <div class="Record-Page">
-    <div class="RecordPage-body">
+    <div class="RecordPage-body" style="background-color: white;border-radius: 10px">
       <h1>发布记录</h1>
       <p>
           <el-radio v-model="selectType"  label="2" border @change="filterIdle">全部</el-radio>
@@ -64,7 +64,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="height: 100px;width: 100%;margin: auto">
+      <div style="height: 40px;width: 100%;margin: auto">
 
       </div>
     </div>

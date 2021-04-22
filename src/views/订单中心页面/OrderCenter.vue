@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="OrderCenter-body">
+  <div class="OrderCenter-body" style="border-radius: 10px;background-color: white;opacity: 0.87">
     <h2>订单中心</h2>
     <div class="top_tap">
       <el-tabs v-model="activeName" type="border-card" v-loading="loading">

@@ -1,7 +1,7 @@
 <template>
   <div id="uploadGood">
     <div class="hello">
-      <form ref="upload_form">
+      <form ref="upload_form"  style="background-color: white;border-radius: 10px">
         <div class="upload">
           <div class="upload_warp">
             <div class="upload_warp_left" @click="fileClick">

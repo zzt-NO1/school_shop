@@ -5,7 +5,7 @@
     <div id="midground" class="wall"></div>
     <div id="foreground" class="wall"></div>
     <div id="top" class="wall"></div>-->
-    <div class="hello">
+    <div class="hello" style="background-color: white;height: 100%;border-radius: 10px;opacity: 0.85">
       <form ref="upload_form">
         <div class="upload">
           <div class="upload_warp">

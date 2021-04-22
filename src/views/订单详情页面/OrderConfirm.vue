@@ -1,6 +1,6 @@
 <template>
   <div class="OrderDetail">
-    <div class="OrderDetail-body" v-loading="loading">
+    <div class="OrderDetail-body" v-loading="loading" style="background-color: white;border-radius: 10px">
       <h1 style="color:#123D64;">订单确认</h1>
       <div class="ReciInfo">
         <el-divider></el-divider>
