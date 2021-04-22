@@ -1,16 +1,16 @@
 <template>
   <div class="Record-Page">
-    <div class="RecordPage-body" style="background-color: white;border-radius: 10px">
+    <div class="RecordPage-body" style="background-color: white;border-radius: 10px;padding-top: 15px">
       <h1>发布记录</h1>
       <p>
           <el-radio v-model="selectType"  label="2" border @change="filterIdle">全部</el-radio>
           <el-radio v-model="selectType"  label="0" border @change="filterIdle">出售</el-radio>
           <el-radio v-model="selectType"  label="1" border @change="filterIdle">出租</el-radio>
       </p>
-      <el-table v-loading="loading" :data="filIdleList" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}"  border style="margin: auto;" :row-style="rowStyle" :cell-style="cellStyle">
-        <el-table-column prop="pictures" width="140">
+      <el-table v-loading="loading" :data="filIdleList" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}" style="margin: auto;width: 90%;border-radius: 8px" :row-style="rowStyle" :cell-style="cellStyle">
+        <el-table-column prop="pictures" width="160">
           <template slot-scope="scope">
-            <el-image :src="scope.row.pictures" :preview-src-list="[scope.row.pictures]" :key="scope.row.id" style="width: 100px;height: 100px">
+            <el-image :src="scope.row.pictures" :preview-src-list="[scope.row.pictures]" :key="scope.row.id" style="width: 100px;height: 100px;margin-left: 30px">
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline"></i>
               </div>

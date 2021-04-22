@@ -2,7 +2,7 @@
   <div class="Cart-Page">
     <div class="cartPage-body">
       <h1>购物车</h1>
-      <el-table :show-header="false" v-loading="loading" :data="idleInfos" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}"   style="margin: auto;" :row-style="rowStyle" :cell-style="cellStyle" @click="getSum"  @row-click="handleCurrentChange" @selection-change="seleChange" >
+      <el-table :show-header="false" v-loading="loading" :data="idleInfos" class="el-table" :header-cell-style="{borderColor:'#D0D3D4'}"   style="margin: auto;width: 90%;border-radius: 8px" :row-style="rowStyle" :cell-style="cellStyle" @click="getSum"  @row-click="handleCurrentChange" @selection-change="seleChange" >
         <el-table-column
             class-name="el-table"
             type="selection"
@@ -60,7 +60,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="height: 80px;width: 100%;margin: auto">
+      <div style="height: 80px;width: 90%;margin: auto">
         <span style="float: left;font-family: 楷体;color: #999999;font-size: 16px">tips:每次结算的商品需同时为出租或出售类型</span>
         <div class="sumOfPrice" style="width: 30%;height: 30px;margin-top: 20px;float: right;margin-right: 20px">
           <span v-if="typeMark===0" style="color: red;font-size: 20px;">总计:￥{{params.allSum}}元</span>

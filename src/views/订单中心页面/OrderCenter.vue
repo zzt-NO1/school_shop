@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="OrderCenter-body" style="border-radius: 10px;background-color: white;opacity: 0.87">
+  <div class="OrderCenter-body" style="border-radius: 10px;background-color: white;opacity: 0.87;padding-top: 15px">
     <h2>订单中心</h2>
     <div class="top_tap">
       <el-tabs v-model="activeName" type="border-card" v-loading="loading">
@@ -218,6 +218,9 @@
                   <el-button type="primary" plain style="margin:auto" slot="reference">确认收货</el-button>
                 </el-popconfirm>
               </div>
+              <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===0">
+                  <el-button type="danger" plain style="margin:auto" slot="reference" @click="continuePay(item.orderId)">继续支付</el-button>
+              </div>
             </div>
             <el-collapse>
               <el-collapse-item name="1" >
@@ -297,6 +300,9 @@
                   <el-button type="danger" plain style="margin:auto" slot="reference">确认归还</el-button>
                 </el-popconfirm>
               </div>
+              <div style="width: 13%;height: 100%;float: right;margin-left: 10px" v-if="item.statusCode===0">
+                <el-button type="danger" plain style="margin:auto" slot="reference" @click="continuePay(item.orderId)">继续支付</el-button>
+              </div>
             </div>
             <el-collapse>
               <el-collapse-item name="1" >
@@ -358,6 +364,12 @@ name: "OrderCenter",
     }
   },
   methods:{
+    //继续支付
+    continuePay(orderId){
+      let orderIdList=[]
+      orderIdList.push(orderId)
+      this.$router.push({path:'/orderPay',query:{orderIdList:JSON.stringify(orderIdList)}})
+    },
     //确认收回
     confirmTakeBack(orderId){
       this.$message.warning('系统正在处理，请耐心等候结果')

@@ -3,7 +3,7 @@
     <div class="OrderPay-body" v-loading="loading" style="background-color: white;border-radius: 10px">
       <h2 style="color:#123D64;">订单支付</h2>
       <el-form>
-        <p style="text-align: right;width: 70%;margin: auto;color: #666666">剩余支付时间:<span style="color: red;font-size: 20px"> {{minutes}} 分 {{second}} 秒</span></p>
+<!--        <p style="text-align: right;width: 70%;margin: auto;color: #666666">剩余支付时间:<span style="color: red;font-size: 20px"> {{minutes}} 分 {{second}} 秒</span></p>-->
         <el-form-item v-for="(item,index) in orderInfoList" :key="index">
           <el-card class="box-card" style="width: 70%;margin: auto;text-align: left">
               <div style="width: 110px">
@@ -41,7 +41,7 @@
         </el-form-item>
         <el-form-item>
           <p style="text-align: right;width: 70%;margin: auto">
-            <span style="float: left;color: #666666">温馨提示：请尽快完成支付，离开该页面将自动结束订单哟！</span>
+            <span style="float: left;color: #666666">温馨提示：请尽快完成支付，创建订单15分钟内未支付将自动结束订单哟！</span>
             <span style="margin-right: 15px;">总计:<span style="color: #FF4F2C">￥<span style="font-size: 19px">{{sum}}</span>元</span></span>
             <el-button type="primary" @click="paySubmit" :disabled="payBtn">立即支付</el-button>
           </p>

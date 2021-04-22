@@ -79,7 +79,7 @@
                 <p style="text-align: left"><span style="float: left;margin-left: 1px;margin-bottom: 10px;margin-top: -10px;color: #669999">
                   <i class="el-icon-location-information"></i>{{scope.row.address}}</span>
                 </p>
-                <el-radio-group v-model="scope.row.selectTransWay" style="float:left;">
+                <el-radio-group v-model="scope.row.selectTransWay" style="float:left;width: 250px">
                   <el-radio :label="1" :disabled="scope.row.transWay===2">校内自取</el-radio>
                   <el-radio :label="2" :disabled="scope.row.transWay===1">快递物流</el-radio>
                 </el-radio-group><br/>
