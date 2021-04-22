@@ -14,7 +14,7 @@
           </el-input>-->
           <label>类型：</label>
           <span class="good-type">
-            <select class="good-type-select" v-model="goodType" style="width: 200px;height: 40px;border: 1px solid #2196F3;border-radius: 4px;color:#2d8cf0;font-size: 14px" half autocomplete="no" @click="filterIdleList">
+            <select class="good-type-select" v-model="goodType" style="width: 200px;height: 40px;border: 1px solid #2196F3;border-radius: 4px;color:#999999;font-size: 14px" half autocomplete="no" @click="filterIdleList">
               <option value="">全部类型</option>
               <option v-for="item in goodTypes" :key="item.id">{{item.name}}</option>
             </select>
