@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" id="login">
+  <!--<div class="wrapper" id="login">
     <div class="head">
       <ul class="fl">
         <li><img src="../../views/登陆注册页面/image/cat2.jpg"></li>
@@ -11,29 +11,29 @@
         <li @click="register" ><label style="cursor: pointer"><a>注册</a></label></li>
       </ul>
     </div>
-    <div class="nav"></div>
+    <hr style="width: 80%"/>
     <div class="content">
       <div class="mod-reg">
         <div class="reg-content">
           <h1 style="text-align: left" class="plat-title">校园闲置物品交易平台</h1>
           <br/><br/>
           <div class="name" >
-           <!-- <span class="tips-login">用户名</span>
-            <input type="text" v-model="userName" name="" placeholder="请输入用户名" class="user-input">-->
+           &lt;!&ndash; <span class="tips-login">用户名</span>
+            <input type="text" v-model="userName" name="" placeholder="请输入用户名" class="user-input">&ndash;&gt;
             <el-input placeholder="请输入账号" v-model="userName" style="width: 280px;border-color: #666666!important;">
               <template slot="prepend"><span style="color: whitesmoke">账号</span></template>
             </el-input>
           </div>
           <div class="code" >
-            <!--<span class="tips-login">密码</span>
-            <input type="password" v-model="password" name="" placeholder="请输入密码"  class="user-input">-->
+            &lt;!&ndash;<span class="tips-login">密码</span>
+            <input type="password" v-model="password" name="" placeholder="请输入密码"  class="user-input">&ndash;&gt;
             <el-input placeholder="请输入密码" v-model="password" show-password style="width: 280px">
               <template  slot="prepend"><span style="color: whitesmoke">密码</span></template>
             </el-input>
           </div>
           <div class="submit" >
             <el-button @click="login()" class="submitbutton" style="cursor: pointer;width: 280px;background-color: #2c3e50!important;color: whitesmoke!important;">登 录</el-button>
-            <!--<input type="submit" id="" name="" value="登    录" @click="login()" class="submitbutton" style="cursor: pointer">-->
+            &lt;!&ndash;<input type="submit" id="" name="" value="登    录" @click="login()" class="submitbutton" style="cursor: pointer">&ndash;&gt;
           </div>
         </div>
         <div class="picture"></div>
@@ -55,6 +55,32 @@
         </p>
       </div>
     </div>
+  </div>-->
+  <div>
+    <div class="login-div" style="width: 100%;height: 730px;padding-top:165px">
+      <transition name="el-zoom-in-top">
+        <div style="width: 40%;height: 65%;background-color: white;margin:auto;opacity: 0.8;border-radius: 8px">
+          <h2 style="padding-top: 50px">校园闲置物品交易平台</h2>
+          <br/>
+          <el-input placeholder="请输入账号" style="width: 50%;margin-top: 20px;" v-model="userName" :clearable="true">
+            <template slot="prepend">账号</template>
+          </el-input>
+          <br/>
+          <el-input type="password" placeholder="请输入密码" style="width: 50%;margin-top: 20px;" v-model="password" show-password :clearable="true">
+            <template slot="prepend">密码</template>
+          </el-input>
+          <br/>
+          <el-checkbox style="margin-top: 20px">
+            记住密码
+          </el-checkbox>
+          <el-link class="register-a" style="margin-left: 70px;font-size: 15px;cursor: pointer" @click="register">
+            <span style="color:#669999">还没账号？立即注册</span>
+          </el-link>
+          <br/>
+          <el-button style="margin-top: 20px;width: 50%;background-color: #2c3e50;color: white" @click="login()">登录</el-button>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -73,6 +99,13 @@ export default {
       this.$router.push({path:"/register"})
     },
     login() {
+      if (this.userName==null||this.userName==''){
+        this.$message.warning("请输入账号")
+        return false
+      }else if (this.password==null||this.password==''){
+        this.$message.warning("请输入密码")
+        return false
+      }
       let passwordEncry = this.encrypt(this.password)
       console.log(this.userName+' '+passwordEncry)
       const _this = this;
@@ -144,4 +177,7 @@ export default {
 <style scoped>
 @import "../../views/登陆注册页面/css/normalize.css";
 @import "../../views/登陆注册页面/css/login.css";
+.login-div{
+  background: url(../../assets/img/bg4.jpg) no-repeat center top;
+}
 </style>
