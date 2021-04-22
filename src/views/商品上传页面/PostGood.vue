@@ -43,44 +43,44 @@
           <!----------------------------------出售品信息------------------------------------------------------------------->
           <div class="upload-msg" v-if="params.rentOrSellMark===0">
             <div class="form-group">
-              <span>标题*</span>
-              <input class="in_text form-field" type="text" v-model="params.title" placeholder="填写标题或闲置品名称" autocomplete="no" required="required"/>
+              <span style="border: 1px solid #1687f3;background-color: #1687f3;color: white" class="append-span">标题*</span>
+              <input style="border: 1px solid #1687f3;" class="in_text form-field" type="text" v-model="params.title" placeholder="填写标题或闲置品名称" autocomplete="no" required="required"/>
             </div>
             <div class="form-group fleft">
-              <span>类别*</span>
+              <span class="append-span">类别*</span>
               <!--<input class="in_text form-field" list="typelist" type="text" half placeholder="请选择类别" autocomplete="no" required="required"/>-->
-              <select v-model="params.goodType" class="in_text form-field select" id="typelist" half placeholder="请选择类别" autocomplete="no" required="required">
+              <select style="border: 1px solid #1687f3;" v-model="params.goodType" class="in_text form-field select" id="typelist" half placeholder="请选择类别" autocomplete="no" required="required">
                 <option value="">请选择类别</option>
                 <option v-for="item in goodTypes" :key="item.id">{{item.name}}</option>
               </select>
             </div>
             <div class="form-group fright">
-              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.price" half placeholder="预期价格" autocomplete="no" required="required"/>
-              <span v-if="params.rentOrSellMark===0">元*</span>
+              <input style="border: 1px solid #1687f3;" class="in_text form-field" type="number" step="0.1" min="0" v-model="params.price" half placeholder="预期价格" autocomplete="no" required="required"/>
+              <span class="append-span" style="border: 1px solid #1687f3;" v-if="params.rentOrSellMark===0">元*</span>
             </div>
             <div class="form-group fleft">
-              <span>新旧程度*</span>
+              <span class="append-span">新旧程度*</span>
               <!--<input class="in_text form-field" type="text" v-model="params.qualityValue" half placeholder="请选择" autocomplete="no" required="required"/>-->
-              <select v-model="params.qualityValue" class="in_text form-field select" half autocomplete="no" required="required">
+              <select style="border: 1px solid #1687f3;" v-model="params.qualityValue" class="in_text form-field select" half autocomplete="no" required="required">
                 <option value="">请选择新旧程度</option>
                 <option v-for="(item,index) in qualityValues" :key="index">{{item}}</option>
               </select>
             </div>
             <div class="form-group fright">
-              <span>数量*</span>
-              <input class="in_text form-field" type="number" v-model="params.count" min="1" max="20" half placeholder="库存数量" autocomplete="no" required="required"/>
+              <span class="append-span">数量*</span>
+              <input style="border: 1px solid #1687f3;" class="in_text form-field" type="number" v-model="params.count" min="1" max="20" half placeholder="库存数量" autocomplete="no" required="required"/>
             </div>
             <div class="form-group fleft">
-              <span>交易途径*</span>
+              <span class="append-span">交易途径*</span>
               <!--<input class="in_text form-field" type="text" v-model="params.transWay" half placeholder="请选择" autocomplete="no" required="required"/>-->
-              <select v-model="params.transWay" class="in_text form-field select" half autocomplete="no" required="required">
+              <select style="border: 1px solid #1687f3;" v-model="params.transWay" class="in_text form-field select" half autocomplete="no" required="required">
                 <!--<option value="">请选择交易途径 </option>-->
                 <option v-for="(item,index) in transWays" :key="index" :value="index">{{item}}</option>
               </select>
             </div>
             <div class="form-group fright">
-              <span>是否包邮*</span>
-              <select v-model="params.isFree" class="in_text form-field select" half autocomplete="no" required="required">
+              <span class="append-span">是否包邮*</span>
+              <select style="border: 1px solid #1687f3;" v-model="params.isFree" class="in_text form-field select" half autocomplete="no" required="required">
                 <!--<option value="">请选择交易途径 </option>-->
                 <option value=0 >不包邮</option>
                 <option value=1 >包邮</option>
@@ -88,87 +88,87 @@
               <!--<input class="in_text form-field" type="text"  half placeholder="请选择" autocomplete="no" required="required"/>-->
             </div>
             <div class="form-group">
-              <span>校内地点*</span>
-              <input class="in_text form-field" type="text" v-model="params.address" placeholder="请填写交易地址" autocomplete="no" required="required"/>
+              <span class="append-span">校内地点*</span>
+              <input style="border: 1px solid #1687f3;" class="in_text form-field" type="text" v-model="params.address" placeholder="请填写交易地址" autocomplete="no" required="required"/>
             </div>
             <div class="form-group" >
-              <textarea class="in_text form-field" type="text" v-model="params.description" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;" required="required"/>
+              <textarea style="border: 1px solid #1687f3;border-radius: 6px 6px 6px 6px;" class="in_text form-field" type="text" v-model="params.description" placeholder="闲置品描述信息*" autocomplete="no" required="required"/>
             </div>
             <div class="form-group" >
-              <input class="in_text" type="submit" value="提交发布申请" @click="submitClick">
+              <input style="border: 1px solid #1687f3;background-color: #2196F3;color: white" class="in_text" type="submit" value="提交发布申请" @click="submitClick">
             </div>
           </div>
           <!------------------------------出租品信息--------------------------------------------------------->
           <div class="rentDiv" v-if="params.rentOrSellMark===1">
             <div class="form-group">
-              <span>标题*</span>
-              <input class="in_text form-field" type="text" v-model="params.title" placeholder="填写标题或闲置品名称" autocomplete="no" required="required"/>
+              <span class="append-span">标题*</span>
+              <input style="border: 1px solid #1687f3;" class="in_text form-field" type="text" v-model="params.title" placeholder="填写标题或闲置品名称" autocomplete="no" required="required"/>
             </div>
             <div class="form-group fleft">
-              <span>类别*</span>
+              <span class="append-span">类别*</span>
               <!--<input class="in_text form-field" type="text" v-model="params.goodType" half placeholder="请选择类别" autocomplete="no" required="required"/>-->
-              <select v-model="params.goodType" class="in_text form-field select" id="typelist1" half autocomplete="no" required="required">
+              <select style="border: 1px solid #1687f3;" v-model="params.goodType" class="in_text form-field select" id="typelist1" half autocomplete="no" required="required">
                 <option value="">请选择类别</option>
                 <option v-for="item in goodTypes" :key="item.id">{{item.name}}</option>
               </select>
             </div>
             <div class="form-group fright">
-              <input class="in_text form-field" type="number" step="0.1" min="0" v-model="params.price" half placeholder="预期价格" autocomplete="no" required="required"/>
-              <span v-if="params.rentOrSellMark===1">元/天*</span>
+              <input style="border: 1px solid #1687f3;" class="in_text form-field" type="number" step="0.1" min="0" v-model="params.price" half placeholder="预期价格" autocomplete="no" required="required"/>
+              <span class="append-span" v-if="params.rentOrSellMark===1">元/天*</span>
             </div>
             <div class="form-group fleft">
-              <span>新旧程度*</span>
+              <span class="append-span">新旧程度*</span>
               <!--<input class="in_text form-field" type="text" v-model="params.qualityValue" half placeholder="请选择" autocomplete="no" required="required"/>-->
-              <select v-model="params.qualityValue" class="in_text form-field select" half autocomplete="no" required="required">
+              <select style="border: 1px solid #1687f3;" v-model="params.qualityValue" class="in_text form-field select" half autocomplete="no" required="required">
                 <option value="">请选择新旧程度</option>
                 <option v-for="(item,index) in qualityValues" :key="index">{{item}}</option>
               </select>
             </div>
             <div class="form-group fright">
-              <span>数量*</span>
-              <input class="in_text form-field" type="number" min="1" max="20" v-model="params.count" half placeholder="库存数量" autocomplete="no" required="required"/>
+              <span class="append-span">数量*</span>
+              <input style="border: 1px solid #1687f3;" class="in_text form-field" type="number" min="1" max="20" v-model="params.count" half placeholder="库存数量" autocomplete="no" required="required"/>
             </div>
             <div class="form-group fleft">
-              <span>交易途径*</span>
+              <span class="append-span">交易途径*</span>
               <!--<input class="in_text form-field" type="text" v-model="params.transWay" half placeholder="请选择" autocomplete="no" required="required"/>-->
-              <select v-model="params.transWay" class="in_text form-field select" half autocomplete="no" required="required">
+              <select style="border: 1px solid #1687f3;" v-model="params.transWay" class="in_text form-field select" half autocomplete="no" required="required">
                 <!--<option value="">请选择交易途径 </option>-->
                 <option v-for="(item,index) in transWays" :key="index" :value="index">{{item}}</option>
               </select>
             </div>
             <div class="form-group fright">
-              <span>是否包邮*</span>
+              <span class="append-span">是否包邮*</span>
               <!--<input class="in_text form-field" type="text"  half placeholder="请选择" autocomplete="no" required="required"/>-->
-              <select v-model="params.isFree" class="in_text form-field select" half autocomplete="no" required="required">
+              <select style="border: 1px solid #1687f3;" v-model="params.isFree" class="in_text form-field select" half autocomplete="no" required="required">
                 <!--<option value="">请选择交易途径 </option>-->
                 <option value=0 >不包邮</option>
                 <option value=1 >包邮</option>
               </select>
             </div>
             <div class="form-group">
-              <span>校内地点*</span>
-              <input class="in_text form-field" type="text" v-model="params.address" placeholder="请填写交易地址" autocomplete="no" required="required"/>
+              <span class="append-span">校内地点*</span>
+              <input style="border: 1px solid #1687f3;" class="in_text form-field" type="text" v-model="params.address" placeholder="请填写交易地址" autocomplete="no" required="required"/>
             </div>
             <div class="form-group" >
-              <textarea class="in_text form-field" type="text" v-model="params.description" placeholder="闲置品描述信息*" autocomplete="no" style="border-radius: 6px 6px 6px 6px;" required="required"/>
+              <textarea style="border: 1px solid #1687f3;border-radius: 6px 6px 6px 6px;" class="in_text form-field" type="text" v-model="params.description" placeholder="闲置品描述信息*" autocomplete="no"  required="required"/>
             </div>
             <div class="form-group">
-              <span>出租规则*</span>
-              <input class="in_text form-field" type="text" placeholder="请填写出租规则" autocomplete="no" v-model="rule" style="color:#1687f3"/>
-              <span style="cursor: pointer" @click="addRule(rule)">添加</span>
+              <span class="append-span">出租规则*</span>
+              <input style="border: 1px solid #1687f3;color:#1687f3;border-radius: 0" class="in_text form-field" type="text" placeholder="请填写出租规则" autocomplete="no" v-model="rule" />
+              <span class="append-span" style="cursor: pointer" @click="addRule(rule)">添加</span>
             </div>
-            <div class="form-group" style="border: 2px solid #2196F3;border-radius: 6px;">
+            <div class="form-group" style="border: 1px solid #2196F3;border-radius: 6px;">
               <ul class="task-list">
-                <li class="task-list-item" v-for="(item,index) in params.rent_rules" :key="index">
-                  <label class="task-list-item-label">
-                    <span>{{index+1}}、 {{item}}</span>
+                <li class="task-list-item" v-for="(item,index) in params.rent_rules" :key="index" style="background-color: #2196F3">
+                  <label class="task-list-item-label" >
+                    <span >{{index+1}}、 {{item}}</span>
                   </label>
-                  <span @click="delItem(item)" class="delete-btn" title="删除规则">{{item.del}}</span>
+                  <span @click="delItem(item)" class="delete-btn" title="删除规则" >{{item.del}}</span>
                 </li>
               </ul>
             </div>
             <div class="form-group" >
-              <input class="in_text" type="submit" value="提交发布申请" @click="submitClick">
+              <input style="border: 1px solid #1687f3;background-color: #2196F3;color:white" class="in_text" type="submit" value="提交发布申请" @click="submitClick">
             </div>
           </div>
         </div>
@@ -434,7 +434,7 @@ export default {
   width: 56%;
   margin-left: 2%;
   height: 100%;
-  border: 2px dashed #2196F3;
+  border: 1px dashed #2196F3;
   border-radius: 4px;
   line-height: 130px;
   color: #2196F3;
@@ -448,7 +448,7 @@ export default {
   float: left;
   width: 40%;
   height: 100%;
-  border: 2px dashed #2196F3;
+  border: 1px dashed #2196F3;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -459,12 +459,12 @@ export default {
 }
 
 .upload {
-  border: 2px solid #2196F3;
+  border: 1px solid #2196F3;
   width: 800px;
   border-radius: 14px;
 }
 .upload1 {
-  border: 2px solid #2196F3;
+  border: 1px solid #2196F3;
   width: 800px;
   height: auto;
   border-radius: 14px;
@@ -482,13 +482,10 @@ export default {
 .c-red{
   color: red;
 }
-/*.bgcolor{
+.append-span{
+  border: 1px solid #2196F3;
   background-color: #2196F3;
-  color: white;
-  font-size: 15px;
+  color: white
 }
-.row{
-  text-align: left;
-  margin-left: 20px;
-}*/
+
 </style>

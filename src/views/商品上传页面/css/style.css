@@ -5,12 +5,6 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/*body {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}*/
 .rule-table{
   width: 300px;
   margin: auto;
@@ -64,17 +58,17 @@ h1 {
 .in_text[type=text] {
   width: calc(100% - 30px);
   margin-bottom: 30px;
-  border: 2px solid #1687f3;
+  border: 1px solid #1687f3;
   background-color: transparent
 }
 .in_text[type=number] {
   width: calc(100% - 30px);
   margin-bottom: 30px;
-  border: 2px solid #1687f3;
+  border: 1px solid #1687f3;
   background-color: transparent
 }
 .in_text[type=text][type=number]:placeholder-shown {
-  border: 2px solid #1687f3;
+  border: 1px solid #1687f3;
   background-color: transparent
 }
 .in_text[type=text]::placeholder {
@@ -95,7 +89,7 @@ h1 {
 .in_text[type=submit] {
   background: #2196f3;;
   color: #1687f3;
-  border: 2px solid #1687f3;
+  border: 1px solid #1687f3;
   outline: 0px solid #fff;
   width: calc(50% - 30px);
   height: 40px;
@@ -142,7 +136,7 @@ h1 {
   border-radius: 6px;
   -webkit-appearance: none;
   color: var(--input-color);
-  border: 2px solid #1687f3;
+  border: 1px solid #1687f3;
   background: var(--input-background);
   transition: border .3s ease;
 }
@@ -205,7 +199,7 @@ h1 {
   line-height: 25px;
   color:#1687f3;
   /*background: var(--group-background);*/
-  border: 2px solid #1687f3;
+/*  border: 1px solid #1687f3;*/
   transition: background .3s ease, border .3s ease, color .3s ease;
 }
 .form-group:focus-within > span {
@@ -295,124 +289,3 @@ body {
   background-position: center;
   cursor: pointer;
 }
-
-@supports (-webkit-appearance: none) or (-moz-appearance: none) {
-  /*input[type=checkbox],
-  input[type=radio] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-  }*/
-}
-
-/*--------------------------背景----------------------------------------------*/
-/*
-.wall{
-  position: absolute;
-  top: 50px;
-  left: 0;
-  bottom: -0px;
-  right: 0;
-  background-repeat: repeat;
-}
-#background{
-  background: url("../../../views/商品上传页面/img/preview.jpg") repeat;
-  -webkit-animation: dd 1000s linear infinite;
-  -moz-animation: dd 1000s linear infinite;
-  -o-animation: dd 1000s linear infinite;
-  animation: dd 1000s linear infinite;
-  background-size: 100% 100%;
-  height: auto;
-
-}
-#midground{
-  background: url("../../../views/商品上传页面/img/midground.png");
-  z-index: 1;
-  -webkit-animation: cc 1000s linear infinite;
-  -moz-animation: cc 1000s linear infinite;
-  -o-animation: cc 1000s linear infinite;
-  animation: cc 1000s linear infinite;
-}
-#foreground{
-  background: url("../../../views/商品上传页面/img/foreground.png");
-  z-index: 1;
-  -webkit-animation: cc 1530s linear infinite;
-  -o-animation: cc 1530s linear infinite;
-  -moz-animation: cc 1530s linear infinite;
-  animation: cc 553s linear infinite;
-}
-#top{
-  background: url("../../../views/商品上传页面/img/midground.png");
-  z-index: 2;
-  -webkit-animation: dd 200s linear infinite;
-  -o-animation: dd 200s linear infinite;
-  animation: da 200s linear infinite;
-}
-@-webkit-keyframes cc {
-  from{
-    background-position: 0 0;
-    transform: translateY(10px);
-  }
-  to{
-    background-position: 600% 0;
-  }
-}
-@-o-keyframes cc {
-  from{
-    background-position: 0 0;
-    transform: translateY(10px);
-  }
-  to{
-    background-position: 600% 0;
-  }
-}
-@-moz-keyframes cc {
-  from{
-    background-position: 0 0;
-    transform: translateY(10px);
-  }
-  to{
-    background-position: 600% 0;
-  }
-}
-@keyframes cc {
-  0%{
-    background-position: 0 0;
-  }
-  100%{
-    background-position: 600% 0;
-  }
-}
-
-@keyframes da {
-  0%{
-    background-position: 0 0;
-  }
-  100%{
-    background-position: 0 600%;
-  }
-}
-@-webkit-keyframes da {
-  0%{
-    background-position: 0 0;
-  }
-  100%{
-    background-position: 0 600%;
-  }
-}
-@-moz-keyframes da {
-  0%{
-    background-position: 0 0;
-  }
-  100%{
-    background-position: 0 600%;
-  }
-}
-@-ms-keyframes da {
-  0%{
-    background-position: 0 0;
-  }
-  100%{
-    background-position: 0 600%;
-  }
-}
-*/
