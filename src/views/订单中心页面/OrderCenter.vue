@@ -462,7 +462,6 @@ name: "OrderCenter",
       })
     },
     getOrderRecordList(){
-      this.loading = true
       let _this = this
       axios.post('http://localhost:8181/orderOperate/getOrderListByStudentAccount',{
         params: this.params
@@ -558,6 +557,11 @@ name: "OrderCenter",
       }
       this.delNewNotice()
     }
+  },
+  mounted() {
+    this.timer = setInterval(() => {
+      setTimeout(this.getOrderRecordList, 0)
+    }, 1000*60*15)
   }
 }
 </script>
